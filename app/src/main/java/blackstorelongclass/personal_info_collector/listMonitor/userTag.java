@@ -6,10 +6,10 @@ package blackstorelongclass.personal_info_collector.listMonitor;
  */
 
 public class userTag {
-    String type;
+    //String type;
     Object Content;
     String Tag;
-    Class C;
+    Class<?> C;
 
     /**
      * 创建标签的函数
@@ -22,5 +22,14 @@ public class userTag {
         this.Tag = tag;
         this.Content = content;
         this.C = content.getClass();
+
+    }
+
+    public Object getObject(){
+        return Content;
+    }
+
+    public Class<?> getClassType(){
+        return C;
     }
 }
