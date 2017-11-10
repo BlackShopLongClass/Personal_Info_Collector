@@ -1,11 +1,16 @@
 package blackstorelongclass.personal_info_collector;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class DisplayMessageActivity extends AppCompatActivity {
 
@@ -25,6 +30,18 @@ public class DisplayMessageActivity extends AppCompatActivity {
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent intent = getIntent();
+        //String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        TextView textView = new TextView(this);
+        textView.setTextSize(40);
+        //textView.setText(message);
+
+        EditText editText = new EditText(this);
+
+        ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.content);
+        layout.addView(textView);
+        layout.addView(editText);
     }
 
 }

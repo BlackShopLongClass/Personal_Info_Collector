@@ -1,3 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="languages">
+        <item>选择类型</item>
+        <item>数字</item>
+        <item>文字</item>
+        <item>时间</item>
+        <item>地点</item>
+    </string-array>
 </resources>
