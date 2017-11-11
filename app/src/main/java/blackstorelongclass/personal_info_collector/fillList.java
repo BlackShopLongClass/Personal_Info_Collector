@@ -53,6 +53,8 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fill_list);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         addView = (LinearLayout) findViewById(R.id.fl_addView);
 
 
@@ -108,7 +110,6 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
             }
         }
         findViewById(R.id.submit).setOnClickListener(this);
-        findViewById(R.id.cancel).setOnClickListener(this);
 
     }
 
@@ -117,8 +118,6 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
         switch (v.getId()) {
             case R.id.submit://点击添加按钮就动态添加Item
                 getData();
-                break;
-            case R.id.cancel://打印数据
                 break;
         }
     }
