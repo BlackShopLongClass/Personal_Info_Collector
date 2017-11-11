@@ -6,27 +6,23 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="10dp">
-
-        <LinearLayout
-            android:id="@+id/ll_addView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-
-
+        android:orientation="horizontal">
 
         <Button
-            android:id="@+id/submit_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="SUBMIT"
-            android:onClick="go"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true" />
+            android:id="@+id/editlist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:onClick="testforeditlist"
+            android:text="testforeditlist" />
 
+        <Button
+            android:id="@+id/filllist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/editlist"
+            android:layout_centerVertical="true"
+            android:onClick="testforfilllist"
+            android:text="testforfilllist" />
 
 
     </RelativeLayout>

@@ -50,4 +50,8 @@ public class userList {
     public int getListSize(){
         return size;
     }
+
+    public String getListTitle(){
+        return titleOfList;
+    }
 }

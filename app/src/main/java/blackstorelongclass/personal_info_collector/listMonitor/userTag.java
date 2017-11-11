@@ -32,4 +32,20 @@ public class userTag {
     public Class<?> getClassType(){
         return C;
     }
+    public boolean isDouble(){
+        if(C == java.lang.Double.class) return true;
+        else
+            return false;
+    }
+
+    public boolean isGregorianCalendar(){
+        if(C == java.util.GregorianCalendar.class) return true;
+        else return false;
+    }
+
+    public boolean isStr(){
+        if(C == java.lang.String.class) return true;
+        else return false;
+    }
+
 }

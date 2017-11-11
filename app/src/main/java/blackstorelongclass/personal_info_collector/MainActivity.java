@@ -37,8 +37,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void go(View view){
+    public void testforeditlist(View view){
         Intent intent = new Intent(this,DynamicAddViewActivity.class);
+        startActivity(intent);
+    }
+
+    public void testforfilllist(View view){
+        Intent intent = new Intent(this,fillList.class);
         startActivity(intent);
     }
 }

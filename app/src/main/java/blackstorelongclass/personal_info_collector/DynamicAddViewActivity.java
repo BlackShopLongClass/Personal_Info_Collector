@@ -126,7 +126,7 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
             str = (String) spinner.getSelectedItem();
 //            Log.e(TAG, "表单项名称：" + hotelName.getText().toString() + "类型是" + str );
 
-            userTag us = new userTag(hotelName.getText().toString(), 111);
+            userTag us = new userTag(hotelName.getText().toString(),java.lang.Long.class);
             inputlist.addTag(hotelName.getText().toString(),us);
         }
 
