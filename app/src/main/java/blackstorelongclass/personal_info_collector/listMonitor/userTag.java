@@ -29,6 +29,10 @@ public class userTag {
         return Content;
     }
 
+    public String getTitle(){
+        return Tag;
+    }
+
     public Class<?> getClassType(){
         return C;
     }
