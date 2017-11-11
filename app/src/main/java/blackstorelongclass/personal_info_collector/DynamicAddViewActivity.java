@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import blackstorelongclass.personal_info_collector.listMonitor.*;
+import blackstorelongclass.personal_info_collector.DataHandler.*;
 
 
 public class DynamicAddViewActivity extends AppCompatActivity implements View.OnClickListener {
@@ -126,9 +127,21 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
             str = (String) spinner.getSelectedItem();
 //            Log.e(TAG, "表单项名称：" + hotelName.getText().toString() + "类型是" + str );
 
-            userTag us = new userTag(hotelName.getText().toString(),java.lang.Long.class);
+            userTag us;
+            switch (str){
+                case "数字":us = new userTag(hotelName.getText().toString(),java.lang.Double.class);
+                    break;
+                case "文字":us = new userTag(hotelName.getText().toString(),java.lang.String.class);
+                    break;
+                case "时间":us = new userTag(hotelName.getText().toString(),java.util.GregorianCalendar.class);
+                    break;
+                default: us = new userTag(hotelName.getText().toString(),java.lang.String.class);
+            }
+
             inputlist.addTag(hotelName.getText().toString(),us);
         }
+        listHandler handler = new listHandler();
+        handler.addNewList(inputlist);
 
     }
 

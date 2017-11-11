@@ -21,6 +21,7 @@ import android.widget.TimePicker;
 import java.util.GregorianCalendar;
 import java.util.Calendar;
 
+import blackstorelongclass.personal_info_collector.DataHandler.listHandler;
 import blackstorelongclass.personal_info_collector.listMonitor.*;
 
 public class fillList extends AppCompatActivity implements View.OnClickListener {
@@ -173,7 +174,8 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 inputlist.addTag(taglist.getTitleList().get(i),us);
             }
         }
-        int i;
+        listHandler handler = new listHandler();
+        handler.addNewData(inputlist);
 
     }
 
