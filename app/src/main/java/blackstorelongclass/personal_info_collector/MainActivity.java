@@ -1,14 +1,15 @@
 package blackstorelongclass.personal_info_collector;
 
-
+import android.icu.util.Calendar;
+import android.icu.util.GregorianCalendar;
+import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
-import android.content.Intent;
-import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import blackstorelongclass.personal_info_collector.listMonitor.userList;
+import blackstorelongclass.personal_info_collector.listMonitor.userTag;
 
 public class MainActivity extends AppCompatActivity {
 
