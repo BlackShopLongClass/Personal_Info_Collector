@@ -22,7 +22,11 @@ public class userTag {
         this.Tag = tag;
         this.Content = content;
         this.C = content.getClass();
+    }
 
+    public userTag(String tag, Class<?> c){
+        this.Tag = tag;
+        this.C = c;
     }
 
     public Object getObject(){
