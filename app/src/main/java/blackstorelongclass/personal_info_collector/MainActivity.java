@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
         String result = "";
         long a = 11;
         userTag u = new userTag("number",a);
+        userList list = new userList("test");
+        list.addTag("number",u);
         result = result+u.getClassType()+""+u.getObject();
         textView.setText(result);
         ConstraintLayout Label = (ConstraintLayout) findViewById(R.id.main);
