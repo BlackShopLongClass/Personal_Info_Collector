@@ -45,10 +45,6 @@
             android:name=".DynamicAddViewActivity"
             android:label="@string/title_activity_dynamic_add_view"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".fillList"
-            android:label="@string/title_activity_fill_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

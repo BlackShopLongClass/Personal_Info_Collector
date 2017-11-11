@@ -20,25 +20,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void addEditText(View view) {
-        // Do something in response to button
-        EditText editText = new EditText(this);
-        //LinearLayout layout = (LinearLayout) findViewById(R.id.main);
-        //layout.addView(editText);
-    }
-
-    public void login_test(View view){
-        Intent intent = new Intent(this,LoginActivity.class);
-        startActivity(intent);
-    }
-
-    public void income(View view){
-        Intent intent = new Intent(this,Income.class);
-        startActivity(intent);
-    }
-
-    public void go(View view){
-        Intent intent = new Intent(this,DynamicAddViewActivity.class);
-        startActivity(intent);
+    public void go(View view) throws IllegalAccessException, InstantiationException {
+//        Intent intent = new Intent(this,MainActivity.class);
+//        String result = "output";
+//
+//        intent.putExtra(Output,result);
+//        startActivity(intent);
+        TextView textView = new TextView(this);
+        Calendar calendar = new GregorianCalendar(2017,02,23,18,29,51);
+        String result = "";
+        long a = 11;
+        userTag u = new userTag("number",a);
+        userList list = new userList("test");
+        list.addTag("number",u);
+        result = result+u.getClassType()+""+u.getObject();
+        textView.setText(result);
+        ConstraintLayout Label = (ConstraintLayout) findViewById(R.id.main);
+        Label.addView(textView);
     }
 }
