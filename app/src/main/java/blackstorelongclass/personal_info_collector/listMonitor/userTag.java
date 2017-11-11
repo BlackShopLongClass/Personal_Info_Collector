@@ -29,9 +29,14 @@ public class userTag {
         return Content;
     }
 
+    public String getTitle(){
+        return Tag;
+    }
+
     public Class<?> getClassType(){
         return C;
     }
+
     public boolean isDouble(){
         if(C == java.lang.Double.class) return true;
         else
@@ -47,5 +52,4 @@ public class userTag {
         if(C == java.lang.String.class) return true;
         else return false;
     }
-
 }
