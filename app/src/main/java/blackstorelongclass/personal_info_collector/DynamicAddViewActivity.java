@@ -21,8 +21,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import blackstorelongclass.personal_info_collector.listMonitor.*;
+
 
 public class DynamicAddViewActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -74,7 +78,7 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
                 addViewItem(v);
                 break;
             case R.id.submit_button://打印数据
-                printData();
+                getData();
                 break;
         }
     }
@@ -107,29 +111,25 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
     }
 
     //获取所有动态添加的Item，找到控件的id，获取数据
-    private void printData() {
+    private void getData() {
+        EditText title = (EditText) findViewById(R.id.title);
+        String inputTitle = title.getText().toString();
+        userList inputlist = new userList(inputTitle);
         for (int i = 0; i < addHotelNameView.getChildCount(); i++) {
+
             View childAt = addHotelNameView.getChildAt(i);
             EditText hotelName = (EditText) childAt.findViewById(R.id.ed_inputname);
 
             String str;
 
             Spinner spinner = (Spinner) childAt.findViewById(R.id.type_spinner);
-//            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                @Override
-//                public void onItemSelected(AdapterView<?> parent, View view,
-//                                           int pos, long id) {
-//
-//                    str[0] =  "你点击的是:"+spinner.getSelectedItem();
-//                }
-//                @Override
-//                public void onNothingSelected(AdapterView<?> parent) {
-//                    // Another interface callback
-//                }
-//            });
-            str = (String)spinner.getSelectedItem();
-            Log.e(TAG, "表单项名称：" + hotelName.getText().toString() + "类型是" + str );
+            str = (String) spinner.getSelectedItem();
+//            Log.e(TAG, "表单项名称：" + hotelName.getText().toString() + "类型是" + str );
+
+            userTag us = new userTag(hotelName.getText().toString(), 111);
+            inputlist.addTag(hotelName.getText().toString(),us);
         }
+
     }
 
 

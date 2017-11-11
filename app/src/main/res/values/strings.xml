@@ -23,4 +23,5 @@
     <string name="title_activity_test_addedittext">test_addedittext</string>
     <string name="title_activity_dynamic_add_view">DynamicAddViewActivity</string>
     <string name="title_activity_dymatic_add_view">DymaticAddViewActivity</string>
+    <string name="title_activity_fill_list">fillList</string>
 </resources>
