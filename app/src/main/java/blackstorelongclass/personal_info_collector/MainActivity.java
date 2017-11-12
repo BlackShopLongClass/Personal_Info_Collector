@@ -1,12 +1,14 @@
 package blackstorelongclass.personal_info_collector;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
+import android.util.Log;
 import android.view.View;
 import android.content.Intent;
 import android.widget.EditText;
@@ -23,6 +25,7 @@ import blackstorelongclass.personal_info_collector.listMonitor.userList;
 import blackstorelongclass.personal_info_collector.listMonitor.userTag;
 
 public class MainActivity extends AppCompatActivity {
+    private String TAG = this.getClass().getSimpleName();
 
     public final static String EXTRA_MESSAGE = "blackstorelongclass.personal_info_collector.MESSAGE";
 
@@ -32,20 +35,32 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void addEditText(View view) {
-        // Do something in response to button
-        EditText editText = new EditText(this);
-        //LinearLayout layout = (LinearLayout) findViewById(R.id.main);
-        //layout.addView(editText);
+    public void go(View view) throws IllegalAccessException, InstantiationException {
+//        Intent intent = new Intent(this,MainActivity.class);
+//        String result = "output";
+//
+//        intent.putExtra(Output,result);
+//        startActivity(intent);
+        TextView textView = new TextView(this);
+        GregorianCalendar calendar1 = new GregorianCalendar(2017, 02, 23, 18, 29, 51);
+        GregorianCalendar calendar2 = new GregorianCalendar(2017, 02, 23, 18, 31, 58);
+        Date eclipse = calendar1.getTime();
+        String result = "" + eclipse.getTime();
+        double a = 11;
+        userTag u1 = new userTag("number", a);
+        userTag u2 = new userTag("time", calendar2);
+        userTag u3 = new userTag("strrr", "it is a place");
+        userList list = new userList("test");
+        list.addTag("number", u1);
+        list.addTag("time", u2);
+        list.addTag("strrr", u3);
+        listHandler handler = new listHandler("333");
+        handler.addNewData(list);
+        handler.addNewList(list);
     }
 
-    public void login_test(View view){
-        Intent intent = new Intent(this,LoginActivity.class);
-        startActivity(intent);
-    }
-
-    public void income(View view){
-        Intent intent = new Intent(this,Income.class);
+    public void testforeditlist(View view){
+        Intent intent = new Intent(this,DynamicAddViewActivity.class);
         startActivity(intent);
     }
 
