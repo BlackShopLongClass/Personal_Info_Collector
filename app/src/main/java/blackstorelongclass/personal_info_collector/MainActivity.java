@@ -64,4 +64,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this,fillList.class);
         startActivity(intent);
     }
+
+    public void testforselecttofill(View view){
+        Intent intent = new Intent(this,selecttofill.class);
+        startActivity(intent);
+    }
 }

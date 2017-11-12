@@ -3,6 +3,7 @@ package blackstorelongclass.personal_info_collector;
 import android.app.DatePickerDialog;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -68,9 +69,14 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
         taglist.addTag("cal",us2);
         taglist.addTag("str",us3);
 
+        Intent intent = getIntent();
+        String topic = intent.getStringExtra(selecttofill.EXTRA_MESSAGE);
+
+
         userTag tag;
         TextView listTopic = (TextView) findViewById(R.id.listTopic);
-        listTopic.setText(taglist.getListTitle());
+//        listTopic.setText(taglist.getListTitle());
+        listTopic.setText(topic);
         for(int i=0;i<taglist.getListSize();i++) {
 
             if (taglist.getTag(taglist.getTitleList().get(i)).isGregorianCalendar()) {

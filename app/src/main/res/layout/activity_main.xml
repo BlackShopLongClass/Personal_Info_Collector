@@ -24,6 +24,15 @@
             android:onClick="testforfilllist"
             android:text="testforfilllist" />
 
+        <Button
+            android:id="@+id/selecttofill"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/filllist"
+            android:layout_centerVertical="true"
+            android:onClick="testforselecttofill"
+            android:text="testforselectforfill" />
+
 
     </RelativeLayout>
 </ScrollView>
