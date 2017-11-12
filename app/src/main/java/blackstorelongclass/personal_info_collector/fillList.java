@@ -174,7 +174,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 inputlist.addTag(taglist.getTitleList().get(i),us);
             }
         }
-        listHandler handler = new listHandler();
+        listHandler handler = new listHandler("s");
         handler.addNewData(inputlist);
 
     }

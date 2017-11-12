@@ -140,7 +140,7 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
 
             inputlist.addTag(hotelName.getText().toString(),us);
         }
-        listHandler handler = new listHandler();
+        listHandler handler = new listHandler("s");
         handler.addNewList(inputlist);
 
     }

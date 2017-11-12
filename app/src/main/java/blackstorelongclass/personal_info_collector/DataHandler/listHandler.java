@@ -23,6 +23,45 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class listHandler {
+    String name;
+    ArrayList<String> tableList;
+
+    public listHandler(String Name){
+        name = Name;
+        tableList = new ArrayList<String>();
+    }
+
+    /**
+     * 添加表单名称
+     * @param table
+     * 表单名称
+     * @return
+     * 成功与否
+     */
+    public boolean addTable(String table){
+        return tableList.add(table);
+    }
+
+    /**
+     * 获取所有表单名称
+     * @return
+     * ArrayList类型的数组
+     */
+    public ArrayList<String> getTableList(){
+        return tableList;
+    }
+
+    public String getUserName(){
+        return name;
+    }
+
+    /**
+     * 向数据库中添加新表单
+     * @param List
+     * 用户输入的数据类型
+     * @return
+     * 添加的成功与否
+     */
     public boolean addNewList(userList List){
         int number = List.getListSize();
         String sentence = "CREATE TABLE "+ List.getListTitle() + "(ID INTEGER PRIMARY KEY AUTOINCREMENT,";
@@ -42,6 +81,13 @@ public class listHandler {
         return true;
     }
 
+    /**
+     * 向数据库中的某一个表单添加一项
+     * @param List
+     * 包含数据的内容的userList
+     * @return
+     * 添加的成功与否
+     */
     public boolean addNewData(userList List){
         int number = List.getListSize();
         ArrayList<String> titleSet = List.getTitleList();
@@ -67,4 +113,21 @@ public class listHandler {
         Log.e("t_addNewData",sentence);
         return true;
     }
+
+    /**
+     * 获取某一个表单的数据类型
+     * @param tableName
+     * 表单名称
+     * @return
+     * 包含数据类型的userList
+     */
+    public userList getDataType(String tableName){
+        userList u= new userList("anything");
+        return u;
+
+    }
+
+
+
+
 }

@@ -16,6 +16,11 @@ public class userList {
     ArrayList<String> titleOfTag;
     int size;
 
+    /**
+     * 使用表单标题创建自定义表单
+     * @param title
+     * 表单标题
+     */
     public userList(String title){
         titleOfList = title;
         titleOfTag = new ArrayList<String>();
@@ -23,10 +28,18 @@ public class userList {
         size = 0;
     }
 
+    /**
+     * 向自定义表单中添加标签
+     * @param title
+     * 标签标题 string类型
+     * @param tag
+     * 自定义标签
+     */
     public void addTag(String title, userTag tag){
         contentOfList.put(title, tag);
         titleOfTag.add(size++,title);
     }
+
 
     public boolean addTag(String title, userTag tag, int priLevel){
         if(priLevel>=0 && priLevel<= size) {
@@ -39,6 +52,13 @@ public class userList {
             return false;
     }
 
+    /**
+     * 通过标签标题获取一个标签
+     * @param title
+     * 标签标题
+     * @return
+     * 匹配到的标签,否则为null
+     */
     public userTag getTag(String title){
         return contentOfList.get(title);
     }

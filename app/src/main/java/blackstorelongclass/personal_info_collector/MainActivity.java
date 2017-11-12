@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         list.addTag("number", u1);
         list.addTag("time", u2);
         list.addTag("strrr", u3);
-        listHandler handler = new listHandler();
+        listHandler handler = new listHandler("333");
         handler.addNewData(list);
         handler.addNewList(list);
     }
