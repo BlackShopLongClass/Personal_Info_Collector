@@ -48,8 +48,11 @@
         <activity
             android:name=".fillList"
             android:label="@string/title_activity_fill_list"
-            android:theme="@style/AppTheme.NoActionBar" /><![CDATA[
-    ]]>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".selecttofill"
+            android:label="@string/title_activity_selecttofill"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
