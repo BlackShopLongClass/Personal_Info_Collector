@@ -66,17 +66,26 @@ public class listHandler {
         int number = List.getListSize();
         String sentence = "CREATE TABLE "+ List.getListTitle() + "(ID INTEGER PRIMARY KEY AUTOINCREMENT,";
         ArrayList<String> titleSet = List.getTitleList();
-
+        String config = "INSERT INTO Config (listName,tagType) VALUES ('" +List.getListTitle() + "','";
         for(int i=0 ; i<number; i++){
             userTag t = List.getTag(titleSet.get(i));
-            if(t.isDouble())
-                sentence = sentence + t.getTitle() + " REAL,";
-            else if(t.isGregorianCalendar())
-                sentence = sentence + t.getTitle() + " INTEGER,";
-            else if(t.isStr())
-                sentence = sentence + t.getTitle() + " TEXT,";
+            if(t.isDouble()) {
+                sentence = sentence + t.getTitle() + " REAL";
+                config += "1";
+            }
+            else if(t.isGregorianCalendar()) {
+                sentence = sentence + t.getTitle() + " INTEGER";
+                config += "2";
+            }
+            else if(t.isStr()) {
+                sentence = sentence + t.getTitle() + " TEXT";
+                config += "3";
+            }
+            if(i+1<number) sentence += ",";
         }
         sentence += ");";
+        config += "');";
+
         Log.e("t_addNewList",sentence);
         return true;
     }
