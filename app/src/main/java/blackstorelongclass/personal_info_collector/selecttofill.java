@@ -2,10 +2,13 @@ package blackstorelongclass.personal_info_collector;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
@@ -24,6 +27,25 @@ public class selecttofill extends AppCompatActivity implements View.OnClickListe
     private LinearLayout addView;
     private List<String> topics;
 
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+//                    mTextMessage.setText(R.string.title_home);
+                    return true;
+                case R.id.navigation_dashboard:
+//                    mTextMessage.setText(R.string.title_dashboard);
+                    return true;
+            }
+            return false;
+        }
+
+    };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +53,7 @@ public class selecttofill extends AppCompatActivity implements View.OnClickListe
 
         addView = (LinearLayout) findViewById(R.id.sf_addView);
 
-        topics = Arrays.asList("xxx","yyy","zzz");
+        topics = Arrays.asList("xxx","yyy","zzz","yyy","zzz","yyy","zzz","yyy","zzz","yyy","zzz","yyy","zzz","yyy","zzz");
 
         for(String topic : topics) {
             View tagView = View.inflate(this, R.layout.selecttofillitem, null);
@@ -43,6 +65,9 @@ public class selecttofill extends AppCompatActivity implements View.OnClickListe
             addView.addView(tagView);
             addView.requestLayout();
         }
+
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
     @Override

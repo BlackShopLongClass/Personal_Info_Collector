@@ -1,53 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/selecttofill">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-
-
-    <RelativeLayout
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/selecttofill">
 
 
-        <android.support.design.widget.AppBarLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/toolbarlayout"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:orientation="vertical">
 
-            <android.support.v7.widget.Toolbar
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+
+            <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:contentInsetLeft="0dp"
-                app:contentInsetStart="0dp">
-                <LinearLayout
+                android:layout_height="match_parent"
+                android:id="@+id/toolbarlayout"
+                android:theme="@style/AppTheme.AppBarOverlay">
+
+                <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:background="@color/colorPrimary"
-                    android:gravity="center">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="选择表单"
-                        android:textSize="30sp"
-                        />
-                </LinearLayout>
-            </android.support.v7.widget.Toolbar>
+                    app:contentInsetLeft="0dp"
+                    app:contentInsetStart="0dp">
 
-        </android.support.design.widget.AppBarLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="@color/colorPrimary"
+                        android:gravity="center">
 
-        <LinearLayout
-            android:id="@+id/sf_addView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/toolbarlayout"
-            android:orientation="vertical" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="选择表单"
+                            android:textSize="30sp" />
+                    </LinearLayout>
+                </android.support.v7.widget.Toolbar>
 
+            </android.support.design.widget.AppBarLayout>
 
-    </RelativeLayout>
-</ScrollView>
+            <LinearLayout
+                android:id="@+id/sf_addView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/toolbarlayout"
+                android:orientation="vertical" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="?android:attr/windowBackground"
+        app:itemIconTint="@color/selector_item_color"
+        app:itemTextColor="@color/selector_item_color"
+        app:menu="@menu/navigation" />
+
+</LinearLayout>

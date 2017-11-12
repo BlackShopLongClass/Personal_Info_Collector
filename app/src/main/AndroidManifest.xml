@@ -52,7 +52,10 @@
         <activity
             android:name=".selecttofill"
             android:label="@string/title_activity_selecttofill"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".testforbuttonnav"
+            android:label="@string/title_activity_testforbuttonnav"></activity>
     </application>
 
 </manifest>

@@ -69,4 +69,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this,selecttofill.class);
         startActivity(intent);
     }
+
+    public void testforbuttonnav(View view){
+        Intent intent = new Intent(this,testforbuttonnav.class);
+        startActivity(intent);
+    }
 }
