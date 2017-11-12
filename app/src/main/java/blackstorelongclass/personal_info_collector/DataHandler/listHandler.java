@@ -55,11 +55,13 @@ public class listHandler {
         for (int i=0; i<List.getListSize();i++){
             if(i>0) sentence += " , ";
             userTag t = List.getTag(titleSet.get(i));
-            if(t.isStr()) sentence = sentence + "'" + (String)t.getObject() + "'";
-            else if(t.isGregorianCalendar())
+            //if(t.isStr()) sentence = sentence + "'" + (String)t.getObject() + "'";
+            if(t.isGregorianCalendar())
                 sentence = sentence + ((GregorianCalendar)t.getObject()).getTime().getTime();
             else if(t.isDouble())
                 sentence = sentence + (double)t.getObject();
+            else
+                sentence = sentence + "'" + (String)t.getObject() + "'";
         }
         sentence += ");";
         Log.e("t_addNewData",sentence);
