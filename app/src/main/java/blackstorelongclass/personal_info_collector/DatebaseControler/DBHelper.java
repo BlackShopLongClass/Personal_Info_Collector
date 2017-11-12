@@ -24,21 +24,18 @@ public class DBHelper extends SQLiteOpenHelper {
     //数据库名称
     private static final String DATABASE_NAME="User.db";
 
-
     public DBHelper(Context context) {
         super(context,DATABASE_NAME,null,DATABASE_VERSION);
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
         //创建数据表
-        ;
+        String SQL_creatConfig="CREATE TABLE Config(ID INTEGER PRIMARY KEY AUTOINCREMENT, listName TEXT, tagType TEXT);";
+        db.execSQL(SQL_creatConfig);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //如果旧表存在，删除，所以数据将会消失
-
-        //再次创建表
-        onCreate(db);
+        ;
     }
 }
