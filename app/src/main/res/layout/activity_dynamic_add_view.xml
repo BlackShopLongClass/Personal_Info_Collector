@@ -38,9 +38,14 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="自定义表单项"
-                            android:textSize="30sp" />
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="245dp"
+                            android:text="Edit Your List"
+                            android:textAlignment="viewStart"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:typeface="sans" />
                     </LinearLayout>
                 </android.support.v7.widget.Toolbar>
 
@@ -51,6 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/toolbarlayout"
                 android:layout_marginTop="10dp"
+                android:padding="20dp"
                 android:id="@+id/constant_name">
 
                 <TextView
@@ -58,8 +64,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="表单名称"
-                    android:textSize="18sp" />
+                    android:text="表单名称 : "
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/title"
@@ -71,10 +78,29 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/pleasefill"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:padding="20dp"
+                android:layout_below="@id/constant_name">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="表单内容 ："
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/ll_addView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/constant_name"
+                android:layout_below="@+id/pleasefill"
+                android:padding="20dp"
                 android:orientation="vertical" />
 
             <Button
@@ -83,6 +109,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ll_addView"
                 android:layout_marginTop="10dp"
+                android:padding="20dp"
                 android:text="获取数据" />
         </RelativeLayout>
     </ScrollView>

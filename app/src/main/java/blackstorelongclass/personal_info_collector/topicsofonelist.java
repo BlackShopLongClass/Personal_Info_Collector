@@ -79,11 +79,11 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
             startActivity(intent);
         }
         else {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String dateStr = sdf.format(calendar.getTime());
-            String gettopic = (String) v.getTag()+ "," + dateStr;
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-MM-SS");
+//            String dateStr = sdf.format(calendar.getTime());
+//            String gettopic = (String) v.getTag()+ "," + dateStr;
             Intent intent = new Intent(this, detailsoftopic.class);
-            intent.putExtra(EXTRA_MESSAGE, gettopic);
+//            intent.putExtra(EXTRA_MESSAGE, gettopic);
             startActivity(intent);
         }
     }

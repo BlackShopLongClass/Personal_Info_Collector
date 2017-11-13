@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".welcome">
+        <activity android:name=".welcome"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,7 +43,8 @@
             android:label="@string/title_activity_testforbuttonnav" />
         <activity android:name=".topicsofonelist"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".detailsoftopic"></activity>
+        <activity android:name=".detailsoftopic"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -42,9 +42,14 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="表单中数据"
-                            android:layout_marginRight="50dp"
-                            android:textSize="30sp" />
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="250dp"
+                            android:text="Data in List"
+                            android:textAlignment="viewStart"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:typeface="sans" />
 
                     </LinearLayout>
                 </android.support.v7.widget.Toolbar>
@@ -56,6 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/toolbarlayout"
+                android:padding="10dp"
                 android:orientation="vertical" />
 
             <Button
@@ -67,7 +73,7 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginTop="10dp"
                 android:layout_weight="3"
-                android:text="添加数据" />
+                android:text="添加新数据" />
 
         </RelativeLayout>
     </ScrollView>
