@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -78,10 +79,12 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
             startActivity(intent);
         }
         else {
-//            String gettopic = (String) v.getTag();
-//            Intent intent = new Intent(this, detailsoftopic.class);
-//            intent.putExtra(EXTRA_MESSAGE, gettopic);
-//            startActivity(intent);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String dateStr = sdf.format(calendar.getTime());
+            String gettopic = (String) v.getTag()+ "," + dateStr;
+            Intent intent = new Intent(this, detailsoftopic.class);
+            intent.putExtra(EXTRA_MESSAGE, gettopic);
+            startActivity(intent);
         }
     }
 }
