@@ -9,6 +9,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ScrollingView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -104,6 +105,7 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
                 addViewItem(v);
                 break;
             case R.id.submit_button://打印数据
+                if(checktime()<0) break;
                 getData();
                 Intent intent = new Intent(this,selecttofill.class);
                 startActivity(intent);
@@ -138,6 +140,31 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
         }
     }
 
+    private int checktime(){
+        int count=0;
+        String time = "时间";
+        for (int i = 0; i < addHotelNameView.getChildCount(); i++) {
+            View childAt = addHotelNameView.getChildAt(i);
+            Spinner spinner = (Spinner) childAt.findViewById(R.id.type_spinner);
+            String str = (String) spinner.getSelectedItem();
+            if(str.equals(time)) count++;
+        }
+        AlertDialog.Builder alertDialogBuilder=new AlertDialog.Builder(this);
+        if(count==0){
+            alertDialogBuilder.setMessage("请至少添加一项时间类型数据");
+            alertDialogBuilder.setPositiveButton("确定",null);
+            alertDialogBuilder.show();
+            return -1;
+        }
+        else if(count>1){
+            alertDialogBuilder.setMessage("至多只能添加一项时间类型数据");
+            alertDialogBuilder.setPositiveButton("确定",null);
+            alertDialogBuilder.show();
+            return -1;
+        }
+        else return 1;
+    }
+
     //获取所有动态添加的Item，找到控件的id，获取数据
     private void getData() {
         EditText title = (EditText) findViewById(R.id.title);
@@ -167,9 +194,6 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
 
             inputlist.addTag(hotelName.getText().toString(),us);
         }
-        listHandler handler = new listHandler("uuu");
-        handler.addNewList(inputlist);
-
 
     }
 

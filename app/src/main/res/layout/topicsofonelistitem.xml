@@ -10,10 +10,12 @@
         android:id="@+id/tagTopic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/topButton"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_weight="2" />
+        android:layout_weight="2"
+        android:text="测试"
+        android:textAlignment="center"
+        android:textSize="18sp" />
 
     <Button
         android:layout_width="wrap_content"

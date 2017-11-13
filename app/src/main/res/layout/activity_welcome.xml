@@ -13,9 +13,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:padding="100dp"
+        android:padding="75dp"
+        android:layout_marginTop="90dp"
         android:text="欢迎使用个人信息采集系统！"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textView2"
@@ -23,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textView"
         android:layout_gravity="center"
-        android:layout_marginLeft="200dp"
+        android:layout_marginLeft="180dp"
         android:padding="20dp"
         android:text="provided by BlackShopLongClass"
         android:textSize="18sp" />
