@@ -76,8 +76,8 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fill_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
         addView = (LinearLayout) findViewById(R.id.fl_addView);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);

@@ -22,22 +22,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DisplayMessageActivity"
-            android:label="@string/title_activity_display_message"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="blackstorelongclass.personal_info_collector.MainActivity" />
-        </activity>
-        <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login" />
-        <activity
-            android:name=".Income"
-            android:label="@string/title_activity_income"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".DymaticAddViewActivity"
             android:label="@string/title_activity_dymatic_add_view"
             android:theme="@style/AppTheme.NoActionBar" />

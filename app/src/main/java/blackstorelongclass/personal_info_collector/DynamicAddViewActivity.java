@@ -105,6 +105,8 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
                 break;
             case R.id.submit_button://打印数据
                 getData();
+                Intent intent = new Intent(this,selecttofill.class);
+                startActivity(intent);
                 break;
         }
     }
@@ -168,8 +170,6 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
         listHandler handler = new listHandler("uuu");
         handler.addNewList(inputlist);
 
-        Intent intent = new Intent(this,selecttofill.class);
-        startActivity(intent);
 
     }
 
