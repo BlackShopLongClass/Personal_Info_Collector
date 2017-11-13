@@ -119,7 +119,7 @@ public class DBOperate extends AppCompatActivity {
                 }
                 else if (tagType.charAt(i)=='2')
                 {
-                    content=(long)cursor.getInt(i+1);
+                    content=cursor.getLong(i+1);
                 }
                 else if (tagType.charAt(i)=='3')
                 {
