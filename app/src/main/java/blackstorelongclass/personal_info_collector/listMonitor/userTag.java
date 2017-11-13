@@ -12,7 +12,7 @@ public class userTag {
     Class<?> C;
 
     /**
-     * 创建标签的函数
+     * 用内容创建标签
      * @param tag
      * 标签名称
      * @param content
@@ -24,34 +24,68 @@ public class userTag {
         this.C = content.getClass();
     }
 
+    /**
+     * 用"类"创建标签
+     * @param tag
+     * 标签名称
+     * @param c
+     * 类名,比如 java.Lang.Double.class
+     */
     public userTag(String tag, Class<?> c){
         this.Tag = tag;
         this.C = c;
     }
 
+    /**
+     * 获取标签内容
+     * @return
+     * 返回Object型的内容,获取之后需要强制类型转换
+     */
     public Object getObject(){
         return Content;
     }
 
+    /**
+     * 获取标签标题
+     * @return
+     * 返回String型标题
+     */
     public String getTitle(){
         return Tag;
     }
 
+    /**
+     * 获取标签类型
+     * @return
+     * 返回"类"类型
+     */
     public Class<?> getClassType(){
         return C;
     }
 
+    /**
+     * 是否为数字类型
+     * @return bool
+     */
     public boolean isDouble(){
         if(C == java.lang.Double.class) return true;
         else
             return false;
     }
 
+    /**
+     * 是否为日期类型
+     * @return bool
+     */
     public boolean isGregorianCalendar(){
         if(C == java.util.GregorianCalendar.class) return true;
         else return false;
     }
 
+    /**
+     * 是否为字符串类型
+     * @return bool
+     */
     public boolean isStr(){
         if(C == java.lang.String.class) return true;
         else return false;
