@@ -1,9 +1,13 @@
 package blackstorelongclass.personal_info_collector.DataHandler;
+import blackstorelongclass.personal_info_collector.DatebaseControler.DBHelper;
+import blackstorelongclass.personal_info_collector.DatebaseControler.DBOperate;
 import blackstorelongclass.personal_info_collector.listMonitor.*;
 
 import android.content.SharedPreferences;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
@@ -22,7 +26,7 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by abc123one on 2017/11/11.
  */
 
-public class listHandler {
+public class listHandler extends AppCompatActivity{
     String name;
     ArrayList<String> tableList;
 
@@ -85,9 +89,8 @@ public class listHandler {
         }
         sentence += ");";
         config += "');";
-
-        Log.e("t_addNewList",sentence);
-        return true;
+        DBOperate DBO=new DBOperate();
+        return DBO.create_newTable(sentence,config);
     }
 
     /**

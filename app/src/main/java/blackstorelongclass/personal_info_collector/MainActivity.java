@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -18,8 +19,10 @@ import android.content.Context;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
+import blackstorelongclass.personal_info_collector.DataHandler.listHandler;
 import blackstorelongclass.personal_info_collector.DatebaseControler.DBHelper;
 import blackstorelongclass.personal_info_collector.listMonitor.userList;
 import blackstorelongclass.personal_info_collector.listMonitor.userTag;
@@ -88,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         list.addTag("number",u);
         result = result+u.getClassType()+""+u.getObject();
         textView.setText(result);
+        //
         DBHelper DBH;
         DBH=new DBHelper(this);
         SQLiteDatabase db=DBH.getReadableDatabase();
