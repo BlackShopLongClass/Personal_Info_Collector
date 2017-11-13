@@ -76,7 +76,7 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
                 Date date = new Date();
                 date.setTime(((long) (ulist.getTag(str)).getObject())*1000);
                 String datetime = date.toString();
-                calendar = Calendar.getInstance();
+                Calendar calendar = Calendar.getInstance();
                 calendar.setTime(date);
 
                 View tagView = View.inflate(this, R.layout.topicsofonelistitem, null);

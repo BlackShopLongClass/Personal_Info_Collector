@@ -22,6 +22,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Calendar;
 
@@ -154,7 +157,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                fillList.this.dateEditText.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
+                fillList.this.dateEditText.setText(year + "-" + ++monthOfYear + "-" + dayOfMonth);
             }
         }, calendardate.get(Calendar.YEAR), calendardate.get(Calendar.MONTH), calendardate.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
@@ -167,19 +170,28 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
 
             @Override
             public void onTimeSet(TimePicker view, int hour, int munite) {
-                fillList.this.timeEditText.setText(hour + " : " + munite);
+                fillList.this.timeEditText.setText(hour + ":" + munite);
             }
         }, calendartime.get(Calendar.HOUR), calendartime.get(Calendar.MINUTE),true);
         timePickerDialog.show();
 
     }
 
-    private void getData() {
+    private void getData(){
         TextView listTopic = (TextView) findViewById(R.id.listTopic);
         String inputTitle = listTopic.getText().toString();
         userList inputlist = new userList(inputTitle);
         for (int i = 0; i < addView.getChildCount(); i++) {
             if(taglist.getTag(taglist.getTitleList().get(i)).isGregorianCalendar()){
+                View childAt = addView.getChildAt(i);
+                EditText taginputtime = childAt.findViewById(R.id.taginputtime);
+                EditText taginputdate = childAt.findViewById(R.id.taginputdate);
+                String timestr = taginputtime.getText().toString();
+                String datestr = taginputdate.getText().toString();
+                SimpleDateFormat stf= new SimpleDateFormat("HH:MM");
+                SimpleDateFormat sdf= new SimpleDateFormat("yyyy-mm-dd");
+
+
                 calendardate.set(Calendar.HOUR,calendartime.get(Calendar.HOUR));
                 calendardate.set(Calendar.MINUTE,calendartime.get(Calendar.MINUTE));
                 userTag us = new userTag((taglist.getTitleList().get(i)),calendardate);

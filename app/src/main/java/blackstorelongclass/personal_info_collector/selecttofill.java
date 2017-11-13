@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 import blackstorelongclass.personal_info_collector.DataHandler.*;
+import blackstorelongclass.personal_info_collector.DatebaseControler.DBHelper;
 
 public class selecttofill extends AppCompatActivity implements View.OnClickListener {
 
@@ -55,6 +56,9 @@ public class selecttofill extends AppCompatActivity implements View.OnClickListe
         addView = (LinearLayout) findViewById(R.id.sf_addView);
 
 //        topics = Arrays.asList("xxx","yyy","zzz","yyy","zzz","yyy","zzz","yyy","zzz","yyy","zzz","yyy","zzz","yyy","zzz");
+        DBHelper dbh = new DBHelper(this);
+        dbh.getReadableDatabase();
+
         listHandler hd = new listHandler("whatever");
         topics = hd.getTableList();
 
