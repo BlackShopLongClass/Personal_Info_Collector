@@ -1,9 +1,13 @@
 package blackstorelongclass.personal_info_collector.DataHandler;
+import blackstorelongclass.personal_info_collector.DatebaseControler.DBHelper;
+import blackstorelongclass.personal_info_collector.DatebaseControler.DBOperate;
 import blackstorelongclass.personal_info_collector.listMonitor.*;
 
 import android.content.SharedPreferences;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
@@ -22,26 +26,80 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by abc123one on 2017/11/11.
  */
 
-public class listHandler {
+public class listHandler extends AppCompatActivity{
+    String name;
+    ArrayList<String> tableList;
+
+    public listHandler(String Name){
+        name = Name;
+        tableList = new ArrayList<String>();
+    }
+
+    /**
+     * 添加表单名称
+     * @param table
+     * 表单名称
+     * @return
+     * 成功与否
+     */
+    public boolean addTable(String table){
+        return tableList.add(table);
+    }
+
+    /**
+     * 获取所有表单名称
+     * @return
+     * ArrayList类型的数组
+     */
+    public ArrayList<String> getTableList(){
+        return tableList;
+    }
+
+    public String getUserName(){
+        return name;
+    }
+
+    /**
+     * 向数据库中添加新表单
+     * @param List
+     * 用户输入的数据类型
+     * @return
+     * 添加的成功与否
+     */
     public boolean addNewList(userList List){
         int number = List.getListSize();
         String sentence = "CREATE TABLE "+ List.getListTitle() + "(ID INTEGER PRIMARY KEY AUTOINCREMENT,";
         ArrayList<String> titleSet = List.getTitleList();
-
+        String config = "INSERT INTO Config (listName,tagType) VALUES ('" +List.getListTitle() + "','";
         for(int i=0 ; i<number; i++){
             userTag t = List.getTag(titleSet.get(i));
-            if(t.isDouble())
-                sentence = sentence + t.getTitle() + " REAL,";
-            else if(t.isGregorianCalendar())
-                sentence = sentence + t.getTitle() + " INTEGER,";
-            else if(t.isStr())
-                sentence = sentence + t.getTitle() + " TEXT,";
+            if(t.isDouble()) {
+                sentence = sentence + t.getTitle() + " REAL";
+                config += "1";
+            }
+            else if(t.isGregorianCalendar()) {
+                sentence = sentence + t.getTitle() + " INTEGER";
+                config += "2";
+            }
+            else if(t.isStr()) {
+                sentence = sentence + t.getTitle() + " TEXT";
+                config += "3";
+            }
+            if(i+1<number) sentence += ",";
         }
         sentence += ");";
-        Log.e("t_addNewList",sentence);
-        return true;
+        config += "');";
+        DBOperate DBO=new DBOperate();
+        return DBO.create_newTable(sentence,config);
     }
 
+    /**
+     * 向数据库中的某一个表单添加一项
+     * @param List
+     * 包含数据的内容的userList
+     * @return
+     * 添加的成功与否
+     */
     public boolean addNewData(userList List){
         int number = List.getListSize();
         ArrayList<String> titleSet = List.getTitleList();
@@ -64,7 +122,24 @@ public class listHandler {
                 sentence = sentence + "'" + (String)t.getObject() + "'";
         }
         sentence += ");";
-        Log.e("t_addNewData",sentence);
-        return true;
+        DBOperate DBO=new DBOperate();
+        return DBO.insert_newItem(sentence);
     }
+
+    /**
+     * 获取某一个表单的数据类型
+     * @param tableName
+     * 表单名称
+     * @return
+     * 包含数据类型的userList
+     */
+    public userList getDataType(String tableName){
+        userList u= new userList("anything");
+        return u;
+
+    }
+
+
+
+
 }
