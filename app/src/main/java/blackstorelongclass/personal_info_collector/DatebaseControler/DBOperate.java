@@ -12,6 +12,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import blackstorelongclass.personal_info_collector.listMonitor.*;
+
+import static android.support.v7.appcompat.R.id.info;
+
 /**
  * Created by ycd on 2017/11/11.
  */
@@ -69,6 +72,7 @@ public class DBOperate extends AppCompatActivity {
         while (cursor.moveToNext()) {
             tagNames.add(cursor.getColumnName(i++));
         }
+        cursor.close();
         return tagNames;
     }
     public String get_tagTypes(String listName) {
@@ -77,13 +81,14 @@ public class DBOperate extends AppCompatActivity {
         Cursor cursor;
         cursor=this.db.rawQuery(SQL_searchConfig,null);
         tagTypes=cursor.getString(2);
+        cursor.close();
         return tagTypes;
     }
     public ArrayList<userList> get_allItems(String listName) {
         ArrayList<userList> info=new ArrayList<userList>();
         String SQL_searchConfig="SELECT tagType FROM Config WHERE listName='"+listName+"';";
-        String SQL_getItems="SELECT * FROM "+listName+";";
         String SQL_getTagName="pragma table_info("+listName+");";
+        String SQL_getItems="SELECT * FROM "+listName+";";
         String tagType;
         Cursor cursor;
         cursor=this.db.rawQuery(SQL_searchConfig,null);
@@ -126,5 +131,49 @@ public class DBOperate extends AppCompatActivity {
         }
         cursor.close();
         return info;
+    }
+    public userList get_specificItem(String SQL_searchItem,String listName) {
+        String SQL_searchConfig="SELECT tagType FROM Config WHERE listName='"+listName+"';";
+        String SQL_getTagName="pragma table_info("+listName+");";
+        int i=0,size=0;
+        String tagType;
+        Vector<String> tagNames=new Vector<String>();
+        Cursor cursor;
+        cursor=this.db.rawQuery(SQL_searchConfig,null);
+        tagType=cursor.getString(2);
+        userList specificItem;
+        cursor=this.db.rawQuery(SQL_getTagName,null);
+        while (cursor.moveToNext()) {
+            tagNames.addElement(cursor.getColumnName(i++));
+        }
+        size=tagType.length();
+        String tag;
+        Object content;
+        cursor=this.db.rawQuery(SQL_searchItem,null);
+        specificItem=new userList(listName);
+        for (i=0;i<size;i++) {
+            userTag temp;
+            tag=tagNames.elementAt(i);
+            if (tagType.charAt(i)=='1')
+            {
+                content=(double)cursor.getDouble(i);
+            }
+            else if (tagType.charAt(i)=='2')
+            {
+                content=(int)cursor.getInt(i);
+            }
+            else if (tagType.charAt(i)=='3')
+            {
+                content=(String)cursor.getString(i);
+            }
+            else
+            {
+                content=null;
+            }
+            temp=new userTag(tag,content);
+            specificItem.addTag(listName,temp);
+        }
+        cursor.close();
+        return specificItem;
     }
 }
