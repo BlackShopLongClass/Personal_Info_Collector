@@ -60,6 +60,25 @@ public class DBOperate extends AppCompatActivity {
         cursor.close();
         return tableNames;
     }
+    public ArrayList<String> get_tagNames(String listName) {
+        String SQL_getTagName="pragma table_info("+listName+");";
+        Cursor cursor;
+        cursor=this.db.rawQuery(SQL_getTagName,null);
+        ArrayList<String> tagNames=new ArrayList<String>();
+        int i=0;
+        while (cursor.moveToNext()) {
+            tagNames.add(cursor.getColumnName(i++));
+        }
+        return tagNames;
+    }
+    public String get_tagTypes(String listName) {
+        String SQL_searchConfig="SELECT tagType FROM Config WHERE listName='"+listName+"';";
+        String tagTypes;
+        Cursor cursor;
+        cursor=this.db.rawQuery(SQL_searchConfig,null);
+        tagTypes=cursor.getString(2);
+        return tagTypes;
+    }
     public ArrayList<userList> get_allItems(String listName) {
         ArrayList<userList> info=new ArrayList<userList>();
         String SQL_searchConfig="SELECT tagType FROM Config WHERE listName='"+listName+"';";
