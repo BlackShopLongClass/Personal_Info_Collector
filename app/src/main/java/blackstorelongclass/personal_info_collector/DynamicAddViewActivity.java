@@ -194,6 +194,8 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
 
             inputlist.addTag(hotelName.getText().toString(),us);
         }
+        listHandler hd = new listHandler("whatever");
+        hd.addNewList(inputlist);
 
     }
 

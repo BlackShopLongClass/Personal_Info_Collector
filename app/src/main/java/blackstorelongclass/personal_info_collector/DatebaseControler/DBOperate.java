@@ -64,68 +64,73 @@ public class DBOperate extends AppCompatActivity {
         return tableNames;
     }
     public ArrayList<String> get_tagNames(String listName) {
-        String SQL_getTagName="pragma table_info("+listName+");";
+        //String SQL_getTagName="pragma table_info("+listName+");";
+        String SQL_getTagName="SELECT * FROM "+listName+";";
         Cursor cursor;
         cursor=this.db.rawQuery(SQL_getTagName,null);
         ArrayList<String> tagNames=new ArrayList<String>();
         int i=0;
-        while (cursor.moveToNext()) {
-            tagNames.add(cursor.getColumnName(i++));
+        cursor.moveToNext();
+        for (i=1;i<cursor.getColumnCount();i++) {
+            tagNames.add(cursor.getColumnName(i));
         }
         cursor.close();
         return tagNames;
     }
     public String get_tagTypes(String listName) {
-        String SQL_searchConfig="SELECT tagType FROM Config WHERE listName='"+listName+"';";
+        String SQL_searchConfig="SELECT * FROM Config WHERE listName='"+listName+"';";
         String tagTypes;
         Cursor cursor;
         cursor=this.db.rawQuery(SQL_searchConfig,null);
+        cursor.moveToNext();
         tagTypes=cursor.getString(2);
         cursor.close();
         return tagTypes;
     }
     public ArrayList<userList> get_allItems(String listName) {
         ArrayList<userList> info=new ArrayList<userList>();
-        String SQL_searchConfig="SELECT tagType FROM Config WHERE listName='"+listName+"';";
-        String SQL_getTagName="pragma table_info("+listName+");";
+        String SQL_searchConfig="SELECT * FROM Config WHERE listName='"+listName+"';";
+        String SQL_getTagName="SELECT * FROM "+listName+";";
         String SQL_getItems="SELECT * FROM "+listName+";";
         String tagType;
         Cursor cursor;
         cursor=this.db.rawQuery(SQL_searchConfig,null);
+        cursor.moveToNext();
         tagType=cursor.getString(2);
         cursor=this.db.rawQuery(SQL_getTagName,null);
         Vector<String> tagName=new Vector<String>();
         int i=0;
-        while (cursor.moveToNext()) {
-            tagName.addElement(cursor.getColumnName(i++));
+        cursor.moveToNext();
+        for (i=1;i<cursor.getColumnCount();i++) {
+            tagName.add(cursor.getColumnName(i));
         }
         int size=tagType.length();
-        String tag;
-        Object content;
         cursor=this.db.rawQuery(SQL_getItems,null);
         while (cursor.moveToNext()) {
             userList temp1=new userList(listName);
             for (i=0;i<size;i++) {
+                String tag;
+                Object content;
                 userTag temp2;
                 tag=tagName.elementAt(i);
                 if (tagType.charAt(i)=='1')
                 {
-                    content=(double)cursor.getDouble(i);
+                    content=(double)cursor.getInt(i+1);
                 }
                 else if (tagType.charAt(i)=='2')
                 {
-                    content=(int)cursor.getInt(i);
+                    content=(long)cursor.getInt(i+1);
                 }
                 else if (tagType.charAt(i)=='3')
                 {
-                    content=(String)cursor.getString(i);
+                    content=(String)cursor.getString(i+1);
                 }
                 else
                 {
                     content=null;
                 }
                 temp2=new userTag(tag,content);
-                temp1.addTag(listName,temp2);
+                temp1.addTag(tag,temp2);
             }
             info.add(temp1);
         }
@@ -134,44 +139,46 @@ public class DBOperate extends AppCompatActivity {
     }
     public userList get_specificItem(String SQL_searchItem,String listName) {
         String SQL_searchConfig="SELECT tagType FROM Config WHERE listName='"+listName+"';";
-        String SQL_getTagName="pragma table_info("+listName+");";
+        String SQL_getTagName="SELECT * FROM "+listName+";";
         int i=0,size=0;
         String tagType;
         Vector<String> tagNames=new Vector<String>();
         Cursor cursor;
         cursor=this.db.rawQuery(SQL_searchConfig,null);
+        cursor.moveToNext();
         tagType=cursor.getString(2);
         userList specificItem;
         cursor=this.db.rawQuery(SQL_getTagName,null);
-        while (cursor.moveToNext()) {
-            tagNames.addElement(cursor.getColumnName(i++));
+        cursor.moveToNext();
+        for (i=1;i<cursor.getColumnCount();i++) {
+            tagNames.add(cursor.getColumnName(i));
         }
         size=tagType.length();
-        String tag;
-        Object content;
         cursor=this.db.rawQuery(SQL_searchItem,null);
         specificItem=new userList(listName);
         for (i=0;i<size;i++) {
             userTag temp;
+            String tag;
+            Object content;
             tag=tagNames.elementAt(i);
             if (tagType.charAt(i)=='1')
             {
-                content=(double)cursor.getDouble(i);
+                content=(double)cursor.getDouble(i+1);
             }
             else if (tagType.charAt(i)=='2')
             {
-                content=(int)cursor.getInt(i);
+                content=(int)cursor.getInt(i+1);
             }
             else if (tagType.charAt(i)=='3')
             {
-                content=(String)cursor.getString(i);
+                content=(String)cursor.getString(i+1);
             }
             else
             {
                 content=null;
             }
             temp=new userTag(tag,content);
-            specificItem.addTag(listName,temp);
+            specificItem.addTag(tag,temp);
         }
         cursor.close();
         return specificItem;

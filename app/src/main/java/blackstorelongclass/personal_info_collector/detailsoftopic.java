@@ -1,5 +1,6 @@
 package blackstorelongclass.personal_info_collector;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import blackstorelongclass.personal_info_collector.listMonitor.*;
+import blackstorelongclass.personal_info_collector.DataHandler.*;
 
+import java.text.ParseException;
 import java.util.GregorianCalendar;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
@@ -48,6 +51,22 @@ public class detailsoftopic extends AppCompatActivity {
 
         TextView text = (TextView) findViewById(R.id.listTopic);
         text.setText(us.getListTitle());
+
+        Intent intent = getIntent();
+        String listname = intent.getStringExtra(topicsofonelist.EXTRA_MESSAGE);
+
+        String table,time;
+        table = listname.split(",")[0];
+        time = listname.split(",")[1];
+
+
+        listHandler hd = new listHandler("whatever");
+        userList us = null;
+        try {
+            us = hd.getATableData(table,time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         addView = (LinearLayout) findViewById(R.id.dt_addView);
         for(String topic : us.getTitleList()){

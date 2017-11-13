@@ -35,7 +35,9 @@ public class listHandler extends AppCompatActivity{
 
     public listHandler(String Name){
         name = Name;
-        tableList = new ArrayList<String>();
+        DBOperate DBO = new DBOperate();
+        tableList = DBO.get_tableNames();
+
     }
 
     /**
@@ -144,7 +146,7 @@ public class listHandler extends AppCompatActivity{
         userList u = new userList(tableName);
         for(int i=0;i<tableStr.size();i++) {
             Class<?> type = java.lang.String.class;
-            switch (tableType.indexOf(i)){
+            switch (tableType.charAt(i)){
                 case '1': type = java.lang.Double.class;
                     break;
                 case '2': type = java.util.GregorianCalendar.class;
@@ -159,7 +161,8 @@ public class listHandler extends AppCompatActivity{
     }
 
     public ArrayList<userList> getTableAllData(String table){
-
+        DBOperate DBO= new DBOperate();
+        return DBO.get_allItems(table);
     }
 
     /**
@@ -183,6 +186,7 @@ public class listHandler extends AppCompatActivity{
             }
         }
         String sentence = "SELECT * FROM " + table + " WHERE " + resultString + "=" + timeStr2Long(time) + ";";
+        return DBO.get_specificItem(sentence,table);
     }
 
 

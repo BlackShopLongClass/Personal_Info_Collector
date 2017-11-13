@@ -35,7 +35,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
     private LinearLayout addView;
     private EditText timeEditText;
     private EditText dateEditText;
-    private userList taglist = new userList("test");
+    private userList taglist;
     private GregorianCalendar calendardate,calendartime;
 
     private void addViewItem(View view) {
@@ -84,24 +84,18 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         GregorianCalendar calendartest = new GregorianCalendar();
-        double d = 1.0;
-        userTag us1 = new userTag("int",d);
-        userTag us2 = new userTag("cal",calendartest);
-        userTag us3 = new userTag("str","sdfsda");
-        taglist.addTag("int",us1);
-        taglist.addTag("cal",us2);
-        taglist.addTag("str",us3);
 
         Intent intent = getIntent();
-        String topic = intent.getStringExtra(selecttofill.EXTRA_MESSAGE);
-
+        String topic = intent.getStringExtra(topicsofonelist.EXTRA_MESSAGE);
 
         userTag tag;
         TextView listTopic = (TextView) findViewById(R.id.listTopic);
 //        listTopic.setText(taglist.getListTitle());
         listTopic.setText(topic);
-        for(int i=0;i<taglist.getListSize();i++) {
 
+        listHandler hd = new listHandler("whatever");
+        taglist = hd.getDataType(topic);
+        for(int i=0;i<taglist.getListSize();i++) {
             if (taglist.getTag(taglist.getTitleList().get(i)).isGregorianCalendar()) {
                 LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.filllistitemtime, null);
                 TextView tagTopic = (TextView) tagView.findViewById(R.id.tagTopic);
@@ -201,13 +195,12 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
             else if(taglist.getTag(taglist.getTitleList().get(i)).isStr()){
                 View childAt = addView.getChildAt(i);
                 EditText taginput = (EditText) childAt.findViewById(R.id.taginput);
-                userTag us = new userTag((taglist.getTitleList().get(i)),taginput.getText());
+                userTag us = new userTag((taglist.getTitleList().get(i)),taginput.getText().toString());
                 inputlist.addTag(taglist.getTitleList().get(i),us);
             }
         }
-//        listHandler handler = new listHandler();
-//        handler.addNewData(inputlist);
-
+        listHandler handler = new listHandler("333");
+        handler.addNewData(inputlist);
     }
 
 }

@@ -12,11 +12,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import java.util.GregorianCalendar;
 import java.util.Calendar;
+import blackstorelongclass.personal_info_collector.DataHandler.*;
+import blackstorelongclass.personal_info_collector.listMonitor.*;
 
 public class topicsofonelist extends AppCompatActivity implements View.OnClickListener {
 
@@ -24,6 +28,8 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
     private LinearLayout addView;
     private List<String> topics;
     private GregorianCalendar calendar;
+    private String str="";
+    private String listname;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -50,20 +56,41 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
 
         addView = (LinearLayout) findViewById(R.id.tl_addView);
 
-        topics = Arrays.asList("xxx", "yyy", "zzz", "yyy", "zzz", "yyy", "zzz", "yyy", "zzz", "yyy", "zzz", "yyy", "zzz", "yyy", "zzz");
+//        topics = Arrays.asList("xxx", "yyy", "zzz", "yyy", "zzz", "yyy", "zzz", "yyy", "zzz", "yyy", "zzz", "yyy", "zzz", "yyy", "zzz");
 
-        for (String topic : topics) {
-            View tagView = View.inflate(this, R.layout.topicsofonelistitem, null);
-            TextView text = tagView.findViewById(R.id.tagTopic);
-            Button bn = tagView.findViewById(R.id.detailoftopic);
-            bn.setTag(topic);
-            bn.setOnClickListener(this);
-//            text.setText(calendar.get(Calendar.YEAR) +"年"+calendar.get(Calendar.MONTH) +""+calendar.get(Calendar.DATE) +""+
-//            calendar.get(Calendar.HOUR) +"："+calendar.get(Calendar.MINUTE));
-            text.setText(topic);
-            addView.addView(tagView);
-            addView.requestLayout();
+        ArrayList<userList> list;
+
+        listHandler hd = new listHandler("whatever");
+        Intent intent = getIntent();
+        listname = intent.getStringExtra(selecttofill.EXTRA_MESSAGE);
+        list = hd.getTableAllData(listname);
+
+        if(list != null) {
+            for (userList ulist : list) {
+                for (int i = 0; i < ulist.getListSize(); i++) {
+                    str = ulist.getTitleList().get(i);
+                    if (ulist.getTag(str).getClassType() == java.lang.Long.class) {
+                        break;
+                    }
+                }
+                Date date = new Date();
+                date.setTime(((long) (ulist.getTag(str)).getObject())*1000);
+                String datetime = date.toString();
+                calendar = Calendar.getInstance();
+                calendar.setTime(date);
+
+                View tagView = View.inflate(this, R.layout.topicsofonelistitem, null);
+                TextView text = tagView.findViewById(R.id.tagTopic);
+                Button bn = tagView.findViewById(R.id.detailoftopic);
+                bn.setTag(str);
+                bn.setOnClickListener(this);
+                text.setText(calendar.get(Calendar.YEAR) + "年" + calendar.get(Calendar.MONTH) + "月" + calendar.get(Calendar.DATE) + "日" +
+                        calendar.get(Calendar.HOUR) + "：" + calendar.get(Calendar.MINUTE));
+                addView.addView(tagView);
+                addView.requestLayout();
+            }
         }
+
 
         Button createnewlistbutton = (Button) findViewById(R.id.addData);
         createnewlistbutton.setOnClickListener(this);
@@ -76,14 +103,15 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         if(v.getId()==R.id.addData){
             Intent intent = new Intent(this,fillList.class);
+            intent.putExtra(EXTRA_MESSAGE, listname);
             startActivity(intent);
         }
         else {
-//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-MM-SS");
-//            String dateStr = sdf.format(calendar.getTime());
-//            String gettopic = (String) v.getTag()+ "," + dateStr;
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-MM-SS");
+            String dateStr = sdf.format(calendar.getTime());
+            String gettopic = (String) v.getTag()+ "," + dateStr;
             Intent intent = new Intent(this, detailsoftopic.class);
-//            intent.putExtra(EXTRA_MESSAGE, gettopic);
+            intent.putExtra(EXTRA_MESSAGE, gettopic);
             startActivity(intent);
         }
     }

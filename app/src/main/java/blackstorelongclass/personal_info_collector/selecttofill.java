@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
+import blackstorelongclass.personal_info_collector.DataHandler.*;
 
 public class selecttofill extends AppCompatActivity implements View.OnClickListener {
 
@@ -53,7 +54,9 @@ public class selecttofill extends AppCompatActivity implements View.OnClickListe
 
         addView = (LinearLayout) findViewById(R.id.sf_addView);
 
-        topics = Arrays.asList("xxx","yyy","zzz","yyy","zzz","yyy","zzz","yyy","zzz","yyy","zzz","yyy","zzz","yyy","zzz");
+//        topics = Arrays.asList("xxx","yyy","zzz","yyy","zzz","yyy","zzz","yyy","zzz","yyy","zzz","yyy","zzz","yyy","zzz");
+        listHandler hd = new listHandler("whatever");
+        topics = hd.getTableList();
 
         for(String topic : topics) {
             View tagView = View.inflate(this, R.layout.selecttofillitem, null);
