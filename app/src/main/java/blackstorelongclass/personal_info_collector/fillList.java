@@ -22,10 +22,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Calendar;
 
 import blackstorelongclass.personal_info_collector.DataHandler.listHandler;
@@ -39,7 +39,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
     private EditText timeEditText;
     private EditText dateEditText;
     private userList taglist;
-    private GregorianCalendar calendardate,calendartime;
+    private Calendar calendardate,calendartime;
 
     private void addViewItem(View view) {
         if (addView.getChildCount() == 0) {//如果一个都没有，就添加一个
@@ -86,7 +86,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        GregorianCalendar calendartest = new GregorianCalendar();
+        Calendar calendartest = Calendar.getInstance();
 
         Intent intent = getIntent();
         String topic = intent.getStringExtra(topicsofonelist.EXTRA_MESSAGE);
@@ -99,7 +99,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
         listHandler hd = new listHandler("whatever");
         taglist = hd.getDataType(topic);
         for(int i=0;i<taglist.getListSize();i++) {
-            if (taglist.getTag(taglist.getTitleList().get(i)).isGregorianCalendar()) {
+            if (taglist.getTag(taglist.getTitleList().get(i)).isCalendar()) {
                 LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.filllistitemtime, null);
                 TextView tagTopic = (TextView) tagView.findViewById(R.id.tagTopic);
                 tagTopic.setText(taglist.getTitleList().get(i));
@@ -152,7 +152,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
     }
 
     protected void showDatePickDlg() {
-       calendardate = new GregorianCalendar();
+       calendardate = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(fillList.this, new DatePickerDialog.OnDateSetListener() {
 
             @Override
@@ -165,7 +165,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
     }
 
     protected void showTimePickDlg() {
-        calendartime = new GregorianCalendar();
+        calendartime = Calendar.getInstance();
         TimePickerDialog timePickerDialog = new TimePickerDialog(fillList.this, new TimePickerDialog.OnTimeSetListener() {
 
             @Override
@@ -182,7 +182,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
         String inputTitle = listTopic.getText().toString();
         userList inputlist = new userList(inputTitle);
         for (int i = 0; i < addView.getChildCount(); i++) {
-            if(taglist.getTag(taglist.getTitleList().get(i)).isGregorianCalendar()){
+            if(taglist.getTag(taglist.getTitleList().get(i)).isCalendar()){
                 View childAt = addView.getChildAt(i);
                 EditText taginputtime = childAt.findViewById(R.id.taginputtime);
                 EditText taginputdate = childAt.findViewById(R.id.taginputdate);
@@ -190,11 +190,16 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 String datestr = taginputdate.getText().toString();
                 SimpleDateFormat stf= new SimpleDateFormat("HH:MM");
                 SimpleDateFormat sdf= new SimpleDateFormat("yyyy-mm-dd");
-
+                String dt = datestr + " " + timestr + ":00";
+                Timestamp ts = Timestamp.valueOf(dt);
+                Calendar datetime = Calendar.getInstance();
+                datetime.setTimeInMillis(ts.getTime());
+                calendartime = datetime;
+                calendardate = datetime;
 
                 calendardate.set(Calendar.HOUR,calendartime.get(Calendar.HOUR));
                 calendardate.set(Calendar.MINUTE,calendartime.get(Calendar.MINUTE));
-                userTag us = new userTag((taglist.getTitleList().get(i)),calendardate);
+                userTag us = new userTag((taglist.getTitleList().get(i)),datetime);
                 inputlist.addTag(taglist.getTitleList().get(i),us);
             }
             else if(taglist.getTag(taglist.getTitleList().get(i)).isDouble()){

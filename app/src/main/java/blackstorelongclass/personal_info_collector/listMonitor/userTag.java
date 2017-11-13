@@ -77,7 +77,7 @@ public class userTag {
      * 是否为日期类型
      * @return bool
      */
-    public boolean isGregorianCalendar(){
+    public boolean isCalendar(){
         if(C == java.util.GregorianCalendar.class) return true;
         else return false;
     }

@@ -17,7 +17,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import java.util.GregorianCalendar;
 import java.util.Calendar;
 import blackstorelongclass.personal_info_collector.DataHandler.*;
 import blackstorelongclass.personal_info_collector.listMonitor.*;
@@ -27,7 +26,7 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
     public final static String EXTRA_MESSAGE = "blackstorelongclass.personal_info_collector.MESSAGE";
     private LinearLayout addView;
     private List<String> topics;
-    private GregorianCalendar calendar;
+    private Calendar calendar;
     private String str="";
     private String listname;
 
@@ -73,11 +72,8 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
                         break;
                     }
                 }
-                Date date = new Date();
-                date.setTime(((long) (ulist.getTag(str)).getObject())*1000);
-                String datetime = date.toString();
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTime(date);
+                calendar.setTimeInMillis((long) (ulist.getTag(str)).getObject());
 
                 View tagView = View.inflate(this, R.layout.topicsofonelistitem, null);
                 TextView text = tagView.findViewById(R.id.tagTopic);
