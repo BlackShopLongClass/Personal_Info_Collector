@@ -134,9 +134,25 @@ public class listHandler extends AppCompatActivity{
      * 包含数据类型的userList
      */
     public userList getDataType(String tableName){
-        userList u= new userList("anything");
-        return u;
+        DBOperate DBO = new DBOperate();
+        ArrayList<String> tableStr= DBO.get_tagNames(tableName);
+        String tableType = DBO.get_tagTypes(tableName);
 
+        userList u = new userList(tableName);
+        for(int i=0;i<tableStr.size();i++) {
+            Class<?> type = java.lang.String.class;
+            switch (tableType.indexOf(i)){
+                case '1': type = java.lang.Double.class;
+                    break;
+                case '2': type = java.util.GregorianCalendar.class;
+                    break;
+                case '3': type = java.lang.String.class;
+                    break;
+            }
+            userTag tag = new userTag(tableStr.get(i),type);
+            u.addTag(tableStr.get(i),tag);
+        }
+        return u;
     }
 
 
