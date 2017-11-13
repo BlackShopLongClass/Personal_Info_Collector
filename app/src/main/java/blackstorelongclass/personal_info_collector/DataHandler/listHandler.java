@@ -16,6 +16,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import java.security.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -115,7 +118,7 @@ public class listHandler extends AppCompatActivity{
             userTag t = List.getTag(titleSet.get(i));
             //if(t.isStr()) sentence = sentence + "'" + (String)t.getObject() + "'";
             if(t.isGregorianCalendar())
-                sentence = sentence + ((GregorianCalendar)t.getObject()).getTime().getTime();
+                sentence = sentence + ((GregorianCalendar)t.getObject()).getTime().getTime()/1000;
             else if(t.isDouble())
                 sentence = sentence + (double)t.getObject();
             else
@@ -155,7 +158,38 @@ public class listHandler extends AppCompatActivity{
         return u;
     }
 
+    public ArrayList<userList> getTableAllData(String table){
+
+    }
+
+    /**
+     * 查询一个表的某一项
+     * @param table
+     * 表名称
+     * @param time
+     * 字符串类型表示的时间
+     * @return
+     *
+     */
+    public userList getATableData(String table,String time) throws ParseException {
+        DBOperate DBO = new DBOperate();
+        ArrayList<String> titles = DBO.get_tagNames(table);
+        String types = DBO.get_tagTypes(table);
+        String resultString = "";
+        for(int i=0;i<titles.size();i++){
+            if(types.indexOf(i) == '2') {
+                resultString = titles.get(i);
+                break;
+            }
+        }
+        String sentence = "SELECT * FROM " + table + " WHERE " + resultString + "=" + timeStr2Long(time) + ";";
+    }
 
 
+    private long timeStr2Long(String timeStr) throws ParseException {
+        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date= sdf.parse(timeStr);
+        return date.getTime()/1000;
+    }
 
 }
