@@ -146,8 +146,10 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.submit://点击添加按钮就动态添加Item
+            case R.id.submit:
                 getData();
+                Intent intent = new Intent(this, topicsofonelist.class);
+                startActivity(intent);
                 break;
         }
     }
@@ -203,13 +205,9 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 inputlist.addTag(taglist.getTitleList().get(i),us);
             }
         }
-        listHandler handler = new listHandler();
-        handler.addNewData(inputlist);
+//        listHandler handler = new listHandler();
+//        handler.addNewData(inputlist);
 
     }
-
-
-
-
 
 }

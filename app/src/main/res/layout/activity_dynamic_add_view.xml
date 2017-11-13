@@ -1,80 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/add_view">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/add_view">
 
-        <android.support.design.widget.AppBarLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/toolbarlayout"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:orientation="vertical">
 
-            <android.support.v7.widget.Toolbar
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+            <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:contentInsetLeft="0dp"
-                app:contentInsetStart="0dp">
-                <LinearLayout
+                android:layout_height="match_parent"
+                android:id="@+id/toolbarlayout"
+                android:theme="@style/AppTheme.AppBarOverlay">
+
+                <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:background="@color/colorPrimary"
-                    android:gravity="center">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="自定义表单项"
-                        android:textSize="30sp"
-                        />
-                </LinearLayout>
-            </android.support.v7.widget.Toolbar>
+                    app:contentInsetLeft="0dp"
+                    app:contentInsetStart="0dp">
 
-        </android.support.design.widget.AppBarLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="@color/colorPrimary"
+                        android:gravity="center">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/toolbarlayout"
-            android:layout_marginTop="10dp"
-            android:id="@+id/constant_name">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="自定义表单项"
+                            android:textSize="30sp" />
+                    </LinearLayout>
+                </android.support.v7.widget.Toolbar>
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
+            </android.support.design.widget.AppBarLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="表单名称"
-                android:textSize="18sp" />
+                android:layout_below="@+id/toolbarlayout"
+                android:layout_marginTop="10dp"
+                android:id="@+id/constant_name">
 
-            <EditText
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="表单名称"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:padding="5dp"
+                    android:singleLine="true" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_addView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="8"
-                android:padding="5dp"
-                android:singleLine="true" />
-        </LinearLayout>
+                android:layout_below="@+id/constant_name"
+                android:orientation="vertical" />
 
-        <LinearLayout
-            android:id="@+id/ll_addView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/constant_name"
-            android:orientation="vertical" />
+            <Button
+                android:id="@+id/submit_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_addView"
+                android:layout_marginTop="10dp"
+                android:text="获取数据" />
+        </RelativeLayout>
+    </ScrollView>
 
-        <Button
-            android:id="@+id/submit_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ll_addView"
-            android:layout_marginTop="10dp"
-            android:text="获取数据" />
-    </RelativeLayout>
-</ScrollView>
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="?android:attr/windowBackground"
+        app:itemIconTint="@color/selector_item_color"
+        app:itemTextColor="@color/selector_item_color"
+        app:menu="@menu/navigation" />
+</LinearLayout>

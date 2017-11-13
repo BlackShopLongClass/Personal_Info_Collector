@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".welcome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -55,7 +55,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".testforbuttonnav"
-            android:label="@string/title_activity_testforbuttonnav"></activity>
+            android:label="@string/title_activity_testforbuttonnav" />
+        <activity android:name=".topicsofonelist"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".detailsoftopic"></activity>
     </application>
 
 </manifest>

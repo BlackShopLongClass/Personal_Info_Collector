@@ -11,7 +11,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/selecttofill">
+        android:id="@+id/topicsofonelist">
 
 
         <RelativeLayout
@@ -42,29 +42,32 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="选择表单"
+                            android:text="表单中数据"
                             android:layout_marginRight="50dp"
                             android:textSize="30sp" />
 
-                        <Button
-                            style="@style/Widget.AppCompat.Button.Borderless"
-                            android:id="@+id/createnewlist"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="150dp"
-                            android:textSize="30sp"
-                            android:text="+" />
                     </LinearLayout>
                 </android.support.v7.widget.Toolbar>
 
             </android.support.design.widget.AppBarLayout>
 
             <LinearLayout
-                android:id="@+id/sf_addView"
+                android:id="@+id/tl_addView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/toolbarlayout"
                 android:orientation="vertical" />
+
+            <Button
+                android:id="@+id/addData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tl_addView"
+                android:layout_marginRight="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="3"
+                android:text="添加数据" />
 
         </RelativeLayout>
     </ScrollView>
