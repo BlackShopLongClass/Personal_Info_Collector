@@ -194,9 +194,15 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 SimpleDateFormat stf= new SimpleDateFormat("HH:MM");
                 SimpleDateFormat sdf= new SimpleDateFormat("yyyy-mm-dd");
                 String dt = datestr + " " + timestr + ":00";
-                Timestamp ts = Timestamp.valueOf(dt);
+                listHandler LH=new listHandler("n");
+                long t=0;
+                try {
+                    t=LH.timeStr2Long(dt);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 Calendar datetime = Calendar.getInstance();
-                datetime.setTimeInMillis(ts.getTime());
+                datetime.setTimeInMillis(t);
                 calendartime = datetime;
                 calendardate = datetime;
 

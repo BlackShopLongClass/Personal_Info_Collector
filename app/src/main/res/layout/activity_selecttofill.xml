@@ -56,7 +56,7 @@
                             android:id="@+id/createnewlist"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="150dp"
+                            android:layout_marginLeft="100dp"
                             android:textSize="30sp"
                             android:text="+" />
                     </LinearLayout>
