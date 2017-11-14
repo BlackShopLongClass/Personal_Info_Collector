@@ -138,7 +138,7 @@ public class DBOperate extends AppCompatActivity {
         return info;
     }
     public userList get_specificItem(String SQL_searchItem,String listName) {
-        String SQL_searchConfig="SELECT tagType FROM Config WHERE listName='"+listName+"';";
+        String SQL_searchConfig="SELECT * FROM Config WHERE listName='"+listName+"';";
         String SQL_getTagName="SELECT * FROM "+listName+";";
         int i=0,size=0;
         String tagType;
@@ -155,30 +155,33 @@ public class DBOperate extends AppCompatActivity {
         }
         size=tagType.length();
         cursor=this.db.rawQuery(SQL_searchItem,null);
+        //cursor.moveToNext();
         specificItem=new userList(listName);
-        for (i=0;i<size;i++) {
-            userTag temp;
-            String tag;
-            Object content;
-            tag=tagNames.elementAt(i);
-            if (tagType.charAt(i)=='1')
-            {
-                content=(double)cursor.getDouble(i+1);
+        while (cursor.moveToNext()) {
+            for (i=0;i<size;i++) {
+                userTag temp;
+                String tag;
+                Object content;
+                tag=tagNames.elementAt(i);
+                if (tagType.charAt(i)=='1')
+                {
+                    content=(double)cursor.getInt(i+1);
+                }
+                else if (tagType.charAt(i)=='2')
+                {
+                    content=cursor.getLong(i+1);
+                }
+                else if (tagType.charAt(i)=='3')
+                {
+                    content=(String)cursor.getString(i+1);
+                }
+                else
+                {
+                    content=null;
+                }
+                temp=new userTag(tag,content);
+                specificItem.addTag(tag,temp);
             }
-            else if (tagType.charAt(i)=='2')
-            {
-                content=(int)cursor.getInt(i+1);
-            }
-            else if (tagType.charAt(i)=='3')
-            {
-                content=(String)cursor.getString(i+1);
-            }
-            else
-            {
-                content=null;
-            }
-            temp=new userTag(tag,content);
-            specificItem.addTag(tag,temp);
         }
         cursor.close();
         return specificItem;

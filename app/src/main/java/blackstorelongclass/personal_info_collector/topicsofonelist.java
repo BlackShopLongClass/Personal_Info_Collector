@@ -29,6 +29,7 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
     private Calendar calendar;
     private String str="";
     private String listname;
+    private String timestring;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -62,6 +63,7 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
         listHandler hd = new listHandler("whatever");
         Intent intent = getIntent();
         listname = intent.getStringExtra(selecttofill.EXTRA_MESSAGE);
+        if(listname==null) listname = intent.getStringExtra(fillList.EXTRA_MESSAGE);
         list = hd.getTableAllData(listname);
 
         if(list != null) {
@@ -80,8 +82,21 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
                 Button bn = tagView.findViewById(R.id.detailoftopic);
                 bn.setTag(str);
                 bn.setOnClickListener(this);
-                text.setText(calendar.get(Calendar.YEAR) + "年" + calendar.get(Calendar.MONTH) + "月" + calendar.get(Calendar.DATE) + "日" +
-                        calendar.get(Calendar.HOUR) + "：" + calendar.get(Calendar.MINUTE));
+                String h,m,month,date;
+                if(calendar.get(Calendar.HOUR)<10) h = "0"+calendar.get(Calendar.HOUR);
+                else h=""+calendar.get(Calendar.HOUR);
+                if(calendar.get(Calendar.MINUTE)<10) m = "0"+calendar.get(Calendar.MINUTE);
+                else m=""+calendar.get(Calendar.MINUTE);
+                if(calendar.get(Calendar.MONTH)<10) month = "0"+calendar.get(Calendar.MONTH);
+                else month=""+calendar.get(Calendar.MONTH);
+                if(calendar.get(Calendar.DATE)<10) date = "0"+calendar.get(Calendar.DATE);
+                else date=""+calendar.get(Calendar.DATE);
+
+
+
+                timestring = calendar.get(Calendar.YEAR) + "-" + month + "-" + date + " " +
+                        h + ":" + m;
+                text.setText(timestring);
                 addView.addView(tagView);
                 addView.requestLayout();
             }
@@ -103,9 +118,8 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
             startActivity(intent);
         }
         else {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-MM-SS");
-            String dateStr = sdf.format(calendar.getTime());
-            String gettopic = (String) v.getTag()+ "," + dateStr;
+            timestring = timestring + ":00";
+            String gettopic = listname+ "," + timestring;
             Intent intent = new Intent(this, detailsoftopic.class);
             intent.putExtra(EXTRA_MESSAGE, gettopic);
             startActivity(intent);

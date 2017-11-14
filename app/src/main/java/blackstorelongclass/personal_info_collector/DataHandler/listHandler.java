@@ -185,7 +185,7 @@ public class listHandler extends AppCompatActivity{
         String types = DBO.get_tagTypes(table);
         String resultString = "";
         for(int i=0;i<titles.size();i++){
-            if(types.indexOf(i) == '2') {
+            if(types.charAt(i) == '2') {
                 resultString = titles.get(i);
                 break;
             }

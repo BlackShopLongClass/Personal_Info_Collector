@@ -33,6 +33,7 @@ import blackstorelongclass.personal_info_collector.listMonitor.*;
 
 public class fillList extends AppCompatActivity implements View.OnClickListener {
 
+    public final static String EXTRA_MESSAGE = "blackstorelongclass.personal_info_collector.MESSAGE";
     private String TAG = this.getClass().getSimpleName();
     //装在所有动态添加的Item的LinearLayout容器
     private LinearLayout addView;
@@ -40,6 +41,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
     private EditText dateEditText;
     private userList taglist;
     private Calendar calendardate,calendartime;
+    private String topic;
 
     private void addViewItem(View view) {
         if (addView.getChildCount() == 0) {//如果一个都没有，就添加一个
@@ -89,7 +91,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
         Calendar calendartest = Calendar.getInstance();
 
         Intent intent = getIntent();
-        String topic = intent.getStringExtra(topicsofonelist.EXTRA_MESSAGE);
+        topic = intent.getStringExtra(topicsofonelist.EXTRA_MESSAGE);
 
         userTag tag;
         TextView listTopic = (TextView) findViewById(R.id.listTopic);
@@ -146,6 +148,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
             case R.id.submit:
                 getData();
                 Intent intent = new Intent(this, topicsofonelist.class);
+                intent.putExtra(EXTRA_MESSAGE, topic);
                 startActivity(intent);
                 break;
         }
@@ -219,5 +222,4 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
         listHandler handler = new listHandler("333");
         handler.addNewData(inputlist);
     }
-
 }
