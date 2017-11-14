@@ -14,7 +14,7 @@ import blackstorelongclass.personal_info_collector.listMonitor.*;
 import blackstorelongclass.personal_info_collector.DataHandler.*;
 
 import java.text.ParseException;
-import java.util.GregorianCalendar;
+
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -50,7 +50,7 @@ public class detailsoftopic extends AppCompatActivity {
         setContentView(R.layout.activity_detailsoftopic);
 
         TextView text = (TextView) findViewById(R.id.listTopic);
-        text.setText(us.getListTitle());
+
 
         Intent intent = getIntent();
         String listname = intent.getStringExtra(topicsofonelist.EXTRA_MESSAGE);
@@ -67,6 +67,7 @@ public class detailsoftopic extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        text.setText(us.getListTitle());
 
         addView = (LinearLayout) findViewById(R.id.dt_addView);
         for(String topic : us.getTitleList()){
@@ -81,7 +82,7 @@ public class detailsoftopic extends AppCompatActivity {
                 tagcontent.setText((String)us.getTag(topic).getObject());
             }
             else{
-                GregorianCalendar calendar = (GregorianCalendar) us.getTag(topic).getObject();
+                Calendar calendar = (Calendar) us.getTag(topic).getObject();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒");
                 String dateStr = sdf.format(calendar.getTime());
                 tagcontent.setText(dateStr);

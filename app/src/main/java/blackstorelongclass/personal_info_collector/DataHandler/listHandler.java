@@ -17,11 +17,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.security.Timestamp;
+import java.sql.Time;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.Calendar;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -57,6 +60,8 @@ public class listHandler extends AppCompatActivity{
      * ArrayList类型的数组
      */
     public ArrayList<String> getTableList(){
+        Calendar time = Calendar.getInstance();
+        Class<?> c = time.getClass();
         return tableList;
     }
 
@@ -82,7 +87,7 @@ public class listHandler extends AppCompatActivity{
                 sentence = sentence + t.getTitle() + " REAL";
                 config += "1";
             }
-            else if(t.isGregorianCalendar()) {
+            else if(t.isCalendar()) {
                 sentence = sentence + t.getTitle() + " INTEGER";
                 config += "2";
             }
@@ -119,8 +124,8 @@ public class listHandler extends AppCompatActivity{
             if(i>0) sentence += " , ";
             userTag t = List.getTag(titleSet.get(i));
             //if(t.isStr()) sentence = sentence + "'" + (String)t.getObject() + "'";
-            if(t.isGregorianCalendar())
-                sentence = sentence + ((GregorianCalendar)t.getObject()).getTime().getTime()/1000;
+            if(t.isCalendar())
+                sentence = sentence + ((Calendar)t.getObject()).getTimeInMillis();
             else if(t.isDouble())
                 sentence = sentence + (double)t.getObject();
             else
@@ -180,7 +185,7 @@ public class listHandler extends AppCompatActivity{
         String types = DBO.get_tagTypes(table);
         String resultString = "";
         for(int i=0;i<titles.size();i++){
-            if(types.indexOf(i) == '2') {
+            if(types.charAt(i) == '2') {
                 resultString = titles.get(i);
                 break;
             }
@@ -193,7 +198,7 @@ public class listHandler extends AppCompatActivity{
     private long timeStr2Long(String timeStr) throws ParseException {
         SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date= sdf.parse(timeStr);
-        return date.getTime()/1000;
+        return date.getTime();
     }
 
 }

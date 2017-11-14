@@ -22,7 +22,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import java.util.GregorianCalendar;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Calendar;
 
 import blackstorelongclass.personal_info_collector.DataHandler.listHandler;
@@ -30,13 +33,15 @@ import blackstorelongclass.personal_info_collector.listMonitor.*;
 
 public class fillList extends AppCompatActivity implements View.OnClickListener {
 
+    public final static String EXTRA_MESSAGE = "blackstorelongclass.personal_info_collector.MESSAGE";
     private String TAG = this.getClass().getSimpleName();
     //装在所有动态添加的Item的LinearLayout容器
     private LinearLayout addView;
     private EditText timeEditText;
     private EditText dateEditText;
     private userList taglist;
-    private GregorianCalendar calendardate,calendartime;
+    private Calendar calendardate,calendartime;
+    private String topic;
 
     private void addViewItem(View view) {
         if (addView.getChildCount() == 0) {//如果一个都没有，就添加一个
@@ -83,10 +88,10 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        GregorianCalendar calendartest = new GregorianCalendar();
+        Calendar calendartest = Calendar.getInstance();
 
         Intent intent = getIntent();
-        String topic = intent.getStringExtra(topicsofonelist.EXTRA_MESSAGE);
+        topic = intent.getStringExtra(topicsofonelist.EXTRA_MESSAGE);
 
         userTag tag;
         TextView listTopic = (TextView) findViewById(R.id.listTopic);
@@ -96,7 +101,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
         listHandler hd = new listHandler("whatever");
         taglist = hd.getDataType(topic);
         for(int i=0;i<taglist.getListSize();i++) {
-            if (taglist.getTag(taglist.getTitleList().get(i)).isGregorianCalendar()) {
+            if (taglist.getTag(taglist.getTitleList().get(i)).isCalendar()) {
                 LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.filllistitemtime, null);
                 TextView tagTopic = (TextView) tagView.findViewById(R.id.tagTopic);
                 tagTopic.setText(taglist.getTitleList().get(i));
@@ -143,18 +148,19 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
             case R.id.submit:
                 getData();
                 Intent intent = new Intent(this, topicsofonelist.class);
+                intent.putExtra(EXTRA_MESSAGE, topic);
                 startActivity(intent);
                 break;
         }
     }
 
     protected void showDatePickDlg() {
-       calendardate = new GregorianCalendar();
+       calendardate = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(fillList.this, new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                fillList.this.dateEditText.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
+                fillList.this.dateEditText.setText(year + "-" + ++monthOfYear + "-" + dayOfMonth);
             }
         }, calendardate.get(Calendar.YEAR), calendardate.get(Calendar.MONTH), calendardate.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
@@ -162,27 +168,41 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
     }
 
     protected void showTimePickDlg() {
-        calendartime = new GregorianCalendar();
+        calendartime = Calendar.getInstance();
         TimePickerDialog timePickerDialog = new TimePickerDialog(fillList.this, new TimePickerDialog.OnTimeSetListener() {
 
             @Override
             public void onTimeSet(TimePicker view, int hour, int munite) {
-                fillList.this.timeEditText.setText(hour + " : " + munite);
+                fillList.this.timeEditText.setText(hour + ":" + munite);
             }
         }, calendartime.get(Calendar.HOUR), calendartime.get(Calendar.MINUTE),true);
         timePickerDialog.show();
 
     }
 
-    private void getData() {
+    private void getData(){
         TextView listTopic = (TextView) findViewById(R.id.listTopic);
         String inputTitle = listTopic.getText().toString();
         userList inputlist = new userList(inputTitle);
         for (int i = 0; i < addView.getChildCount(); i++) {
-            if(taglist.getTag(taglist.getTitleList().get(i)).isGregorianCalendar()){
+            if(taglist.getTag(taglist.getTitleList().get(i)).isCalendar()){
+                View childAt = addView.getChildAt(i);
+                EditText taginputtime = childAt.findViewById(R.id.taginputtime);
+                EditText taginputdate = childAt.findViewById(R.id.taginputdate);
+                String timestr = taginputtime.getText().toString();
+                String datestr = taginputdate.getText().toString();
+                SimpleDateFormat stf= new SimpleDateFormat("HH:MM");
+                SimpleDateFormat sdf= new SimpleDateFormat("yyyy-mm-dd");
+                String dt = datestr + " " + timestr + ":00";
+                Timestamp ts = Timestamp.valueOf(dt);
+                Calendar datetime = Calendar.getInstance();
+                datetime.setTimeInMillis(ts.getTime());
+                calendartime = datetime;
+                calendardate = datetime;
+
                 calendardate.set(Calendar.HOUR,calendartime.get(Calendar.HOUR));
                 calendardate.set(Calendar.MINUTE,calendartime.get(Calendar.MINUTE));
-                userTag us = new userTag((taglist.getTitleList().get(i)),calendardate);
+                userTag us = new userTag((taglist.getTitleList().get(i)),datetime);
                 inputlist.addTag(taglist.getTitleList().get(i),us);
             }
             else if(taglist.getTag(taglist.getTitleList().get(i)).isDouble()){
@@ -202,5 +222,4 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
         listHandler handler = new listHandler("333");
         handler.addNewData(inputlist);
     }
-
 }
