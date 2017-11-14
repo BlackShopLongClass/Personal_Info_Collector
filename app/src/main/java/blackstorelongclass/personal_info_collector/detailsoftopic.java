@@ -76,13 +76,16 @@ public class detailsoftopic extends AppCompatActivity {
             tagtopic.setText(topic);
             TextView tagcontent = tagView.findViewById(R.id.tagcontent);
             if(us.getTag(topic).isDouble()){
-                tagcontent.setText((String)us.getTag(topic).getObject());
+                tagcontent.setText(us.getTag(topic).getObject().toString());
             }
             else if(us.getTag(topic).isStr()){
                 tagcontent.setText((String)us.getTag(topic).getObject());
             }
             else{
-                Calendar calendar = (Calendar) us.getTag(topic).getObject();
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis((long)(us.getTag(topic).getObject()));
+                        //(Calendar) (us.getTag(topic).getObject());
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒");
                 String dateStr = sdf.format(calendar.getTime());
                 tagcontent.setText(dateStr);

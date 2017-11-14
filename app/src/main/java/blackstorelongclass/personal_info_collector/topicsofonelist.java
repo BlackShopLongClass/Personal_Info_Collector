@@ -87,8 +87,8 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
                 else h=""+calendar.get(Calendar.HOUR);
                 if(calendar.get(Calendar.MINUTE)<10) m = "0"+calendar.get(Calendar.MINUTE);
                 else m=""+calendar.get(Calendar.MINUTE);
-                if(calendar.get(Calendar.MONTH)<10) month = "0"+calendar.get(Calendar.MONTH);
-                else month=""+calendar.get(Calendar.MONTH);
+                if(calendar.get(Calendar.MONTH)<9) month = "0"+(calendar.get(Calendar.MONTH)+1);
+                else month=""+(calendar.get(Calendar.MONTH)+1);
                 if(calendar.get(Calendar.DATE)<10) date = "0"+calendar.get(Calendar.DATE);
                 else date=""+calendar.get(Calendar.DATE);
 
