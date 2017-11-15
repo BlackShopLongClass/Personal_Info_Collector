@@ -15,7 +15,7 @@
         android:layout_marginRight="20dp"
         android:layout_weight="2"
         android:text="测试"
-        android:textAlignment="center"
+        android:textAlignment="viewStart"
         android:textSize="18sp" />
 
     <Button
@@ -23,7 +23,9 @@
         style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
         android:layout_weight="1"
+        android:elevation="0dp"
         android:padding="20dp"
         android:text="进入此表单"
         android:textSize="14sp" />
