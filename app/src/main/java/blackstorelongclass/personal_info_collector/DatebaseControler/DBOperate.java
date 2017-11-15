@@ -165,7 +165,7 @@ public class DBOperate extends AppCompatActivity {
                 tag=tagNames.elementAt(i);
                 if (tagType.charAt(i)=='1')
                 {
-                    content=(double)cursor.getInt(i+1);
+                    content=cursor.getDouble(i+1);
                 }
                 else if (tagType.charAt(i)=='2')
                 {

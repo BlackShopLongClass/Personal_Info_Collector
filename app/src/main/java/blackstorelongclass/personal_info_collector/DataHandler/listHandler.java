@@ -195,7 +195,7 @@ public class listHandler extends AppCompatActivity{
     }
 
 
-    private long timeStr2Long(String timeStr) throws ParseException {
+    public long timeStr2Long(String timeStr) throws ParseException {
         SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date= sdf.parse(timeStr);
         return date.getTime();
