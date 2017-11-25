@@ -40,7 +40,7 @@ public class listHandler extends AppCompatActivity{
         name = Name;
         DBOperate DBO = new DBOperate();
         tableList = DBO.get_tableNames();
-
+        Log.i("bslc_listHandler","listHandler():name="+name);
     }
 
     /**
@@ -79,8 +79,10 @@ public class listHandler extends AppCompatActivity{
     public boolean addNewList(userList List){
         int number = List.getListSize();
         String sentence = "CREATE TABLE "+ List.getListTitle() + "(ID INTEGER PRIMARY KEY AUTOINCREMENT,";
+        Log.i("bslc_listHandler","addNewList():sentence_before="+sentence);
         ArrayList<String> titleSet = List.getTitleList();
         String config = "INSERT INTO Config (listName,tagType) VALUES ('" +List.getListTitle() + "','";
+        Log.i("bslc_listHandler","addNewList():config_before="+config);
         for(int i=0 ; i<number; i++){
             userTag t = List.getTag(titleSet.get(i));
             if(t.isDouble()) {
@@ -100,6 +102,8 @@ public class listHandler extends AppCompatActivity{
         sentence += ");";
         config += "');";
         DBOperate DBO=new DBOperate();
+        Log.i("bslc_listHandler","addNewList():config_after="+config);
+        Log.i("bslc_listHandler","addNewList():sentence_after="+sentence);
         return DBO.create_newTable(sentence,config);
     }
 
@@ -114,6 +118,7 @@ public class listHandler extends AppCompatActivity{
         int number = List.getListSize();
         ArrayList<String> titleSet = List.getTitleList();
         String sentence = "INSERT INTO "+ List.getListTitle() +" (";
+        Log.i("bslc_listHandler","addNewData():sentence_before="+sentence);
         for(int i=0; i<List.getListSize();i++){
             userTag t = List.getTag(titleSet.get(i));
             if(i>0) sentence += ",";
@@ -132,6 +137,7 @@ public class listHandler extends AppCompatActivity{
                 sentence = sentence + "'" + (String)t.getObject() + "'";
         }
         sentence += ");";
+        Log.i("bslc_listHandler","addNewData():sentence_after="+sentence);
         DBOperate DBO=new DBOperate();
         return DBO.insert_newItem(sentence);
     }
@@ -144,14 +150,15 @@ public class listHandler extends AppCompatActivity{
      * 包含数据类型的userList
      */
     public userList getDataType(String tableName){
+        Log.i("bslc_listHandler","getDataType():Start get table name="+tableName);
         DBOperate DBO = new DBOperate();
         ArrayList<String> tableStr= DBO.get_tagNames(tableName);
-        String tableType = DBO.get_tagTypes(tableName);
-
+        String tagType = DBO.get_tagTypes(tableName);
+        Log.i("bslc_listHandler","getDataType():types of each tag="+tagType+"(1 for num;2 for date; 3 for word.)");
         userList u = new userList(tableName);
         for(int i=0;i<tableStr.size();i++) {
             Class<?> type = java.lang.String.class;
-            switch (tableType.charAt(i)){
+            switch (tagType.charAt(i)){
                 case '1': type = java.lang.Double.class;
                     break;
                 case '2': type = java.util.GregorianCalendar.class;
@@ -182,15 +189,17 @@ public class listHandler extends AppCompatActivity{
     public userList getATableData(String table,String time) throws ParseException {
         DBOperate DBO = new DBOperate();
         ArrayList<String> titles = DBO.get_tagNames(table);
-        String types = DBO.get_tagTypes(table);
+        String tagTypes = DBO.get_tagTypes(table);
+        Log.i("bslc_listHandler","getATableData():tagType="+tagTypes+"(1 for num;2 for date; 3 for word.)");
         String resultString = "";
         for(int i=0;i<titles.size();i++){
-            if(types.charAt(i) == '2') {
+            if(tagTypes.charAt(i) == '2') {
                 resultString = titles.get(i);
                 break;
             }
         }
         String sentence = "SELECT * FROM " + table + " WHERE " + resultString + "=" + timeStr2Long(time) + ";";
+        Log.i("bslc_listHandler","getATableData():sentence="+sentence);
         return DBO.get_specificItem(sentence,table);
     }
 
