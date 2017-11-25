@@ -38,20 +38,20 @@ public class DBOperate extends AppCompatActivity {
             this.db.execSQL(SQL_createConfig);
             this.db.execSQL(SQL_create);
         }catch(Exception e){
-            Log.e("bslc_DBOperate","create_newTable(): create fail!");
+            Log.i("bslc","bslc_DBOperate_create_newTable(): create fail!");
             e.printStackTrace();
         }
-        Log.i("bslc_DBOperate","create_newTable(): create success!");
+        Log.i("bslc","bslc_DBOperate_create_newTable(): create success!");
         return true;
     }
     public boolean insert_newItem(String SQL_insert) {
         try{
             this.db.execSQL(SQL_insert);
         }catch(Exception e){
-            Log.e("bslc_DBOperate","insert_newItem(): insert fail!");
+            Log.i("bslc","bslc_DBOperate_insert_newItem(): insert fail!");
             e.printStackTrace();
         }
-        Log.i("bslc_DBOperate","insert_newItem(): insert success!");
+        Log.i("bslc","bslc_DBOperate_insert_newItem(): insert success!");
         return true;
     }
     public ArrayList<String> get_tableNames() {
@@ -67,7 +67,7 @@ public class DBOperate extends AppCompatActivity {
             }
         }
         cursor.close();
-        Log.i("bslc_DBOperate","get_tableNames():tableNames="+tableNames);
+        Log.i("bslc","bslc_DBOperate_get_tableNames():tableNames="+tableNames);
         return tableNames;
     }
     public ArrayList<String> get_tagNames(String listName) {
@@ -80,7 +80,7 @@ public class DBOperate extends AppCompatActivity {
         cursor.moveToNext();
         for (i=1;i<cursor.getColumnCount();i++) {
             String currentTagName = cursor.getColumnName(i);
-            Log.i("bslc_DBOperate","get_tagNames():currentTagName="+currentTagName);
+            Log.i("bslc","bslc_DBOperate_get_tagNames():currentTagName="+currentTagName);
             tagNames.add(currentTagName);
         }
         cursor.close();
@@ -94,12 +94,12 @@ public class DBOperate extends AppCompatActivity {
         cursor.moveToNext();
         tagTypes=cursor.getString(2);
         cursor.close();
-        Log.i("bslc_DBOperate","get_tagTypes();tagTypes="+tagTypes);
+        Log.i("bslc","bslc_DBOperate_get_tagTypes();tagTypes="+tagTypes);
         return tagTypes;
     }
     public ArrayList<userList> get_allItems(String listName) {
         ArrayList<userList> info=new ArrayList<userList>();
-        Log.i("bslc_DBOperate","get_allItems():listName="+listName);
+        Log.i("bslc","bslc_DBOperate_get_allItems():listName="+listName);
         String SQL_searchConfig="SELECT * FROM Config WHERE listName='"+listName+"';";
         String SQL_getTagName="SELECT * FROM "+listName+";";
         String SQL_getItems="SELECT * FROM "+listName+";";
@@ -108,14 +108,14 @@ public class DBOperate extends AppCompatActivity {
         cursor=this.db.rawQuery(SQL_searchConfig,null);
         cursor.moveToNext();
         tagType=cursor.getString(2);
-        Log.i("bslc_DBOperate","get_allItems():tagType="+tagType);
+        Log.i("bslc","bslc_DBOperate_get_allItems():tagType="+tagType);
         cursor=this.db.rawQuery(SQL_getTagName,null);
         Vector<String> tagName=new Vector<String>();
         int i=0;
         cursor.moveToNext();
         for (i=1;i<cursor.getColumnCount();i++) {
             String currentTagName = cursor.getColumnName(i);
-            Log.i("bslc_DBOperate","get_allItems():added currentTagName:"+currentTagName);
+            Log.i("bslc","bslc_DBOperate_get_allItems():added currentTagName:"+currentTagName);
             tagName.add(currentTagName);
         }
         int size=tagType.length();
@@ -149,13 +149,13 @@ public class DBOperate extends AppCompatActivity {
             info.add(temp1);
         }
         cursor.close();
-        Log.i("bslc_DBOperate","get_allItems(): finish!");
+        Log.i("bslc","bslc_DBOperate_get_allItems(): finish!");
         return info;
     }
     public userList get_specificItem(String SQL_searchItem,String listName) {
         String SQL_searchConfig="SELECT * FROM Config WHERE listName='"+listName+"';";
         String SQL_getTagName="SELECT * FROM "+listName+";";
-        Log.i("bslc_DBOperate","get_specificItem():listName:"+listName);
+        Log.i("bslc","bslc_DBOperate_get_specificItem():listName:"+listName);
         int i=0,size=0;
         String tagType;
         Vector<String> tagNames=new Vector<String>();
@@ -163,7 +163,7 @@ public class DBOperate extends AppCompatActivity {
         cursor=this.db.rawQuery(SQL_searchConfig,null);
         cursor.moveToNext();
         tagType=cursor.getString(2);
-        Log.i("bslc_DBOperate","get_specificItem():tagType="+tagType);
+        Log.i("bslc","bslc_DBOperate_get_specificItem():tagType="+tagType);
         userList specificItem;
         cursor=this.db.rawQuery(SQL_getTagName,null);
         cursor.moveToNext();
@@ -183,21 +183,21 @@ public class DBOperate extends AppCompatActivity {
                 if (tagType.charAt(i)=='1')
                 {
                     content=cursor.getDouble(i+1);
-                    Log.i("bslc_DBOperate","get_specifigItem():tagType=double;content="+content);
+                    Log.i("bslc","bslc_DBOperate_get_specifigItem():tagType=double;content="+content);
                 }
                 else if (tagType.charAt(i)=='2')
                 {
                     content=cursor.getLong(i+1);
-                    Log.i("bslc_DBOperate","get_specifigItem():tagType=time;content="+content);
+                    Log.i("bslc","bslc_DBOperate_get_specifigItem():tagType=time;content="+content);
                 }
                 else if (tagType.charAt(i)=='3')
                 {
                     content=(String)cursor.getString(i+1);
-                    Log.i("bslc_DBOperate","get_specificItem():tagType=string;content="+content);
+                    Log.i("bslc","bslc_DBOperate_get_specificItem():tagType=string;content="+content);
                 }
                 else
                 {
-                    Log.e("bslc_DBOperate","get_specificItem():can't figure out data type");
+                    Log.i("bslc_DBOperate","bslc_DBOperate_get_specificItem():can't figure out data type");
                     content=null;
                 }
                 temp=new userTag(tag,content);
@@ -205,7 +205,7 @@ public class DBOperate extends AppCompatActivity {
             }
         }
         cursor.close();
-        Log.i("bslc_DBOperate","get_specificItem():finish!");
+        Log.i("bslc","bslc_DBOperate_get_specificItem():finish!");
         return specificItem;
     }
 }

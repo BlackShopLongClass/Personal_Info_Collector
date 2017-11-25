@@ -40,7 +40,7 @@ public class listHandler extends AppCompatActivity{
         name = Name;
         DBOperate DBO = new DBOperate();
         tableList = DBO.get_tableNames();
-        Log.i("bslc_listHandler","listHandler():name="+name);
+        Log.i("bslc","bslc_listHandler_listHandler():name="+name);
     }
 
     /**
@@ -79,10 +79,10 @@ public class listHandler extends AppCompatActivity{
     public boolean addNewList(userList List){
         int number = List.getListSize();
         String sentence = "CREATE TABLE "+ List.getListTitle() + "(ID INTEGER PRIMARY KEY AUTOINCREMENT,";
-        Log.i("bslc_listHandler","addNewList():sentence_before="+sentence);
+        Log.i("bslc","bslc_listHandler_addNewList():sentence_before="+sentence);
         ArrayList<String> titleSet = List.getTitleList();
         String config = "INSERT INTO Config (listName,tagType) VALUES ('" +List.getListTitle() + "','";
-        Log.i("bslc_listHandler","addNewList():config_before="+config);
+        Log.i("bslc","bslc_listHandler_addNewList():config_before="+config);
         for(int i=0 ; i<number; i++){
             userTag t = List.getTag(titleSet.get(i));
             if(t.isDouble()) {
@@ -102,8 +102,8 @@ public class listHandler extends AppCompatActivity{
         sentence += ");";
         config += "');";
         DBOperate DBO=new DBOperate();
-        Log.i("bslc_listHandler","addNewList():config_after="+config);
-        Log.i("bslc_listHandler","addNewList():sentence_after="+sentence);
+        Log.i("bslc","bslc_listHandler_addNewList():config_after="+config);
+        Log.i("bslc","bslc_listHandler_addNewList():sentence_after="+sentence);
         return DBO.create_newTable(sentence,config);
     }
 
@@ -118,7 +118,7 @@ public class listHandler extends AppCompatActivity{
         int number = List.getListSize();
         ArrayList<String> titleSet = List.getTitleList();
         String sentence = "INSERT INTO "+ List.getListTitle() +" (";
-        Log.i("bslc_listHandler","addNewData():sentence_before="+sentence);
+        Log.i("bslc","bslc_listHandler_addNewData():sentence_before="+sentence);
         for(int i=0; i<List.getListSize();i++){
             userTag t = List.getTag(titleSet.get(i));
             if(i>0) sentence += ",";
@@ -137,7 +137,7 @@ public class listHandler extends AppCompatActivity{
                 sentence = sentence + "'" + (String)t.getObject() + "'";
         }
         sentence += ");";
-        Log.i("bslc_listHandler","addNewData():sentence_after="+sentence);
+        Log.i("bslc","bslc_listHandler_addNewData():sentence_after="+sentence);
         DBOperate DBO=new DBOperate();
         return DBO.insert_newItem(sentence);
     }
@@ -154,7 +154,7 @@ public class listHandler extends AppCompatActivity{
         DBOperate DBO = new DBOperate();
         ArrayList<String> tableStr= DBO.get_tagNames(tableName);
         String tagType = DBO.get_tagTypes(tableName);
-        Log.i("bslc_listHandler","getDataType():types of each tag="+tagType+"(1 for num;2 for date; 3 for word.)");
+        Log.i("bslc","bslc_listHandler_getDataType():types of each tag="+tagType+"(1 for num;2 for date; 3 for word.)");
         userList u = new userList(tableName);
         for(int i=0;i<tableStr.size();i++) {
             Class<?> type = java.lang.String.class;
@@ -190,7 +190,7 @@ public class listHandler extends AppCompatActivity{
         DBOperate DBO = new DBOperate();
         ArrayList<String> titles = DBO.get_tagNames(table);
         String tagTypes = DBO.get_tagTypes(table);
-        Log.i("bslc_listHandler","getATableData():tagType="+tagTypes+"(1 for num;2 for date; 3 for word.)");
+        Log.i("bslc","bslc_listHandler_getATableData():tagType="+tagTypes+"(1 for num;2 for date; 3 for word.)");
         String resultString = "";
         for(int i=0;i<titles.size();i++){
             if(tagTypes.charAt(i) == '2') {
@@ -199,7 +199,7 @@ public class listHandler extends AppCompatActivity{
             }
         }
         String sentence = "SELECT * FROM " + table + " WHERE " + resultString + "=" + timeStr2Long(time) + ";";
-        Log.i("bslc_listHandler","getATableData():sentence="+sentence);
+        Log.i("bslc","bslc_listHandler_getATableData():sentence="+sentence);
         return DBO.get_specificItem(sentence,table);
     }
 
