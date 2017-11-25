@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -83,8 +84,8 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
                 bn.setTag(str);
                 bn.setOnClickListener(this);
                 String h,m,month,date;
-                if(calendar.get(Calendar.HOUR)<10) h = "0"+calendar.get(Calendar.HOUR);
-                else h=""+calendar.get(Calendar.HOUR);
+                if(calendar.get(Calendar.HOUR_OF_DAY)<10) h = "0"+calendar.get(Calendar.HOUR_OF_DAY);
+                else h=""+calendar.get(Calendar.HOUR_OF_DAY);
                 if(calendar.get(Calendar.MINUTE)<10) m = "0"+calendar.get(Calendar.MINUTE);
                 else m=""+calendar.get(Calendar.MINUTE);
                 if(calendar.get(Calendar.MONTH)<9) month = "0"+(calendar.get(Calendar.MONTH)+1);
@@ -97,6 +98,7 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
                 timestring = calendar.get(Calendar.YEAR) + "-" + month + "-" + date + " " +
                         h + ":" + m;
                 text.setText(timestring);
+                Log.i("bslc","bslc_topicsofonelist_onCreate():time="+timestring);
                 addView.addView(tagView);
                 addView.requestLayout();
             }

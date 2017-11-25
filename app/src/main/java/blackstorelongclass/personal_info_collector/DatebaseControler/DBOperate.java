@@ -134,6 +134,7 @@ public class DBOperate extends AppCompatActivity {
                 else if (tagType.charAt(i)=='2')
                 {
                     content=cursor.getLong(i+1);
+                    Log.i("bslc","bslc_DBOperate_get_allItems(): time="+content);
                 }
                 else if (tagType.charAt(i)=='3')
                 {
@@ -197,7 +198,7 @@ public class DBOperate extends AppCompatActivity {
                 }
                 else
                 {
-                    Log.i("bslc_DBOperate","bslc_DBOperate_get_specificItem():can't figure out data type");
+                    Log.i("bslc","bslc_DBOperate_get_specificItem():can't figure out data type");
                     content=null;
                 }
                 temp=new userTag(tag,content);
