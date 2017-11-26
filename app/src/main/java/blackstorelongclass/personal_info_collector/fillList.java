@@ -3,14 +3,17 @@ package blackstorelongclass.personal_info_collector;
 import android.app.DatePickerDialog;
 
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -42,6 +45,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
     private userList taglist;
     private Calendar calendardate,calendartime;
     private String topic;
+    private boolean flag = true;
 
     private void addViewItem(View view) {
         if (addView.getChildCount() == 0) {//如果一个都没有，就添加一个
@@ -131,10 +135,18 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                     }
                 });
             }
-            else{
+            else if(taglist.getTag(taglist.getTitleList().get(i)).isStr()){
                 LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.filllistitem, null);
                 TextView tagTopic = (TextView) tagView.findViewById(R.id.tagTopic);
                 tagTopic.setText(taglist.getTitleList().get(i));
+                addView.addView(tagView);
+            }
+            else {
+                LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.filllistitem, null);
+                TextView tagTopic = (TextView) tagView.findViewById(R.id.tagTopic);
+                tagTopic.setText(taglist.getTitleList().get(i));
+                EditText editText = (EditText)tagView.findViewById(R.id.taginput);
+                editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 addView.addView(tagView);
             }
         }
@@ -146,11 +158,15 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.submit:
+                flag = false;
+                if(flag == true){
                 getData();
                 Intent intent = new Intent(this, topicsofonelist.class);
                 intent.putExtra(EXTRA_MESSAGE, topic);
                 startActivity(intent);
-                break;
+                break;}
+                else
+                    dialog();
         }
     }
 
@@ -226,6 +242,29 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
             }
         }
         listHandler handler = new listHandler("333");
-        handler.addNewData(inputlist);
+        flag = handler.addNewData(inputlist);
     }
+
+    protected void dialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage("确认退出吗？");
+
+        builder.setTitle("提示");
+
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog,int which) {
+                dialog.dismiss();
+            }
+
+        });
+
+
+        builder.create().show();
+
+    }
+
 }

@@ -98,6 +98,7 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
                 timestring = calendar.get(Calendar.YEAR) + "-" + month + "-" + date + " " +
                         h + ":" + m;
                 text.setText(timestring);
+                bn.setTag(timestring);
                 Log.i("bslc","bslc_topicsofonelist_onCreate():time="+timestring);
                 addView.addView(tagView);
                 addView.requestLayout();
@@ -120,8 +121,9 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
             startActivity(intent);
         }
         else {
-            timestring = timestring + ":00";
-            String gettopic = listname+ "," + timestring;
+            String tString = (String)v.getTag();
+            tString = tString + ":00";
+            String gettopic = listname+ "," + tString;
             Intent intent = new Intent(this, detailsoftopic.class);
             intent.putExtra(EXTRA_MESSAGE, gettopic);
             startActivity(intent);
