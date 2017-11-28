@@ -63,7 +63,10 @@ public class DBOperate extends AppCompatActivity {
         while (cursor.moveToNext()) {
             i++;
             if (i>3) {
-                tableNames.add(cursor.getString(cursor.getColumnIndex("name")));
+                String tableName = cursor.getString(cursor.getColumnIndex("name"));
+                if(tableName.equals("sqlite_sequence"))
+                    continue;;
+                tableNames.add(tableName);
             }
         }
         cursor.close();

@@ -15,6 +15,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import blackstorelongclass.personal_info_collector.DataHandler.listHandler;
+
 import static blackstorelongclass.personal_info_collector.fillList.EXTRA_MESSAGE;
 
 public class timeLine extends AppCompatActivity implements View.OnClickListener {
@@ -49,12 +51,14 @@ public class timeLine extends AppCompatActivity implements View.OnClickListener 
         setContentView(R.layout.activity_time_line);
 
         addView = (LinearLayout) findViewById(R.id.timeline_addView);
-        Pair<Long , String> p1 = new Pair<>(1511851210000L,"eating");
-        Pair<Long , String> p2 = new Pair<>(1511451210000L,"eating");
+//        Pair<Long , String> p1 = new Pair<>(1511851210000L,"eating");
+//        Pair<Long , String> p2 = new Pair<>(1511451210000L,"eating");
+//
+//        pairList.add(p1);
+//        pairList.add(p2);
 
-        pairList.add(p1);
-        pairList.add(p2);
-
+        listHandler listhandler = new listHandler("1");
+        pairList = listhandler.getTimeWithTitle();
         for(Pair<Long,String> p : pairList) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis((long) p.first);
