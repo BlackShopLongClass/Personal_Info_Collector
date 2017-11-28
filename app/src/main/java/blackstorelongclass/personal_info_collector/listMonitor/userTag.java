@@ -79,6 +79,7 @@ public class userTag {
      */
     public boolean isCalendar(){
         if(C == java.util.GregorianCalendar.class) return true;
+        else if(C == java.lang.Long.class) return true;
         else return false;
     }
 
