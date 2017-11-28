@@ -89,7 +89,7 @@ public class timeLine extends AppCompatActivity implements View.OnClickListener 
                     h + ":" + m;
             Log.i("bslc","bslc_timeLine_onCreate():timestring="+timestring);
             text.setText(timestring);
-            String str = p.second + timestring;
+            String str = p.second + "," + timestring + ":00";
             bn.setTag(str);
             bn.setText(p.second);
 

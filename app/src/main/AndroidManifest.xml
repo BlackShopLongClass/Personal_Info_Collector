@@ -48,7 +48,8 @@
         <activity
             android:name=".detailsoftopic"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".timeLine"></activity>
+        <activity android:name=".timeLine"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
