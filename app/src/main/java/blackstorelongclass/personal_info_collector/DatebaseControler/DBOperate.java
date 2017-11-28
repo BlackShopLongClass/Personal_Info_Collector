@@ -62,7 +62,7 @@ public class DBOperate extends AppCompatActivity {
         int i=0;
         while (cursor.moveToNext()) {
             i++;
-            if (i>3) {
+            if (i>2) {
                 String tableName = cursor.getString(cursor.getColumnIndex("name"));
                 if(tableName.equals("sqlite_sequence"))
                     continue;;

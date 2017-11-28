@@ -158,7 +158,9 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.submit:
-                flag = false;
+                listHandler lh = new listHandler("2");
+
+                flag = true;
                 if(flag == true){
                 getData();
                 Intent intent = new Intent(this, topicsofonelist.class);

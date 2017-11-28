@@ -244,6 +244,8 @@ public class listHandler extends AppCompatActivity{
                 Pair<Long,String> p = new Pair<>(u.getTime(),u.getListTitle());
                 currentTable.add(p);
             }
+            if(currentTable.isEmpty())
+                continue;
             allTableArrary.add(currentTable);
         }
         ArrayList<Pair> resultList = new ArrayList<>();
