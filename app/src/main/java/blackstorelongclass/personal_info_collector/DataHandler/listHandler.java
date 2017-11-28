@@ -13,6 +13,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.TextView;
 
@@ -182,9 +183,9 @@ public class listHandler extends AppCompatActivity{
      * @param table
      * 表名称
      * @param time
-     * 字符串类型表示的时间
+     * 字符串类型表示的时间,形如:"yyyy-MM-dd HH:mm:ss"
      * @return
-     *
+     * 所得到的表单
      */
     public userList getATableData(String table,String time) throws ParseException {
         DBOperate DBO = new DBOperate();
@@ -203,6 +204,23 @@ public class listHandler extends AppCompatActivity{
         return DBO.get_specificItem(sentence,table);
     }
 
+    /**
+     * 查询一个表单的一个时间点是否可用
+     * @param table
+     * 表单名称
+     * @param time
+     * 字符串类型的时间,形如:"yyyy-MM-dd HH:mm:ss"
+     * @return
+     * true:该时间可以使用
+     * false:该时间不能使用
+     * @throws ParseException
+     */
+    public boolean checkTimeAvaliable(String table, String time)throws ParseException{
+        userList userlist = getATableData(table,time);
+        ArrayList<String> arr = userlist.getTitleList();
+        return arr.size()==0 ? true : false;
+    }
+
 
     public long timeStr2Long(String timeStr) throws ParseException {
         SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -210,4 +228,40 @@ public class listHandler extends AppCompatActivity{
         return date.getTime();
     }
 
+    /**
+     * 查询所有表单的时间-标题键值对,用于展示时间轴时使用
+     * @return
+     * ArraryList<Pair>.其中Pair<Long,String>
+     */
+    public ArrayList<Pair> getTimeWithTitle(){
+        DBOperate DBO = new DBOperate();
+        ArrayList<ArrayList<Pair<Long,String>>> allTableArrary = new ArrayList<>();
+        for(String title:tableList){
+            ArrayList<userList> userlist = DBO.get_allItems(title);
+            ArrayList<Pair<Long,String>> currentTable = new ArrayList<>();
+            for(userList u:userlist){
+                Pair<Long,String> p = new Pair<>(u.getTime(),u.getListTitle());
+                currentTable.add(p);
+            }
+            allTableArrary.add(currentTable);
+        }
+        ArrayList<Pair> resultList = new ArrayList<>();
+
+        while (true){
+            int numOfTable = allTableArrary.size();
+            int flag = 0;
+            for(int i=1;i<numOfTable;i++){
+                if(allTableArrary.get(i).get(0).first<allTableArrary.get(flag).get(0).first)
+                    flag = i;
+            }
+            resultList.add(allTableArrary.get(flag).get(0));
+            allTableArrary.get(flag).remove(0);
+            if(allTableArrary.get(flag).isEmpty()){
+                allTableArrary.remove(flag);
+                if(allTableArrary.isEmpty())
+                    break;
+            }
+        }
+        return resultList;
+    }
 }

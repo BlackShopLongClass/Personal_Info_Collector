@@ -1,5 +1,8 @@
 package blackstorelongclass.personal_info_collector.listMonitor;
 
+import android.content.Intent;
+import android.util.Pair;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -73,5 +76,15 @@ public class userList {
 
     public String getListTitle(){
         return titleOfList;
+    }
+
+    public long getTime(){
+        for(String item:titleOfTag){ //遍历每一个tag寻找时间类型
+            userTag tempTag = contentOfList.get(item);
+            if(tempTag.isCalendar()) {
+                return (long)tempTag.Content;
+            }
+        }
+        return 0;
     }
 }
