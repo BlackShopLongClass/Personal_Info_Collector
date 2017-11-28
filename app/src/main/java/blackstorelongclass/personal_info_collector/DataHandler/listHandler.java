@@ -237,16 +237,19 @@ public class listHandler extends AppCompatActivity{
         DBOperate DBO = new DBOperate();
         ArrayList<ArrayList<Pair<Long,String>>> allTableArrary = new ArrayList<>();
         for(String title:tableList){
+            Log.i("bslc","bslc_listHandler_getTimeWithTitle():fetch list from DB names +" + title);
             ArrayList<userList> userlist = DBO.get_allItems(title);
             ArrayList<Pair<Long,String>> currentTable = new ArrayList<>();
             for(userList u:userlist){
                 Pair<Long,String> p = new Pair<>(u.getTime(),u.getListTitle());
                 currentTable.add(p);
             }
+            if(currentTable.isEmpty())
+                continue;
             allTableArrary.add(currentTable);
         }
         ArrayList<Pair> resultList = new ArrayList<>();
-
+        Log.i("bslc","bslc_listHandler_getTimeWithTitle():fetch finish, start to sort");
         while (true){
             int numOfTable = allTableArrary.size();
             int flag = 0;
@@ -255,9 +258,11 @@ public class listHandler extends AppCompatActivity{
                     flag = i;
             }
             resultList.add(allTableArrary.get(flag).get(0));
+            Log.i("bslc","bslc_listHandler_getTimeWithTitle():time="+allTableArrary.get(flag).get(0).first);
             allTableArrary.get(flag).remove(0);
             if(allTableArrary.get(flag).isEmpty()){
                 allTableArrary.remove(flag);
+                Log.i("bslc","bslc_listHandler_getTimeWithTitle():1 stack empty,"+(numOfTable-1)+" remains");
                 if(allTableArrary.isEmpty())
                     break;
             }

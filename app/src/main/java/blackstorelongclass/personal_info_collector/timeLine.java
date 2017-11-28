@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Handler;
+
+import blackstorelongclass.personal_info_collector.DataHandler.listHandler;
 
 import blackstorelongclass.personal_info_collector.DataHandler.listHandler;
 
@@ -58,9 +61,9 @@ public class timeLine extends AppCompatActivity implements View.OnClickListener 
 //        pairList.add(p1);
 //        pairList.add(p2);
 
-        listHandler handler = new listHandler("333");
-        pairList = handler.getTimeWithTitle();
 
+        listHandler listhandler = new listHandler("1");
+        pairList = listhandler.getTimeWithTitle();
 
         for(Pair<Long,String> p : pairList) {
             Calendar calendar = Calendar.getInstance();
@@ -84,6 +87,7 @@ public class timeLine extends AppCompatActivity implements View.OnClickListener 
 
             timestring = calendar.get(Calendar.YEAR) + "-" + month + "-" + date + " " +
                     h + ":" + m;
+            Log.i("bslc","bslc_timeLine_onCreate():timestring="+timestring);
             text.setText(timestring);
             String str = p.second + timestring;
             bn.setTag(str);
