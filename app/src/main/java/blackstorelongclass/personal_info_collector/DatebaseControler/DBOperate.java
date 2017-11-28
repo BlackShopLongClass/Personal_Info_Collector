@@ -102,7 +102,6 @@ public class DBOperate extends AppCompatActivity {
         Log.i("bslc","bslc_DBOperate_get_allItems():listName="+listName);
         String SQL_searchConfig="SELECT * FROM Config WHERE listName='"+listName+"';";
         String SQL_getTagName="SELECT * FROM "+listName+";";
-        String SQL_getItems="SELECT * FROM "+listName+";";
         String tagType;
         Cursor cursor;
         cursor=this.db.rawQuery(SQL_searchConfig,null);
@@ -118,6 +117,16 @@ public class DBOperate extends AppCompatActivity {
             Log.i("bslc","bslc_DBOperate_get_allItems():added currentTagName:"+currentTagName);
             tagName.add(currentTagName);
         }
+        int timeTag=0;
+        String timeName;
+        for (i=0;i<tagType.length();i++) {
+            if (tagType.charAt(i)=='2') {
+                timeTag=i;
+                break;
+            }
+        }
+        timeName=tagName.elementAt(timeTag);
+        String SQL_getItems="SELECT * FROM "+listName+" ORDER BY "+timeName+" ASC;";
         int size=tagType.length();
         cursor=this.db.rawQuery(SQL_getItems,null);
         while (cursor.moveToNext()) {
