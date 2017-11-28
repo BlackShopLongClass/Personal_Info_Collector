@@ -28,6 +28,7 @@ public class selecttofill extends AppCompatActivity implements View.OnClickListe
     public final static String EXTRA_MESSAGE = "blackstorelongclass.personal_info_collector.MESSAGE";
     private LinearLayout addView;
     private List<String> topics;
+//    private Intent intentNavigation = new Intent(this, timeLine.class);
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -39,7 +40,8 @@ public class selecttofill extends AppCompatActivity implements View.OnClickListe
 //                    mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_dashboard:
-//                    mTextMessage.setText(R.string.title_dashboard);
+                    Intent intentNavigation = new Intent(selecttofill.this, timeLine.class);
+                    startActivity(intentNavigation);
                     return true;
             }
             return false;
