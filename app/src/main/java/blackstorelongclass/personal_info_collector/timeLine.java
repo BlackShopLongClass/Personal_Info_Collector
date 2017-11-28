@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
@@ -81,6 +82,7 @@ public class timeLine extends AppCompatActivity implements View.OnClickListener 
 
             timestring = calendar.get(Calendar.YEAR) + "-" + month + "-" + date + " " +
                     h + ":" + m;
+            Log.i("bslc","bslc_timeLine_onCreate():timestring="+timestring);
             text.setText(timestring);
             String str = p.second + timestring;
             bn.setTag(str);

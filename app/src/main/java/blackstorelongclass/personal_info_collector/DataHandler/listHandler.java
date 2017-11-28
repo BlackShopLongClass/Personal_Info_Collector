@@ -258,6 +258,7 @@ public class listHandler extends AppCompatActivity{
                     flag = i;
             }
             resultList.add(allTableArrary.get(flag).get(0));
+            Log.i("bslc","bslc_listHandler_getTimeWithTitle():time="+allTableArrary.get(flag).get(0).first);
             allTableArrary.get(flag).remove(0);
             if(allTableArrary.get(flag).isEmpty()){
                 allTableArrary.remove(flag);
