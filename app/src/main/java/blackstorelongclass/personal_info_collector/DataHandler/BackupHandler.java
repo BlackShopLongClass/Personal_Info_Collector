@@ -14,6 +14,9 @@ import org.xmlpull.v1.XmlPullParserException;
 import android.util.Log;
 import android.util.Xml;
 
+import jxl.Cell;
+import jxl.CellType;
+import jxl.NumberCell;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.write.Label;
@@ -88,10 +91,11 @@ public class BackupHandler {
             String titleOfList = sheet.getName();
             int Rows = sheet.getRows();
             int Cols = sheet.getColumns();
+
             Log.i("bslc", "bslc_BackupHandler_readxls():sheet name=" + sheet.getName());
             Log.i("bslc", "bslc_BackupHandler_readxls():总行数:" + Rows + ", 总列数:" + Cols);
             String val = null;
-            for (int i = 0; i < Rows; i++) {
+            for (int i = 0; i < Rows-1; i++) {
                 Log.i("bslc", "bslc_BackupHandler_readxls():row="+i);
                 boolean null_row = true;
                 for (int j = 0; j < Cols; j++) {
@@ -112,6 +116,14 @@ public class BackupHandler {
                     null_row = true;
                 }
                 //objList = new ArrayList<Object>();
+            }
+            for(int j=0;j<Cols;j++){
+                Cell cell= sheet.getCell(2,j);
+                if(cell.getType() == CellType.NUMBER){
+                    NumberCell numberCell = (NumberCell) cell;
+                    double value =numberCell.getValue();
+                    Log.i("bslc", "bslc_BackupHandler_readxls():"+value);
+                }
             }
             workbook.close();
         } catch (Exception e){
