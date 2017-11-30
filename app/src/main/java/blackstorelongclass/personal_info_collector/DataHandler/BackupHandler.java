@@ -102,6 +102,7 @@ public class BackupHandler {
                     // getCell(Col,Row)获得单元格的值，注意getCell格式是先列后行，不是常见的先行后列
                     Log.i("bslc", "bslc_BackupHandler_readxls():column="+j);
                     Log.i("bslc", "bslc_BackupHandler_readxls():"+(sheet.getCell(j, i)).getContents() + "\t");
+                    
                     val = (sheet.getCell(j, i)).getContents();
                     if (val == null || val.equals("")) {
                         val = "null";
