@@ -81,6 +81,44 @@ public class BackupHandler {
         return dataList;
     }
 
+    public static void readxls(String path){
+        try{
+            Workbook workbook = Workbook.getWorkbook(new File(path));
+            Sheet sheet = workbook.getSheet(0);
+            String titleOfList = sheet.getName();
+            int Rows = sheet.getRows();
+            int Cols = sheet.getColumns();
+            Log.i("bslc", "bslc_BackupHandler_readxls():sheet name=" + sheet.getName());
+            Log.i("bslc", "bslc_BackupHandler_readxls():总行数:" + Rows + ", 总列数:" + Cols);
+            String val = null;
+            for (int i = 0; i < Rows; i++) {
+                Log.i("bslc", "bslc_BackupHandler_readxls():row="+i);
+                boolean null_row = true;
+                for (int j = 0; j < Cols; j++) {
+                    // getCell(Col,Row)获得单元格的值，注意getCell格式是先列后行，不是常见的先行后列
+                    Log.i("bslc", "bslc_BackupHandler_readxls():column="+j);
+                    Log.i("bslc", "bslc_BackupHandler_readxls():"+(sheet.getCell(j, i)).getContents() + "\t");
+                    val = (sheet.getCell(j, i)).getContents();
+                    if (val == null || val.equals("")) {
+                        val = "null";
+                    } else {
+                        null_row = false;
+                    }
+                    //objList.add(val);
+                }
+                Log.d(TAG, "\n");
+                if (null_row != true) {
+                    //dataList.add(objList);
+                    null_row = true;
+                }
+                //objList = new ArrayList<Object>();
+            }
+            workbook.close();
+        } catch (Exception e){
+            Log.i("bslc","bslc_BackupHandler_readxls():error:"+e.getMessage());
+        }
+    }
+
     public static List<List<Object>> read2007XLSX(String path) {
         List<List<Object>> dataList = new ArrayList<List<Object>>();
         String str_c = "";
