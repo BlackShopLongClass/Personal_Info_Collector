@@ -43,6 +43,10 @@ public class selecttofill extends AppCompatActivity implements View.OnClickListe
                     Intent intentNavigation = new Intent(selecttofill.this, timeLine.class);
                     startActivity(intentNavigation);
                     return true;
+                case R.id.navigation_user:
+                    Intent intentNavigation3 = new Intent(selecttofill.this, Userspage.class);
+                    startActivity(intentNavigation3);
+                    return true;
             }
             return false;
         }

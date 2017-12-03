@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/time_line"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/selecttofill">
 
 
         <RelativeLayout
@@ -42,7 +43,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="20dp"
-                            android:text="Display in time order"
+                            android:layout_marginRight="50dp"
+                            android:text="Users"
                             android:textAlignment="viewStart"
                             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                             android:textSize="24sp"
@@ -55,12 +57,32 @@
             </android.support.design.widget.AppBarLayout>
 
             <LinearLayout
-                android:id="@+id/timeline_addView"
+                android:id="@+id/sf_addView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/toolbarlayout"
-                android:orientation="vertical" />
+                android:padding="10dp"
+                android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="50dp"
+                    android:text="User Name"
+                    android:textAlignment="viewStart"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:typeface="sans" />
+
+                <Button
+                    android:id="@+id/selectfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="SELECTFILE"
+                    android:onClick="selectfile"/>
+            </LinearLayout>
 
         </RelativeLayout>
     </ScrollView>
@@ -73,6 +95,6 @@
         android:background="?android:attr/windowBackground"
         app:itemIconTint="@color/selector_item_color"
         app:itemTextColor="@color/selector_item_color"
-        app:menu="@menu/navigation2" />
+        app:menu="@menu/navigation3" />
 
 </LinearLayout>

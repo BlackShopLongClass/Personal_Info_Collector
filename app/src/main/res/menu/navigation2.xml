@@ -4,16 +4,17 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home_black_24dp"
-        android:checked="true"
         android:title="管理数据" />
 
     <item
         android:id="@+id/navigation_dashboard"
         android:icon="@drawable/ic_dashboard_black_24dp"
+        android:checked="true"
         android:title="展示数据" />
 
     <item
         android:id="@+id/navigation_user"
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="系统设置" />
+
 </menu>

@@ -48,8 +48,13 @@
         <activity
             android:name=".detailsoftopic"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".timeLine"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".timeLine"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Userspage"
+            android:label="@string/title_activity_userspage"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
