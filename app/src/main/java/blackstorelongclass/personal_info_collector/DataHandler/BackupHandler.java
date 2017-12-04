@@ -2,6 +2,7 @@ package blackstorelongclass.personal_info_collector.DataHandler;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -14,6 +15,8 @@ import org.xmlpull.v1.XmlPullParserException;
 import android.util.Log;
 import android.util.Xml;
 
+import blackstorelongclass.personal_info_collector.listMonitor.userList;
+import blackstorelongclass.personal_info_collector.listMonitor.userTag;
 import jxl.Cell;
 import jxl.CellType;
 import jxl.NumberCell;
@@ -88,22 +91,54 @@ public class BackupHandler {
         try{
             Workbook workbook = Workbook.getWorkbook(new File(path));
             Sheet sheet = workbook.getSheet(0);
+            //read title of userList
             String titleOfList = sheet.getName();
-            int Rows = sheet.getRows();
-            int Cols = sheet.getColumns();
+            //读取
+            int Rows = sheet.getRows(); //行
+            int Cols = sheet.getColumns(); //列
 
             Log.i("bslc", "bslc_BackupHandler_readxls():sheet name=" + sheet.getName());
             Log.i("bslc", "bslc_BackupHandler_readxls():总行数:" + Rows + ", 总列数:" + Cols);
-            String val = null;
-            for (int i = 0; i < Rows-1; i++) {
+
+            ArrayList<String> titleList = new ArrayList<>();
+
+            //read titles of userTag
+            userList demoList = new userList(titleOfList);
+            for(int j = 0; j< Cols; j++) {
+                Class<?> cellType = java.lang.String.class;
+                String typeFlag = (sheet.getCell(j, 1)).getContents();
+                switch (typeFlag){
+                    case "STRING": cellType = java.lang.String.class;
+                        break;
+                    case "NUMBER": cellType = java.lang.Double.class;
+                        break;
+                    case "TIME": cellType = java.lang.Long.class;
+                        break;
+                    default:
+                        break;
+                }
+                String tagTitle = (sheet.getCell(j, 0)).getContents();
+                userTag currentTag = new userTag(tagTitle,cellType);
+                Log.i("bslc","bslc_BackupHandler_readxls(): get Cell name "+ tagTitle + " type " + cellType);
+                demoList.addTag(tagTitle,currentTag);
+            }
+
+            //create ArraryList of userList
+            ArrayList<userList> userData = new ArrayList<>();
+            for (int i = 1; i < Rows-1; i++) { //行
                 Log.i("bslc", "bslc_BackupHandler_readxls():row="+i);
+                //创建新list项
+                userList currentUserList = new userList(titleOfList);
                 boolean null_row = true;
-                for (int j = 0; j < Cols; j++) {
+                for (int j = 0; j < Cols; j++) { //列
                     // getCell(Col,Row)获得单元格的值，注意getCell格式是先列后行，不是常见的先行后列
+                    Cell currentCell = sheet.getCell(j,i);
+                    CellType type =  currentCell.getType();
                     Log.i("bslc", "bslc_BackupHandler_readxls():column="+j);
-                    Log.i("bslc", "bslc_BackupHandler_readxls():"+(sheet.getCell(j, i)).getContents() + "\t");
-                    
-                    val = (sheet.getCell(j, i)).getContents();
+                    Log.i("bslc", "bslc_BackupHandler_readxls():cell content is "+currentCell.getContents() + "\t");
+                    Log.i("blsc", "blsc_BackupHandler_readxls():cell type"+type);
+
+                    String val = (sheet.getCell(j, i)).getContents();
                     if (val == null || val.equals("")) {
                         val = "null";
                     } else {
@@ -180,12 +215,12 @@ public class BackupHandler {
                         if (tag.equalsIgnoreCase("row")) {
                         } else if (tag.equalsIgnoreCase("c")) {
                             String t = xmlParsersheet.getAttributeValue(null, "t");
-                            if (t != null) {
-                                flat = true; // 字符串型
-                                // Log.d(TAG, flat + "有");
-                            } else { // 非字符串型，可能是整型
+                            if (t == null) { // 非字符串型，可能是整型
                                 // Log.d(TAG, flat + "没有");
                                 flat = false;
+                            } else {
+                                flat = true; // 字符串型
+                                // Log.d(TAG, flat + "有");
                             }
                         } else if (tag.equalsIgnoreCase("v")) {
                             v = xmlParsersheet.nextText();
@@ -205,7 +240,7 @@ public class BackupHandler {
                     case XmlPullParser.END_TAG:
                         if (xmlParsersheet.getName().equalsIgnoreCase("row") && v != null) {
                             str_c += "\n";
-                            if (null_row != true) {
+                            if (!null_row) {
                                 dataList.add(objList);
                                 null_row = true;
                             }
