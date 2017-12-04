@@ -30,11 +30,12 @@ dependencies {
     //    compile files('/Users/abc123one/Documents/JAVA/personalInfoCollector/Personal_Info_Collector/libs/jxl.jar')
     //compile files('F:/SEProject/Personal_Info_Collector/libs/jxl.jar')
     compile files('/Users/xmh_mac/Documents/JAVA/Personal_Info_Collector/libs/jxl.jar')
+    compile files('/Users/xmh_mac/Documents/JAVA/Personal_Info_Collector/libs/commons-io-2.6.jar')
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:26.+'
     compile 'com.android.support:support-vector-drawable:26.+'
     compile 'com.android.support:support-v4:26.+'
+    compile 'com.google.android.gms:play-services-maps:11.0.4'
     testCompile 'junit:junit:4.12'
-    compile files('/Users/xmh_mac/Documents/JAVA/Personal_Info_Collector/libs/commons-io-2.6.jar')
 }
