@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
@@ -13,15 +15,19 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.util.Log;
+import android.util.Pair;
 import android.util.Xml;
 
 import blackstorelongclass.personal_info_collector.listMonitor.userList;
 import blackstorelongclass.personal_info_collector.listMonitor.userTag;
 import jxl.Cell;
 import jxl.CellType;
+import jxl.DateCell;
 import jxl.NumberCell;
 import jxl.Sheet;
 import jxl.Workbook;
+import jxl.format.CellFormat;
+import jxl.read.biff.BiffException;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
@@ -87,10 +93,27 @@ public class BackupHandler {
         return dataList;
     }
 
-    public static void readxls(String path){
+    public static ArrayList<ArrayList<userList>> readXlsFile(String path){
+        ArrayList<ArrayList<userList>> userData = new ArrayList<>();
+        try {
+            Workbook workbook = Workbook.getWorkbook(new File(path));
+            int numOfSheets = workbook.getNumberOfSheets();
+            for(int i=0;i<numOfSheets;i++){
+                ArrayList<userList> currentList = readXlsPage(path,i);
+                userData.add(currentList);
+            }
+        } catch (IOException e) {
+            Log.i("bslc","bslc_BackupHandler_readXlsFile(): IOException ERROR: "+e.getMessage());
+        } catch (BiffException e) {
+            Log.i("bslc","bslc_BackupHandler_readXlsFile(): BiffException ERROR: "+e.getMessage());
+        }
+        return userData;
+    }
+
+    public static ArrayList<userList> readXlsPage(String path, int index){
         try{
             Workbook workbook = Workbook.getWorkbook(new File(path));
-            Sheet sheet = workbook.getSheet(0);
+            Sheet sheet = workbook.getSheet(index);
             //read title of userList
             String titleOfList = sheet.getName();
             //读取
@@ -132,39 +155,53 @@ public class BackupHandler {
                 boolean null_row = true;
                 for (int j = 0; j < Cols; j++) { //列
                     // getCell(Col,Row)获得单元格的值，注意getCell格式是先列后行，不是常见的先行后列
+                    userTag demoTag = demoList.getTag(j);
                     Cell currentCell = sheet.getCell(j,i);
+                    if(demoTag.isStr()){
+
+                        userTag currentTag = new userTag(demoTag.getTitle(),currentCell.getContents());
+                        currentUserList.addTag(demoTag.getTitle(),currentTag);
+                    }
+                    else if(demoTag.isDouble()){
+                        //NumberCell currentCell = (NumberCell) sheet.getCell(j,i);
+                        userTag currentTag = new userTag(demoTag.getTitle(),((NumberCell)currentCell).getValue());
+                        currentUserList.addTag(demoTag.getTitle(),currentTag);
+                    }
+                    else if(demoTag.isCalendar()){
+                        //DateCell currentCell = (DateCell) sheet.getCell(j,i);
+                        Date date = ((DateCell)currentCell).getDate();
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(date);
+                        userTag currentTag = new userTag(demoTag.getTitle(),calendar);
+                        currentUserList.addTag(demoTag.getTitle(),currentTag);
+                    }
+                    else{
+                        //Cell currentCell = sheet.getCell(j,i);
+                        String positionStr = currentCell.getContents();
+                        String[] positions = positionStr.split(",");
+                        double positionX = Double.parseDouble(positions[0]);
+                        double positionY = Double.parseDouble(positions[1]);
+                        Pair<Double,Double> pos = new Pair<>(positionX,positionY);
+                        userTag currentTag = new userTag(demoTag.getTitle(),pos);
+                        currentUserList.addTag(demoTag.getTitle(),currentTag);
+                    }
+
+
                     CellType type =  currentCell.getType();
                     Log.i("bslc", "bslc_BackupHandler_readxls():column="+j);
                     Log.i("bslc", "bslc_BackupHandler_readxls():cell content is "+currentCell.getContents() + "\t");
                     Log.i("blsc", "blsc_BackupHandler_readxls():cell type"+type);
-
-                    String val = (sheet.getCell(j, i)).getContents();
-                    if (val == null || val.equals("")) {
-                        val = "null";
-                    } else {
-                        null_row = false;
-                    }
-                    //objList.add(val);
                 }
-                Log.d(TAG, "\n");
-                if (null_row != true) {
-                    //dataList.add(objList);
-                    null_row = true;
-                }
+                userData.add(currentUserList);
                 //objList = new ArrayList<Object>();
             }
-            for(int j=0;j<Cols;j++){
-                Cell cell= sheet.getCell(2,j);
-                if(cell.getType() == CellType.NUMBER){
-                    NumberCell numberCell = (NumberCell) cell;
-                    double value =numberCell.getValue();
-                    Log.i("bslc", "bslc_BackupHandler_readxls():"+value);
-                }
-            }
             workbook.close();
+            return userData;
         } catch (Exception e){
             Log.i("bslc","bslc_BackupHandler_readxls():error:"+e.getMessage());
+            return null;
         }
+
     }
 
     public static List<List<Object>> read2007XLSX(String path) {
@@ -266,7 +303,7 @@ public class BackupHandler {
         return dataList;
     }
 
-    public static int writeExcel(String file_name, List<List<Object>> data_list) {
+    public static int writeExcel2003(String file_name, List<List<Object>> data_list) {
         try {
             WritableWorkbook book = Workbook.createWorkbook(new File(file_name));
             WritableSheet sheet1 = book.createSheet("sheet1", 0);
@@ -284,6 +321,11 @@ public class BackupHandler {
             return -1;
         }
         return 0;
+    }
+
+    public static boolean writeXlsFile(){
+
+        return true;
     }
 
 }

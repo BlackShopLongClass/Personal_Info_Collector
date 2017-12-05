@@ -42,7 +42,7 @@ public class listHandler extends AppCompatActivity{
         DBOperate DBO = new DBOperate();
         tableList = DBO.get_tableNames();
         Log.i("bslc","bslc_listHandler_listHandler():name="+name);
-        BackupHandler.readxls("/data/data/blackstorelongclass.personal_info_collector/lists.xls");
+        BackupHandler.readXlsFile("/data/data/blackstorelongclass.personal_info_collector/lists.xls");
     }
 
     /**
