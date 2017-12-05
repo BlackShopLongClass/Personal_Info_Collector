@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -67,6 +68,8 @@ public class Userspage extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         showFileChooser();
+        String x=Environment.getExternalStorageDirectory().getPath()+"/tencent/QQfile_recv/lists(1).xls";
+        BackupHandler.readXlsFile(x);
     }
 
     private void showFileChooser() {
@@ -79,7 +82,9 @@ public class Userspage extends AppCompatActivity implements View.OnClickListener
             // Potentially direct the user to the Market with a Dialog
             Toast.makeText(this, "Please install a File Manager.", Toast.LENGTH_SHORT).show();
         }
-        BackupHandler.readXlsFile(inputPath);
+        //String x="/"+Environment.getExternalStorageDirectory().getPath()+"/tencent/QQfile_recv/lists(1).xls";
+        //BackupHandler.readXlsFile(x);
+        //BackupHandler.readXlsFile(inputPath);
     }
 
 

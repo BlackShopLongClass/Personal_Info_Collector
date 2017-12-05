@@ -148,7 +148,7 @@ public class BackupHandler {
 
             //create ArraryList of userList
             ArrayList<userList> userData = new ArrayList<>();
-            for (int i = 1; i < Rows-1; i++) { //行
+            for (int i = 2; i < Rows-1; i++) { //行
                 Log.i("bslc", "bslc_BackupHandler_readxls():row="+i);
                 //创建新list项
                 userList currentUserList = new userList(titleOfList);
