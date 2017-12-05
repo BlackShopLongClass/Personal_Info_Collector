@@ -104,4 +104,14 @@ public class userList {
         }
         return 0;
     }
+
+    public Pair<Double,Double> getPosition(){
+        for(String item:titleOfTag){ //遍历每一个tag寻找时间类型
+            userTag tempTag = contentOfList.get(item);
+            if(tempTag.isPos()) {
+                return (Pair<Double,Double>)tempTag.Content;
+            }
+        }
+        return null;
+    }
 }

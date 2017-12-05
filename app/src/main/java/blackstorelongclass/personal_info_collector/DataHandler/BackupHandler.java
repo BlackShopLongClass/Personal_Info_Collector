@@ -28,9 +28,12 @@ import jxl.Sheet;
 import jxl.Workbook;
 import jxl.format.CellFormat;
 import jxl.read.biff.BiffException;
+import jxl.write.DateTime;
 import jxl.write.Label;
+import jxl.write.Number;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
+import jxl.write.WriteException;
 
 public class BackupHandler {
     private final static String TAG = "ExcelUtil";
@@ -102,6 +105,7 @@ public class BackupHandler {
                 ArrayList<userList> currentList = readXlsPage(path,i);
                 userData.add(currentList);
             }
+            workbook.close();
         } catch (IOException e) {
             Log.i("bslc","bslc_BackupHandler_readXlsFile(): IOException ERROR: "+e.getMessage());
         } catch (BiffException e) {
@@ -111,8 +115,14 @@ public class BackupHandler {
     }
 
     public static ArrayList<userList> readXlsPage(String path, int index){
+        Workbook workbook;
+        listHandler listhandler = new listHandler("name");
         try{
-            Workbook workbook = Workbook.getWorkbook(new File(path));
+            workbook = Workbook.getWorkbook(new File(path));
+        } catch (Exception e){
+            Log.i("bslc","bslc_BackupHandler_readxls():error:"+e.getMessage());
+            return null;
+        }
             Sheet sheet = workbook.getSheet(index);
             //read title of userList
             String titleOfList = sheet.getName();
@@ -145,31 +155,53 @@ public class BackupHandler {
                 Log.i("bslc","bslc_BackupHandler_readxls(): get Cell name "+ tagTitle + " type " + cellType);
                 demoList.addTag(tagTitle,currentTag);
             }
-
+            listhandler.addNewList(demoList);
             //create ArraryList of userList
             ArrayList<userList> userData = new ArrayList<>();
-            for (int i = 1; i < Rows-1; i++) { //行
+            for (int i = 2; i < Rows; i++) { //行
                 Log.i("bslc", "bslc_BackupHandler_readxls():row="+i);
                 //创建新list项
                 userList currentUserList = new userList(titleOfList);
                 boolean null_row = true;
-                for (int j = 0; j < Cols; j++) { //列
+                int j=0;
+                for (j = 0; j < Cols; j++) { //列
                     // getCell(Col,Row)获得单元格的值，注意getCell格式是先列后行，不是常见的先行后列
                     userTag demoTag = demoList.getTag(j);
                     Cell currentCell = sheet.getCell(j,i);
+                    if(currentCell.getType().equals(CellType.EMPTY)){
+                        break;
+                    }
                     if(demoTag.isStr()){
-
-                        userTag currentTag = new userTag(demoTag.getTitle(),currentCell.getContents());
+                        userTag currentTag;
+                        try {
+                            currentTag = new userTag(demoTag.getTitle(),currentCell.getContents());
+                        } catch (Exception e) {
+                            Log.i("bslc", "bslc_BackupHandler_readXlsPage(): demoTag isStr ERROR" + e.getMessage());
+                            break;
+                        }
                         currentUserList.addTag(demoTag.getTitle(),currentTag);
                     }
                     else if(demoTag.isDouble()){
                         //NumberCell currentCell = (NumberCell) sheet.getCell(j,i);
-                        userTag currentTag = new userTag(demoTag.getTitle(),((NumberCell)currentCell).getValue());
+                        userTag currentTag;
+                        try {
+                            currentTag = new userTag(demoTag.getTitle(),((NumberCell)currentCell).getValue());
+                        } catch (Exception e) {
+                            Log.i("bslc", "bslc_BackupHandler_readXlsPage(): demoTag isDouble ERROR" + e.getMessage());
+                            break;
+                        }
+
                         currentUserList.addTag(demoTag.getTitle(),currentTag);
                     }
                     else if(demoTag.isCalendar()){
                         //DateCell currentCell = (DateCell) sheet.getCell(j,i);
-                        Date date = ((DateCell)currentCell).getDate();
+                        Date date;
+                        try{
+                            date = ((DateCell)currentCell).getDate();
+                        }catch (Exception e){
+                            Log.i("bslc", "bslc_BackupHandler_readXlsPage(): demoTag isCalendar ERROR" + e.getMessage());
+                            break;
+                        }
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime(date);
                         userTag currentTag = new userTag(demoTag.getTitle(),calendar);
@@ -177,10 +209,16 @@ public class BackupHandler {
                     }
                     else{
                         //Cell currentCell = sheet.getCell(j,i);
-                        String positionStr = currentCell.getContents();
-                        String[] positions = positionStr.split(",");
-                        double positionX = Double.parseDouble(positions[0]);
-                        double positionY = Double.parseDouble(positions[1]);
+                        double positionX=0,positionY=0;
+                        try {
+                            String positionStr = currentCell.getContents();
+                            String[] positions = positionStr.split(",");
+                            positionX = Double.parseDouble(positions[0]);
+                            positionY = Double.parseDouble(positions[1]);
+                        }catch (Exception e){
+                            Log.i("bslc", "bslc_BackupHandler_readXlsPage(): demoTag isPos ERROR" + e.getMessage());
+                            break;
+                        }
                         Pair<Double,Double> pos = new Pair<>(positionX,positionY);
                         userTag currentTag = new userTag(demoTag.getTitle(),pos);
                         currentUserList.addTag(demoTag.getTitle(),currentTag);
@@ -192,16 +230,17 @@ public class BackupHandler {
                     Log.i("bslc", "bslc_BackupHandler_readxls():cell content is "+currentCell.getContents() + "\t");
                     Log.i("blsc", "blsc_BackupHandler_readxls():cell type"+type);
                 }
-                userData.add(currentUserList);
+                if(j==Cols) {
+                    userData.add(currentUserList);
+                    listhandler.addNewData(currentUserList);
+                }
+                else{
+                    continue;
+                }
                 //objList = new ArrayList<Object>();
             }
             workbook.close();
             return userData;
-        } catch (Exception e){
-            Log.i("bslc","bslc_BackupHandler_readxls():error:"+e.getMessage());
-            return null;
-        }
-
     }
 
     public static List<List<Object>> read2007XLSX(String path) {
@@ -323,8 +362,124 @@ public class BackupHandler {
         return 0;
     }
 
-    public static boolean writeXlsFile(){
+    public static boolean writeXlsFile(String Path){
+        listHandler listhandler = new listHandler("name");
+        ArrayList<String> tableList = listhandler.getTableList();
+        WritableWorkbook book;
+        try {
+            book = Workbook.createWorkbook(new File(Path));
+        } catch (IOException e) {
+            Log.i("bslc","bslc_BackupHandler_writeXlsFile():create book ERROR! "+ e.getMessage());
+            return false;
+        }
+        int indexOfSheet = 0;
+        for(String title:tableList){
+            ArrayList<userList> currentList = listhandler.getTableAllData(title);
+            userList demoList = listhandler.getDataType(title);
+            WritableSheet currentSheet = book.createSheet(demoList.getListTitle(),indexOfSheet);
+            ArrayList<String> tagList = demoList.getTitleList();
+            Log.i("bslc","bslc_BackupHandler_writeXlsFile(): start to write table name="
+                    + title + " indexOfColumn=0");
+            //write titles with types for a TABLE
+            int indexOfColumn = 0;
+            for(String tagName:tagList){
+                Label tagNameLabel = new Label(indexOfColumn,0,tagName);
+                userTag currentTag = demoList.getTag(tagName);
+                try {
+                    currentSheet.addCell(tagNameLabel);
+                } catch (WriteException e) {
+                    Log.i("bslc","bslc_BackupHandler_writeXlsFile():write cell ERROR! "+ e.getMessage());
+                }
 
+                String typeString;
+                if(currentTag.isCalendar())     typeString = "TIME";
+                else if(currentTag.isDouble())  typeString = "NUMBER";
+                else if(currentTag.isPos())     typeString = "POSITION";
+                else                            typeString = "STRING";
+                Label tagTypeLabel = new Label(indexOfColumn,1,typeString);
+                Log.i("bslc","bslc_BackupHandler_writeXlsFile(): current tag name ="
+                        + tagName +"tag type =" + typeString);
+
+                try {
+                    currentSheet.addCell(tagTypeLabel);
+                }catch (Exception e){
+                    Log.i("bslc","bslc_BackupHandler_writeXlsFile():write cell ERROR! "+ e.getMessage());
+                }
+
+                indexOfColumn++;
+            }
+
+            //write Data for TABLE
+            int indexOfRow = 2;
+            for(userList currentUL:currentList){
+                indexOfColumn = 0;
+                for(String tagName:tagList){
+                    userTag currentTag = currentUL.getTag(tagName);
+
+                    //judge cell type
+                    if(currentTag.isCalendar()){
+                        Date date = new Date((Long) currentTag.getObject());
+                        DateTime datetimeCell = new DateTime(indexOfColumn,indexOfRow,date);
+                        try {
+                            currentSheet.addCell(datetimeCell);
+                        }catch (Exception e){
+                            Log.i("bslc","bslc_BackupHandler_writeXlsFile():write cell ERROR! "+
+                                    "judged to calendar type: "+ e.getMessage());
+                        }
+                    }
+                    else if(currentTag.isDouble()){
+                        Number numberCell = new Number(indexOfColumn,indexOfRow
+                                                        ,(Double)currentTag.getObject()
+                        );
+                        try {
+                            currentSheet.addCell(numberCell);
+                        }catch (Exception e){
+                            Log.i("bslc","bslc_BackupHandler_writeXlsFile():write cell ERROR! "+
+                                    "judged to double type"+ e.getMessage());
+                        }
+                    }
+                    else if(currentTag.isPos()){
+                        Pair<Double,Double> position = (Pair<Double,Double>)currentTag.getObject();
+                        Label label = new Label(indexOfColumn,indexOfRow
+                                                ,position.first+","+position.second
+                        );
+                        try {
+                            currentSheet.addCell(label);
+                        }catch (Exception e){
+                            Log.i("bslc","bslc_BackupHandler_writeXlsFile():write cell ERROR! "+
+                                    "judged to position type"+ e.getMessage());
+                        }
+                    }
+                    else{
+                        Label label = new Label(indexOfColumn
+                                                ,indexOfRow
+                                                ,(String)currentTag.getObject()
+                        );
+                        try {
+                            currentSheet.addCell(label);
+                        }catch (Exception e){
+                            Log.i("bslc","bslc_BackupHandler_writeXlsFile():write cell ERROR! "+
+                                    "judged to String type"+ e.getMessage());
+                        }
+                    }
+                    indexOfColumn++;
+                }
+                indexOfRow++;
+            }
+            //end of writing a sheet
+            try {
+                book.write();
+            } catch (IOException e) {
+                Log.i("bslc","bslc_BackupHandler_writeXlsFile():write sheet ERROR! "+e.getMessage());
+            }
+            indexOfSheet++;
+        }
+        try {
+            book.close();
+        } catch (Exception e) {
+            Log.i("bslc","bslc_BackupHandler_writeXlsFile():close book ERROR! "+e.getMessage());
+            return false;
+        }
         return true;
     }
 
