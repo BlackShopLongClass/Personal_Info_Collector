@@ -141,7 +141,7 @@ public class DBOperate extends AppCompatActivity {
                 tag=tagName.elementAt(i);
                 if (tagType.charAt(i)=='1')
                 {
-                    content=(double)cursor.getInt(i+1);
+                    content=cursor.getDouble(i+1);
                 }
                 else if (tagType.charAt(i)=='2')
                 {
@@ -151,6 +151,11 @@ public class DBOperate extends AppCompatActivity {
                 else if (tagType.charAt(i)=='3')
                 {
                     content=(String)cursor.getString(i+1);
+                }
+                else if (tagType.charAt(i)=='4')   //经纬度分别为double
+                {
+                    content=cursor.getDouble(i+1);
+                    Log.i("bslc","bslc_DBOperate_get_specificItem():tagType=position;content="+content);
                 }
                 else
                 {
@@ -193,20 +198,25 @@ public class DBOperate extends AppCompatActivity {
                 String tag;
                 Object content;
                 tag=tagNames.elementAt(i);
-                if (tagType.charAt(i)=='1')
+                if (tagType.charAt(i)=='1')  //数字类型为double
                 {
                     content=cursor.getDouble(i+1);
                     Log.i("bslc","bslc_DBOperate_get_specifigItem():tagType=double;content="+content);
                 }
-                else if (tagType.charAt(i)=='2')
+                else if (tagType.charAt(i)=='2')   //时间类型为long
                 {
                     content=cursor.getLong(i+1);
                     Log.i("bslc","bslc_DBOperate_get_specifigItem():tagType=time;content="+content);
                 }
-                else if (tagType.charAt(i)=='3')
+                else if (tagType.charAt(i)=='3')  //文字类型为string
                 {
                     content=(String)cursor.getString(i+1);
                     Log.i("bslc","bslc_DBOperate_get_specificItem():tagType=string;content="+content);
+                }
+                else if (tagType.charAt(i)=='4')   //经纬度分别为double
+                {
+                    content=cursor.getDouble(i+1);
+                    Log.i("bslc","bslc_DBOperate_get_specificItem():tagType=position;content="+content);
                 }
                 else
                 {

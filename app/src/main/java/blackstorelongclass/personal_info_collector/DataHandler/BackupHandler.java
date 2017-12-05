@@ -136,7 +136,7 @@ public class BackupHandler {
                     CellType type =  currentCell.getType();
                     Log.i("bslc", "bslc_BackupHandler_readxls():column="+j);
                     Log.i("bslc", "bslc_BackupHandler_readxls():cell content is "+currentCell.getContents() + "\t");
-                    Log.i("blsc", "blsc_BackupHandler_readxls():cell type"+type);
+                    Log.i("bslc", "bslc_BackupHandler_readxls():cell type"+type);
 
                     String val = (sheet.getCell(j, i)).getContents();
                     if (val == null || val.equals("")) {
