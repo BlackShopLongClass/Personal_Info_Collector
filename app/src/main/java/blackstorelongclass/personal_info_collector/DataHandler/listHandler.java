@@ -303,6 +303,7 @@ public class listHandler extends AppCompatActivity{
      */
     public ArrayList<Pair<String,Pair<Double,Double>>> getPositionWithTitle(){
         DBOperate DBO = new DBOperate();
+
         ArrayList<Pair<String,Pair<Double,Double>>> resultList = new ArrayList<>();
         for(String title:tableList){
             Log.i("bslc","bslc_listHandler_getTimeWithTitle():fetch list from DB names +" + title);
@@ -370,5 +371,9 @@ public class listHandler extends AppCompatActivity{
      */
     public boolean deleteData(String listName, Calendar calendar){
 
+    }
+
+    public ArrayList<Pair<Pair<String,Long>,String>> getBridge(userList userlist){
+        return null;
     }
 }
