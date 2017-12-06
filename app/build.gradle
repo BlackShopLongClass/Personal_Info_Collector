@@ -27,8 +27,8 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    //    compile files('/Users/abc123one/Documents/JAVA/personalInfoCollector/Personal_Info_Collector/libs/jxl.jar')
-    compile files('F:/SEProject/Personal_Info_Collector/libs/jxl.jar')
+    compile files('/Users/abc123one/Documents/JAVA/personalInfoCollector/Personal_Info_Collector/libs/jxl.jar')
+    //compile files('F:/SEProject/Personal_Info_Collector/libs/jxl.jar')
     //compile files('/Users/xmh_mac/Documents/JAVA/Personal_Info_Collector/libs/jxl.jar')
     //compile files('/Users/xmh_mac/Documents/JAVA/Personal_Info_Collector/libs/commons-io-2.6.jar')
     compile 'com.android.support:appcompat-v7:26.+'
@@ -39,7 +39,9 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:11.0.4'
     testCompile 'junit:junit:4.12'
     //compile files('/Users/xmh_mac/Documents/JAVA/Personal_Info_Collector/libs/AMap2DMap_5.2.0_AMapSearch_5.5.0_AMapLocation_3.6.1_20171107.jar')
-    //compile files('/Users/abc123one/Documents/JAVA/personalInfoCollector/Personal_Info_Collector/libs/jxl.jar')
-    compile files('F:/SEProject/Personal_Info_Collector/libs/AMap2DMap_5.2.0_AMapSearch_5.5.0_AMapLocation_3.6.1_20171107.jar')
-    compile files('F:/SEProject/Personal_Info_Collector/libs/commons-io-2.6.jar')
+    compile files('/Users/abc123one/Documents/JAVA/personalInfoCollector/Personal_Info_Collector/libs/jxl.jar')
+    //compile files('F:/SEProject/Personal_Info_Collector/libs/AMap2DMap_5.2.0_AMapSearch_5.5.0_AMapLocation_3.6.1_20171107.jar')
+    //compile files('F:/SEProject/Personal_Info_Collector/libs/commons-io-2.6.jar')
+    compile files('/Users/abc123one/Documents/JAVA/personalInfoCollector/Personal_Info_Collector/libs/dropbox-core-sdk-3.0.5.jar')
+    compile files('/Users/abc123one/Documents/JAVA/personalInfoCollector/Personal_Info_Collector/libs/AMap2DMap_5.2.0_AMapSearch_5.5.0_AMapLocation_3.6.1_20171107.jar')
 }

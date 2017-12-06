@@ -125,6 +125,9 @@ public class listHandler extends AppCompatActivity{
         for(int i=0; i<List.getListSize();i++){
             userTag t = List.getTag(titleSet.get(i));
             if(i>0) sentence += ",";
+            if(t.isPos()){
+                sentence = sentence + t.getTitle()+"x," + t.getTitle()+"y";
+            }
             sentence += t.getTitle();
         }
         sentence += ") VALUES (";
@@ -136,6 +139,10 @@ public class listHandler extends AppCompatActivity{
                 sentence = sentence + ((Calendar)t.getObject()).getTimeInMillis();
             else if(t.isDouble())
                 sentence = sentence + (double)t.getObject();
+            else if(t.isPos()) {
+                Pair<Double,Double> position = (Pair<Double,Double>) t.getObject();
+                sentence = sentence + position.first + "," + position.second;
+            }
             else
                 sentence = sentence + "'" + (String)t.getObject() + "'";
         }
@@ -164,9 +171,11 @@ public class listHandler extends AppCompatActivity{
             switch (tagType.charAt(i)){
                 case '1': type = java.lang.Double.class;
                     break;
-                case '2': type = java.util.GregorianCalendar.class;
+                case '2': type = java.util.Calendar.class;
                     break;
                 case '3': type = java.lang.String.class;
+                    break;
+                case '4': type = android.util.Pair.class;
                     break;
             }
             userTag tag = new userTag(tableStr.get(i),type);
@@ -201,7 +210,7 @@ public class listHandler extends AppCompatActivity{
         DBOperate DBO = new DBOperate();
         ArrayList<String> titles = DBO.get_tagNames(table);
         String tagTypes = DBO.get_tagTypes(table);
-        Log.i("bslc","bslc_listHandler_getATableData():tagType="+tagTypes+"(1 for num;2 for date; 3 for word.)");
+        Log.i("bslc","bslc_listHandler_getATableData():tagType="+tagTypes+"(1 for num;2 for date; 3 for word; 4 for position)");
         String resultString = "";
         for(int i=0;i<titles.size();i++){
             if(tagTypes.charAt(i) == '2') {
@@ -304,5 +313,62 @@ public class listHandler extends AppCompatActivity{
             }
         }
         return resultList;
+    }
+
+    /**
+     * 编辑一个表单
+     * @param List
+     * 被编辑完成的表单所生成的userList
+     * @param calendar
+     * 编辑表单之前此表单的时间值,为Calendar
+     * @return
+     */
+    public boolean editData(userList List, Calendar calendar){
+        int number = List.getListSize();
+        ArrayList<String> titleSet = List.getTitleList();
+        String sentence = "UPDATE SET "+ List.getListTitle();
+        Log.i("bslc","bslc_listHandler_editData():sentence_before="+sentence);
+        String timeTagName="TIME";
+        for(int i=0; i<List.getListSize();i++){
+            userTag t = List.getTag(titleSet.get(i));
+            if(i>0) sentence += ",";
+
+            if(t.isPos()){
+                Pair<Double,Double> position = (Pair<Double,Double>)t.getObject();
+                sentence = sentence + t.getTitle()+"x=" + position.first +","
+                        + t.getTitle()+"y" + position.second;
+            }
+            else {
+                sentence += t.getTitle() + "=";
+
+                //if(t.isStr()) sentence = sentence + "'" + (String)t.getObject() + "'";
+                if (t.isCalendar()) {
+                    sentence = sentence + ((Calendar) t.getObject()).getTimeInMillis();
+                    timeTagName = t.getTitle();
+                }
+                else if (t.isDouble())
+                    sentence = sentence + (double) t.getObject();
+
+                else
+                    sentence = sentence + "'" + (String) t.getObject() + "'";
+            }
+        }
+
+        sentence += "WHERE" + timeTagName +"=" + calendar.getTimeInMillis();
+        Log.i("bslc","bslc_listHandler_editData():sentence_after="+sentence);
+        DBOperate DBO=new DBOperate();
+        return DBO.insert_newItem(sentence);
+    }
+
+    /**
+     * 删除表单中的一项内容
+     * @param listName
+     * 表单名称
+     * @param calendar
+     * 被删除的项的时间
+     * @return
+     */
+    public boolean deleteData(String listName, Calendar calendar){
+
     }
 }
