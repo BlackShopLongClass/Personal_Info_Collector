@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Pair;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,6 +25,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import com.amap.api.maps2d.model.LatLng;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -46,6 +49,8 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
     private Calendar calendardate,calendartime;
     private String topic;
     private boolean flag = true;
+    private String position;
+
 
     private void addViewItem(View view) {
         if (addView.getChildCount() == 0) {//如果一个都没有，就添加一个
@@ -141,6 +146,12 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 tagTopic.setText(taglist.getTitleList().get(i));
                 addView.addView(tagView);
             }
+            else if(taglist.getTag(taglist.getTitleList().get(i)).isPosition()){
+                LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.filllistitemposition, null);
+                TextView tagTopic = (TextView) tagView.findViewById(R.id.tagTopic);
+                tagTopic.setText(taglist.getTitleList().get(i));
+                addView.addView(tagView);
+            }
             else {
                 LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.filllistitem, null);
                 TextView tagTopic = (TextView) tagView.findViewById(R.id.tagTopic);
@@ -169,6 +180,10 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 break;}
                 else
                     dialog();
+
+            case R.id.positionbutton:
+                Intent intent = new Intent(this, MapsActivity.class);
+                startActivity(intent);
         }
     }
 
@@ -240,6 +255,19 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 View childAt = addView.getChildAt(i);
                 EditText taginput = (EditText) childAt.findViewById(R.id.taginput);
                 userTag us = new userTag((taglist.getTitleList().get(i)),taginput.getText().toString());
+                inputlist.addTag(taglist.getTitleList().get(i),us);
+            }
+            else if(taglist.getTag(taglist.getTitleList().get(i)).isPosition()){
+                View childAt = addView.getChildAt(i);
+
+                Intent intent2 = getIntent();
+                position = intent2.getStringExtra(MapsActivity.EXTRA_MESSAGE);
+                Long firststr = Long.parseLong(position.split(",")[0].substring(1));
+                Long secondstr = Long.parseLong(position.split(",")[1].substring(0,6));
+                Pair<Long,Long> p = new Pair<>(firststr,secondstr);
+
+                EditText taginput = (EditText) childAt.findViewById(R.id.taginput);
+                userTag us = new userTag((taglist.getTitleList().get(i)),p);
                 inputlist.addTag(taglist.getTitleList().get(i),us);
             }
         }

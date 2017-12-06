@@ -89,8 +89,7 @@ public class selecttofill extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if(v.getId()==R.id.createnewlist){
-//            Intent intent = new Intent(this,DynamicAddViewActivity.class);
-            Intent intent = new Intent(this,MapsActivity.class);
+            Intent intent = new Intent(this,DynamicAddViewActivity.class);
             startActivity(intent);
         }
         else {
