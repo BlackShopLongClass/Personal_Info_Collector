@@ -42,11 +42,11 @@ public class listHandler extends AppCompatActivity{
         DBOperate DBO = new DBOperate();
         tableList = DBO.get_tableNames();
         Log.i("bslc","bslc_listHandler_listHandler():name="+name);
-        BackupHandler.readxls("/data/data/blackstorelongclass.personal_info_collector/lists.xls");
+        //BackupHandler.readXlsFile("/data/data/blackstorelongclass.personal_info_collector/lists.xls");
     }
 
     /**
-     * 添加表单名称
+     * 向所有表单名称列表中添加表单名称
      * @param table
      * 表单名称
      * @return
@@ -79,6 +79,7 @@ public class listHandler extends AppCompatActivity{
      * 添加的成功与否
      */
     public boolean addNewList(userList List){
+        addTable(List.getListTitle());
         int number = List.getListSize();
         String sentence = "CREATE TABLE "+ List.getListTitle() + "(ID INTEGER PRIMARY KEY AUTOINCREMENT,";
         Log.i("bslc","bslc_listHandler_addNewList():sentence_before="+sentence);
@@ -124,6 +125,9 @@ public class listHandler extends AppCompatActivity{
         for(int i=0; i<List.getListSize();i++){
             userTag t = List.getTag(titleSet.get(i));
             if(i>0) sentence += ",";
+            if(t.isPos()){
+                sentence = sentence + t.getTitle()+"x," + t.getTitle()+"y";
+            }
             sentence += t.getTitle();
         }
         sentence += ") VALUES (";
@@ -135,6 +139,10 @@ public class listHandler extends AppCompatActivity{
                 sentence = sentence + ((Calendar)t.getObject()).getTimeInMillis();
             else if(t.isDouble())
                 sentence = sentence + (double)t.getObject();
+            else if(t.isPos()) {
+                Pair<Double,Double> position = (Pair<Double,Double>) t.getObject();
+                sentence = sentence + position.first + "," + position.second;
+            }
             else
                 sentence = sentence + "'" + (String)t.getObject() + "'";
         }
@@ -163,9 +171,11 @@ public class listHandler extends AppCompatActivity{
             switch (tagType.charAt(i)){
                 case '1': type = java.lang.Double.class;
                     break;
-                case '2': type = java.util.GregorianCalendar.class;
+                case '2': type = java.util.Calendar.class;
                     break;
                 case '3': type = java.lang.String.class;
+                    break;
+                case '4': type = android.util.Pair.class;
                     break;
             }
             userTag tag = new userTag(tableStr.get(i),type);
@@ -174,6 +184,14 @@ public class listHandler extends AppCompatActivity{
         return u;
     }
 
+    /**
+     * 获取一个表单的所有数据
+     * @param table
+     * 表单名称
+     * @return
+     * userList的ArraryList
+     * 注意,返回的时间为Long类型,单位为毫秒,转换为calendar时使用setTimeInMills()方法.
+     */
     public ArrayList<userList> getTableAllData(String table){
         DBOperate DBO= new DBOperate();
         return DBO.get_allItems(table);
@@ -192,7 +210,7 @@ public class listHandler extends AppCompatActivity{
         DBOperate DBO = new DBOperate();
         ArrayList<String> titles = DBO.get_tagNames(table);
         String tagTypes = DBO.get_tagTypes(table);
-        Log.i("bslc","bslc_listHandler_getATableData():tagType="+tagTypes+"(1 for num;2 for date; 3 for word.)");
+        Log.i("bslc","bslc_listHandler_getATableData():tagType="+tagTypes+"(1 for num;2 for date; 3 for word; 4 for position)");
         String resultString = "";
         for(int i=0;i<titles.size();i++){
             if(tagTypes.charAt(i) == '2') {
@@ -222,7 +240,13 @@ public class listHandler extends AppCompatActivity{
         return arr.size()==0 ? true : false;
     }
 
-
+    /**
+     * 将字符串类型的时间转换为Unix时间戳
+     * @param timeStr
+     * @return
+     * Long型时间戳
+     * @throws ParseException
+     */
     public long timeStr2Long(String timeStr) throws ParseException {
         SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date= sdf.parse(timeStr);
@@ -269,5 +293,82 @@ public class listHandler extends AppCompatActivity{
             }
         }
         return resultList;
+    }
+
+    /**
+     * 获得用户所有表单所有项的<标题,地理位置>
+     * @return
+     * ArrayList<Pair<String,Pair<Double,Double>>>
+     * 列表<<标题,<坐标x,坐标y>>
+     */
+    public ArrayList<Pair<String,Pair<Double,Double>>> getPositionWithTitle(){
+        DBOperate DBO = new DBOperate();
+        ArrayList<Pair<String,Pair<Double,Double>>> resultList = new ArrayList<>();
+        for(String title:tableList){
+            Log.i("bslc","bslc_listHandler_getTimeWithTitle():fetch list from DB names +" + title);
+            ArrayList<userList> currentList = DBO.get_allItems(title);
+            for(userList u:currentList){
+                Pair<String,Pair<Double,Double>> dataSet = new Pair<>(title,u.getPosition());
+                resultList.add(dataSet);
+            }
+        }
+        return resultList;
+    }
+
+    /**
+     * 编辑一个表单
+     * @param List
+     * 被编辑完成的表单所生成的userList
+     * @param calendar
+     * 编辑表单之前此表单的时间值,为Calendar
+     * @return
+     */
+    public boolean editData(userList List, Calendar calendar){
+        int number = List.getListSize();
+        ArrayList<String> titleSet = List.getTitleList();
+        String sentence = "UPDATE SET "+ List.getListTitle();
+        Log.i("bslc","bslc_listHandler_editData():sentence_before="+sentence);
+        String timeTagName="TIME";
+        for(int i=0; i<List.getListSize();i++){
+            userTag t = List.getTag(titleSet.get(i));
+            if(i>0) sentence += ",";
+
+            if(t.isPos()){
+                Pair<Double,Double> position = (Pair<Double,Double>)t.getObject();
+                sentence = sentence + t.getTitle()+"x=" + position.first +","
+                        + t.getTitle()+"y" + position.second;
+            }
+            else {
+                sentence += t.getTitle() + "=";
+
+                //if(t.isStr()) sentence = sentence + "'" + (String)t.getObject() + "'";
+                if (t.isCalendar()) {
+                    sentence = sentence + ((Calendar) t.getObject()).getTimeInMillis();
+                    timeTagName = t.getTitle();
+                }
+                else if (t.isDouble())
+                    sentence = sentence + (double) t.getObject();
+
+                else
+                    sentence = sentence + "'" + (String) t.getObject() + "'";
+            }
+        }
+
+        sentence += "WHERE" + timeTagName +"=" + calendar.getTimeInMillis();
+        Log.i("bslc","bslc_listHandler_editData():sentence_after="+sentence);
+        DBOperate DBO=new DBOperate();
+        return DBO.insert_newItem(sentence);
+    }
+
+    /**
+     * 删除表单中的一项内容
+     * @param listName
+     * 表单名称
+     * @param calendar
+     * 被删除的项的时间
+     * @return
+     */
+    public boolean deleteData(String listName, Calendar calendar){
+
     }
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -17,11 +18,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import org.apache.commons.io.FileUtils;
+
+
 
 import java.net.URISyntaxException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import blackstorelongclass.personal_info_collector.DataHandler.BackupHandler;
 
 public class Userspage extends AppCompatActivity implements View.OnClickListener {
 
@@ -64,6 +68,8 @@ public class Userspage extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         showFileChooser();
+        String x=Environment.getExternalStorageDirectory().getPath()+"/tencent/QQfile_recv/lists(1).xls";
+        BackupHandler.readXlsFile(x);
     }
 
     private void showFileChooser() {
@@ -76,7 +82,9 @@ public class Userspage extends AppCompatActivity implements View.OnClickListener
             // Potentially direct the user to the Market with a Dialog
             Toast.makeText(this, "Please install a File Manager.", Toast.LENGTH_SHORT).show();
         }
-
+        //String x="/"+Environment.getExternalStorageDirectory().getPath()+"/tencent/QQfile_recv/lists(1).xls";
+        //BackupHandler.readXlsFile(x);
+        //BackupHandler.readXlsFile(inputPath);
     }
 
 
