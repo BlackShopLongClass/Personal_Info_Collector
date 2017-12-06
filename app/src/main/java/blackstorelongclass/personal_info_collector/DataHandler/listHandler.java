@@ -42,11 +42,11 @@ public class listHandler extends AppCompatActivity{
         DBOperate DBO = new DBOperate();
         tableList = DBO.get_tableNames();
         Log.i("bslc","bslc_listHandler_listHandler():name="+name);
-        BackupHandler.readxls("/data/data/blackstorelongclass.personal_info_collector/lists.xls");
+        //BackupHandler.readXlsFile("/data/data/blackstorelongclass.personal_info_collector/lists.xls");
     }
 
     /**
-     * 添加表单名称
+     * 向所有表单名称列表中添加表单名称
      * @param table
      * 表单名称
      * @return
@@ -79,6 +79,7 @@ public class listHandler extends AppCompatActivity{
      * 添加的成功与否
      */
     public boolean addNewList(userList List){
+        addTable(List.getListTitle());
         int number = List.getListSize();
         String sentence = "CREATE TABLE "+ List.getListTitle() + "(ID INTEGER PRIMARY KEY AUTOINCREMENT,";
         Log.i("bslc","bslc_listHandler_addNewList():sentence_before="+sentence);
@@ -174,6 +175,14 @@ public class listHandler extends AppCompatActivity{
         return u;
     }
 
+    /**
+     * 获取一个表单的所有数据
+     * @param table
+     * 表单名称
+     * @return
+     * userList的ArraryList
+     * 注意,返回的时间为Long类型,单位为毫秒,转换为calendar时使用setTimeInMills()方法.
+     */
     public ArrayList<userList> getTableAllData(String table){
         DBOperate DBO= new DBOperate();
         return DBO.get_allItems(table);
@@ -222,7 +231,13 @@ public class listHandler extends AppCompatActivity{
         return arr.size()==0 ? true : false;
     }
 
-
+    /**
+     * 将字符串类型的时间转换为Unix时间戳
+     * @param timeStr
+     * @return
+     * Long型时间戳
+     * @throws ParseException
+     */
     public long timeStr2Long(String timeStr) throws ParseException {
         SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date= sdf.parse(timeStr);
@@ -266,6 +281,26 @@ public class listHandler extends AppCompatActivity{
                 Log.i("bslc","bslc_listHandler_getTimeWithTitle():1 stack empty,"+(numOfTable-1)+" remains");
                 if(allTableArrary.isEmpty())
                     break;
+            }
+        }
+        return resultList;
+    }
+
+    /**
+     * 获得用户所有表单所有项的<标题,地理位置>
+     * @return
+     * ArrayList<Pair<String,Pair<Double,Double>>>
+     * 列表<<标题,<坐标x,坐标y>>
+     */
+    public ArrayList<Pair<String,Pair<Double,Double>>> getPositionWithTitle(){
+        DBOperate DBO = new DBOperate();
+        ArrayList<Pair<String,Pair<Double,Double>>> resultList = new ArrayList<>();
+        for(String title:tableList){
+            Log.i("bslc","bslc_listHandler_getTimeWithTitle():fetch list from DB names +" + title);
+            ArrayList<userList> currentList = DBO.get_allItems(title);
+            for(userList u:currentList){
+                Pair<String,Pair<Double,Double>> dataSet = new Pair<>(title,u.getPosition());
+                resultList.add(dataSet);
             }
         }
         return resultList;

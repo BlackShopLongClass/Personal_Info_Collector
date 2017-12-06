@@ -91,4 +91,13 @@ public class userTag {
         if(C == java.lang.String.class) return true;
         else return false;
     }
+
+    /**
+     * 是否为地点类型
+     * @return bool
+     */
+    public boolean isPos(){
+        if(C == android.util.Pair.class) return true;
+        else return false;
+    }
 }

@@ -1,6 +1,7 @@
 package blackstorelongclass.personal_info_collector.listMonitor;
 
 import android.content.Intent;
+import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
@@ -66,6 +67,22 @@ public class userList {
         return contentOfList.get(title);
     }
 
+    /**
+     * 通过Tag的index获取一个标签
+     * @param index
+     * Tag的索引值
+     * @return
+     * userTag内容,如果索引超出范围,则返回null!!
+     */
+    public userTag getTag(int index) {
+        int size = titleOfTag.size();
+        if(index>=size) {
+            Log.i("bslc", "bslc_userList_getTag():index out of bound! index=" + index + " bound="+size);
+            return null;
+        }
+        return contentOfList.get(titleOfTag.get(index));
+    }
+
     public ArrayList<String> getTitleList(){
         return titleOfTag;
     }
@@ -86,5 +103,15 @@ public class userList {
             }
         }
         return 0;
+    }
+
+    public Pair<Double,Double> getPosition(){
+        for(String item:titleOfTag){ //遍历每一个tag寻找时间类型
+            userTag tempTag = contentOfList.get(item);
+            if(tempTag.isPos()) {
+                return (Pair<Double,Double>)tempTag.Content;
+            }
+        }
+        return null;
     }
 }
