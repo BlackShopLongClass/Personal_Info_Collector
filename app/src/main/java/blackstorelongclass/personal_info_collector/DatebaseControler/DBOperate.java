@@ -45,6 +45,23 @@ public class DBOperate extends AppCompatActivity {
         Log.i("bslc","bslc_DBOperate_create_newTable(): create success!");
         return true;
     }
+    public boolean delete_Table(String listName) {//删除表单时检查联系表中的项，存在也进行删除
+        String SQL_tableDROP="DROP TABLE "+listName+";";
+        try{
+            this.db.execSQL(SQL_tableDROP);
+        }catch(Exception e) {
+            Log.i("bslc","bslc_DBOperate_delete_Table(): delete fail!");
+            e.printStackTrace();
+        }
+        String SQL_deleteConfig="DELETE FROM Config WHERE listName='"+listName+"';";
+        try{
+            this.db.execSQL(SQL_deleteConfig);
+        }catch(Exception e) {
+            Log.i("bslc","bslc_DBOperate_delete_Table(): delete fail!");
+            e.printStackTrace();
+        }
+        return true;
+    }
     public boolean insert_newItem(String SQL_insert) {
         try{
             this.db.execSQL(SQL_insert);
@@ -55,6 +72,27 @@ public class DBOperate extends AppCompatActivity {
         Log.i("bslc","bslc_DBOperate_insert_newItem(): insert success!");
         return true;
     }
+    public boolean delete_item(String SQL_delete) {
+        try{
+            this.db.execSQL(SQL_delete);
+        }catch(Exception e){
+            Log.i("bslc","bslc_DBOperate_delete_Item(): delete fail!");
+            e.printStackTrace();
+        }
+        Log.i("bslc","bslc_DBOperate_delete_Item(): delete success!");
+        return true;
+    }
+    public boolean update_item(String SQL_update) {
+        try{
+            this.db.execSQL(SQL_update);
+        }catch(Exception e){
+            Log.i("bslc","bslc_DBOperate_update_Item(): update fail!");
+            e.printStackTrace();
+        }
+        Log.i("bslc","bslc_DBOperate_update_Item(): update success!");
+        return true;
+    }
+
     public ArrayList<String> get_tableNames() {
         ArrayList<String> tableNames=new ArrayList<String>();
         Cursor cursor;
@@ -282,5 +320,46 @@ public class DBOperate extends AppCompatActivity {
         }
         return true;
     }
-
+    public Pair<String,Pair<Long,String>> link_rightSearch(String list1Name,long item1Time) {
+        String SQL_search="SELECT * FROM Link WHERE list1Name='"+list1Name+"' AND item1Time="+item1Time+";";
+        Cursor cursor;
+        cursor=this.db.rawQuery(SQL_search,null);
+        cursor.moveToNext();
+        String list2Name,tagName;
+        long item2Time;
+        list2Name=cursor.getString(3);
+        item2Time=cursor.getLong(4);
+        tagName=cursor.getString(5);
+        Pair<Long,String> temp=new Pair<>(item2Time,tagName);
+        Pair<String,Pair<Long,String>> rightItem=new Pair<>(list2Name,temp);
+        return rightItem;
+    }
+    public ArrayList<Pair<String,Pair<Long,String>>> link_leftSearch(String list2Name,long item2Time) {
+        String SQL_search="SELECT * FROM Link WHERE list2Name='"+list2Name+"' AND item2Time="+item2Time+";";
+        Cursor cursor;
+        cursor=this.db.rawQuery(SQL_search,null);
+        ArrayList<Pair<String,Pair<Long,String>>> leftItems=new ArrayList<>();
+        while (cursor.moveToNext()) {
+            String list1Name;
+            long item1Time;
+            String tagName;
+            list1Name=cursor.getString(1);
+            item1Time=cursor.getLong(2);
+            tagName=cursor.getString(5);
+            Pair<Long,String> temp=new Pair<>(item1Time,tagName);
+            Pair<String,Pair<Long,String>> temp1=new Pair<>(list1Name,temp);
+            leftItems.add(temp1);
+        }
+        return leftItems;
+    }
+    public boolean link_delete(String list1Name,long item1Time,String list2Name,long item2Time,String tagName) {
+        String SQL_delete="DELETE FROM Link WHERE list1Name ='"+list1Name+"' AND item1Time="+item1Time+" AND list2Name='"+list2Name
+                +"' AND item2Time="+item2Time+" AND tagName='"+tagName+"';";
+        try{
+            this.db.execSQL(SQL_delete);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return true;
+    }
 }
