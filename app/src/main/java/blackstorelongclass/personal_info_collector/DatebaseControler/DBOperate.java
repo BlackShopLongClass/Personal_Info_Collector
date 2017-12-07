@@ -104,7 +104,9 @@ public class DBOperate extends AppCompatActivity {
             if (i>2) {
                 String tableName = cursor.getString(cursor.getColumnIndex("name"));
                 if(tableName.equals("sqlite_sequence"))
-                    continue;;
+                    continue;
+                if (tableName.equals("android_metadata"))
+                    continue;
                 tableNames.add(tableName);
             }
         }

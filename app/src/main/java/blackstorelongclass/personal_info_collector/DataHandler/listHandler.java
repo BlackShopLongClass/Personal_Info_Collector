@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -80,7 +81,10 @@ public class listHandler extends AppCompatActivity{
      * 添加的成功与否
      */
     public boolean addNewList(userList List){
-        BackupHandler.writeXlsFile("/data/data/blackstorelongclass.personal_info_collector/export");
+        String file=Environment.getExternalStorageDirectory()+"/Download/export.xls";
+        //"/data/data/blackstorelongclass.personal_info_collector/export"
+        BackupHandler.writeXlsFile(file);
+        //BackupHandler.readXlsFile("/data/data/blackstorelongclass.personal_info_collector/export.xls");
         addTable(List.getListTitle());
         int number = List.getListSize();
         String sentence = "CREATE TABLE "+ List.getListTitle() + "(ID INTEGER PRIMARY KEY AUTOINCREMENT,";
@@ -381,26 +385,13 @@ public class listHandler extends AppCompatActivity{
         return DBO.delete_item(sql);
     }
 
-    /**
-     * 获得一个数据的所有关联项
-     * @param userlist
-     * 一个表单内的单独数据
-     * @return
-     * 返回<<表单名称,时间>,tag名称>
-     *     其中表单名称为被连接的数据的表单名称,时间为被连接的表单的一个数据项的时间,tag名称为被连接的tag名称.
-     */
+
     public Pair<Pair<String,Long>,String> getBridge(String title, Long time){
         DBOperate DBO = new DBOperate();
         return DBO.link_rightSearch(title,time);
     }
 
-    /**
-     * 获得一个数据所有被关联的项
-     * @param userlist 一个表单内的单独数据
-     * @return
-     * 返回<表单名称,时间>
-     *     其中表单名称为主动连接的数据表单名称,时间为主动连接的数据项的时间
-     */
+
     public ArrayList<Pair<Pair<String,Long>,String>> getBeBridged(String title, Long time){
         DBOperate DBO = new DBOperate();
         return DBO.link_leftSearch(title,time);
