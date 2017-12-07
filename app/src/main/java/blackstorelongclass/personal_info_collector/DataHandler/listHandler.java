@@ -68,7 +68,7 @@ public class listHandler extends AppCompatActivity{
     }
 
     public String getUserName(){
-        BackupHandler.writeXlsFile("/data/data/backstorelongclass.personal_info_collector/export.xls");
+
         return name;
     }
 
@@ -80,6 +80,7 @@ public class listHandler extends AppCompatActivity{
      * 添加的成功与否
      */
     public boolean addNewList(userList List){
+        BackupHandler.writeXlsFile("/data/data/backstorelongclass.personal_info_collector/export.xls");
         addTable(List.getListTitle());
         int number = List.getListSize();
         String sentence = "CREATE TABLE "+ List.getListTitle() + "(ID INTEGER PRIMARY KEY AUTOINCREMENT,";
