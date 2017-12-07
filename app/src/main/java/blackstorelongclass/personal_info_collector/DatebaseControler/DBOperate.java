@@ -320,7 +320,7 @@ public class DBOperate extends AppCompatActivity {
         }
         return true;
     }
-    public Pair<String,Pair<Long,String>> link_rightSearch(String list1Name,long item1Time) {
+    public Pair<Pair<String,Long>,String> link_rightSearch(String list1Name,long item1Time) {
         String SQL_search="SELECT * FROM Link WHERE list1Name='"+list1Name+"' AND item1Time="+item1Time+";";
         Cursor cursor;
         cursor=this.db.rawQuery(SQL_search,null);
@@ -331,10 +331,10 @@ public class DBOperate extends AppCompatActivity {
         item2Time=cursor.getLong(4);
         tagName=cursor.getString(5);
         Pair<Long,String> temp=new Pair<>(item2Time,tagName);
-        Pair<String,Pair<Long,String>> rightItem=new Pair<>(list2Name,temp);
+        Pair<Pair<String,Long>,String> rightItem=new Pair<>(list2Name,temp);
         return rightItem;
     }
-    public ArrayList<Pair<String,Pair<Long,String>>> link_leftSearch(String list2Name,long item2Time) {
+    public ArrayList<Pair<Pair<String,Long>,String>> link_leftSearch(String list2Name,long item2Time) {
         String SQL_search="SELECT * FROM Link WHERE list2Name='"+list2Name+"' AND item2Time="+item2Time+";";
         Cursor cursor;
         cursor=this.db.rawQuery(SQL_search,null);
