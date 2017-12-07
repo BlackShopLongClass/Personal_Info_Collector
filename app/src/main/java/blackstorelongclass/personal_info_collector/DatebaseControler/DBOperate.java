@@ -324,31 +324,45 @@ public class DBOperate extends AppCompatActivity {
         String SQL_search="SELECT * FROM Link WHERE list1Name='"+list1Name+"' AND item1Time="+item1Time+";";
         Cursor cursor;
         cursor=this.db.rawQuery(SQL_search,null);
-        cursor.moveToNext();
-        String list2Name,tagName;
-        long item2Time;
-        list2Name=cursor.getString(3);
-        item2Time=cursor.getLong(4);
-        tagName=cursor.getString(5);
-        Pair<Long,String> temp=new Pair<>(item2Time,tagName);
-        Pair<Pair<String,Long>,String> rightItem=new Pair<>(list2Name,temp);
-        return rightItem;
+        if (cursor.moveToNext())
+        {
+            return null;
+        }
+        else
+        {
+            String list2Name,tagName;
+            long item2Time;
+            list2Name=cursor.getString(3);
+            item2Time=cursor.getLong(4);
+            tagName=cursor.getString(5);
+            Pair<String,Long> temp=new Pair<>(list2Name,item2Time);
+            Pair<Pair<String,Long>,String> rightItem=new Pair<>(temp,tagName);
+            return rightItem;
+        }
+
     }
     public ArrayList<Pair<Pair<String,Long>,String>> link_leftSearch(String list2Name,long item2Time) {
         String SQL_search="SELECT * FROM Link WHERE list2Name='"+list2Name+"' AND item2Time="+item2Time+";";
         Cursor cursor;
         cursor=this.db.rawQuery(SQL_search,null);
-        ArrayList<Pair<String,Pair<Long,String>>> leftItems=new ArrayList<>();
-        while (cursor.moveToNext()) {
-            String list1Name;
-            long item1Time;
-            String tagName;
-            list1Name=cursor.getString(1);
-            item1Time=cursor.getLong(2);
-            tagName=cursor.getString(5);
-            Pair<Long,String> temp=new Pair<>(item1Time,tagName);
-            Pair<String,Pair<Long,String>> temp1=new Pair<>(list1Name,temp);
-            leftItems.add(temp1);
+        ArrayList<Pair<Pair<String,Long>,String>> leftItems=new ArrayList<>();
+        if (cursor.moveToNext())
+        {
+            do{
+                String list1Name;
+                long item1Time;
+                String tagName;
+                list1Name=cursor.getString(1);
+                item1Time=cursor.getLong(2);
+                tagName=cursor.getString(5);
+                Pair<String,Long> temp=new Pair<>(list1Name,item1Time);
+                Pair<Pair<String,Long>,String> temp1=new Pair<>(temp,tagName);
+                leftItems.add(temp1);
+            }while(cursor.moveToNext());
+        }
+        else
+        {
+            return null;
         }
         return leftItems;
     }
