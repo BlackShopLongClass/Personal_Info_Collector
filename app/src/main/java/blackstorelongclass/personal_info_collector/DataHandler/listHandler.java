@@ -43,7 +43,6 @@ public class listHandler extends AppCompatActivity{
         tableList = DBO.get_tableNames();
         Log.i("bslc","bslc_listHandler_listHandler():name="+name);
         //BackupHandler.readXlsFile("/data/data/blackstorelongclass.personal_info_collector/lists.xls");
-        BackupHandler.writeXlsFile("/data/data/backstorelongclass.personal_info_collector/export.xls");
     }
 
     /**
@@ -69,6 +68,7 @@ public class listHandler extends AppCompatActivity{
     }
 
     public String getUserName(){
+        BackupHandler.writeXlsFile("/data/data/backstorelongclass.personal_info_collector/export.xls");
         return name;
     }
 
