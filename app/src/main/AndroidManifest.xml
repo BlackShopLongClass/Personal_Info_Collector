@@ -95,7 +95,23 @@
             android:name="com.amap.api.v2.apikey"
             android:value="568f76ca338e2cd80c31c7b4d7fb2086" />
 
-        <activity android:name=".MapShowPage"></activity>
+        <activity android:name=".MapShowPage" />
+        <activity
+            android:name=".editList"
+            android:label="@string/title_activity_edit_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".searchactivity"
+            android:label="search"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".searchresult"
+            android:label="@string/title_activity_searchresult"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".firstchoose"
+            android:label="@string/title_activity_firstchoose"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -19,12 +19,14 @@ import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class detailsoftopic extends AppCompatActivity {
+public class detailsoftopic extends AppCompatActivity implements View.OnClickListener {
 
 
     public final static String EXTRA_MESSAGE = "blackstorelongclass.personal_info_collector.MESSAGE";
     private LinearLayout addView;
     private userList us;
+    private String dateStr;
+    private String listname;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -53,7 +55,7 @@ public class detailsoftopic extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        String listname = intent.getStringExtra(topicsofonelist.EXTRA_MESSAGE);
+        listname = intent.getStringExtra(topicsofonelist.EXTRA_MESSAGE);
 
         String table,time;
         table = listname.split(",")[0];
@@ -86,15 +88,24 @@ public class detailsoftopic extends AppCompatActivity {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis((long)(us.getTag(topic).getObject()));
                         //(Calendar) (us.getTag(topic).getObject());
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒");
-                String dateStr = sdf.format(calendar.getTime());
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+                dateStr = sdf.format(calendar.getTime());
                 tagcontent.setText(dateStr);
             }
             addView.addView(tagView);
             addView.requestLayout();
         }
 
+        findViewById(R.id.edit).setOnClickListener(this);
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(this, editList.class);
+        intent.putExtra(EXTRA_MESSAGE, listname);
+        startActivity(intent);
     }
 }

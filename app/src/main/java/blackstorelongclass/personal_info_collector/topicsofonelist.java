@@ -64,7 +64,12 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
         listHandler hd = new listHandler("whatever");
         Intent intent = getIntent();
         listname = intent.getStringExtra(selecttofill.EXTRA_MESSAGE);
-        if(listname==null) listname = intent.getStringExtra(fillList.EXTRA_MESSAGE);
+        if(listname==null) {
+            listname = intent.getStringExtra(fillList.EXTRA_MESSAGE);
+            if(listname==null) {
+                listname = intent.getStringExtra(editList.EXTRA_MESSAGE);
+            }
+        }
         list = hd.getTableAllData(listname);
 
         if(list != null) {
@@ -83,6 +88,11 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
                 Button bn = tagView.findViewById(R.id.detailoftopic);
                 bn.setTag(str);
                 bn.setOnClickListener(this);
+
+                Button deletebn = tagView.findViewById(R.id.delete);
+                deletebn.setTag(str);
+                deletebn.setOnClickListener(this);
+
                 String h,m,month,date;
                 if(calendar.get(Calendar.HOUR_OF_DAY)<10) h = "0"+calendar.get(Calendar.HOUR_OF_DAY);
                 else h=""+calendar.get(Calendar.HOUR_OF_DAY);
@@ -120,12 +130,22 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
             intent.putExtra(EXTRA_MESSAGE, listname);
             startActivity(intent);
         }
-        else {
+        else if(v.getId()==R.id.detailoftopic) {
             String tString = (String)v.getTag();
             tString = tString + ":00";
             String gettopic = listname+ "," + tString;
             Intent intent = new Intent(this, detailsoftopic.class);
             intent.putExtra(EXTRA_MESSAGE, gettopic);
+            startActivity(intent);
+        }
+        else if(v.getId()==R.id.delete) {
+            String tString = (String)v.getTag();
+            tString = tString + ":00";
+            String gettopic = listname+ "," + tString;
+
+            //添加删除函数
+
+            Intent intent = new Intent(this, selecttofill.class);
             startActivity(intent);
         }
     }

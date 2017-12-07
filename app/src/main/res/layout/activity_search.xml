@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -11,7 +10,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/selecttofill">
+        android:id="@+id/search">
 
 
         <RelativeLayout
@@ -43,43 +42,52 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="20dp"
-                            android:layout_marginRight="30dp"
+                            android:layout_marginRight="50dp"
                             android:text="Select A List"
                             android:textAlignment="viewStart"
                             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                             android:textSize="24sp"
                             android:textStyle="bold"
                             android:typeface="sans" />
-
-                        <Button
-                            android:id="@+id/searchdata"
-                            style="@style/Widget.AppCompat.Button.Borderless"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="50dp"
-                            android:text="s"
-                            android:textSize="30sp" />
-
-                        <Button
-                            android:id="@+id/createnewlist"
-                            style="@style/Widget.AppCompat.Button.Borderless"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="0dp"
-                            android:text="+"
-                            android:textSize="30sp" />
                     </LinearLayout>
                 </android.support.v7.widget.Toolbar>
 
             </android.support.design.widget.AppBarLayout>
 
             <LinearLayout
-                android:id="@+id/sf_addView"
+                android:id="@+id/searchlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/toolbarlayout"
                 android:padding="10dp"
-                android:orientation="vertical" />
+                android:orientation="horizontal" >
+                <Spinner
+                    android:id="@+id/type_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:entries="@array/items" />
+
+                <EditText
+                    android:id="@+id/sc_input"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"
+                    android:padding="5dp" />
+
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/searchlayout"
+                android:layout_marginRight="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="3"
+                android:text="提交" />
 
         </RelativeLayout>
     </ScrollView>

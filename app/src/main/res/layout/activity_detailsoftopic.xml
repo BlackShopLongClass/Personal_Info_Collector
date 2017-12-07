@@ -73,6 +73,17 @@
                 android:layout_below="@+id/listTopic"
                 android:orientation="vertical" />
 
+            <Button
+                android:id="@+id/edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dt_addView"
+                android:layout_marginRight="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="3"
+                android:text="修改数据" />
+
 
         </RelativeLayout>
     </ScrollView>

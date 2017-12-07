@@ -82,6 +82,9 @@ public class selecttofill extends AppCompatActivity implements View.OnClickListe
         Button createnewlistbutton = (Button) findViewById(R.id.createnewlist);
         createnewlistbutton.setOnClickListener(this);
 
+        Button searchbutton = (Button) findViewById(R.id.searchdata);
+        searchbutton.setOnClickListener(this);
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
@@ -90,6 +93,10 @@ public class selecttofill extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if(v.getId()==R.id.createnewlist){
             Intent intent = new Intent(this,DynamicAddViewActivity.class);
+            startActivity(intent);
+        }
+        else if(v.getId()==R.id.searchdata){
+            Intent intent = new Intent(this, searchactivity.class);
             startActivity(intent);
         }
         else {

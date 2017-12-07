@@ -107,4 +107,8 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_edit_list">editList</string>
+    <string name="title_activity_search">search</string>
+    <string name="title_activity_searchresult">searchresult</string>
+    <string name="title_activity_firstchoose">firstchoose</string>
 </resources>

@@ -25,7 +25,7 @@ import blackstorelongclass.personal_info_collector.DataHandler.listHandler;
 
 public class MapShowPage extends AppCompatActivity {
 
-    ArrayList<Pair> pairList = new ArrayList<Pair>();
+    ArrayList<Pair<String,Pair<Double,Double>>> pairList = new ArrayList<Pair<String,Pair<Double,Double>>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class MapShowPage extends AppCompatActivity {
 //        pairList.add(p2);
 
 
-        for(Pair<String,Pair<Long,Long>> p : pairList){
+        for(Pair<String,Pair<Double,Double>> p : pairList){
             LatLng latLng = new LatLng(p.second.first,p.second.second);
             final Marker marker = aMap.addMarker(new MarkerOptions().position(latLng).title(p.first));
         }

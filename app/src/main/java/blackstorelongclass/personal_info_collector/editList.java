@@ -37,7 +37,7 @@ import java.util.Calendar;
 import blackstorelongclass.personal_info_collector.DataHandler.listHandler;
 import blackstorelongclass.personal_info_collector.listMonitor.*;
 
-public class fillList extends AppCompatActivity implements View.OnClickListener {
+public class editList extends AppCompatActivity implements View.OnClickListener {
 
     public final static String EXTRA_MESSAGE = "blackstorelongclass.personal_info_collector.MESSAGE";
     private String TAG = this.getClass().getSimpleName();
@@ -48,8 +48,10 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
     private userList taglist;
     private Calendar calendardate,calendartime;
     private String topic;
+    private String listname;
     private boolean flag = true;
     private String position;
+    private String table;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -73,10 +75,8 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fill_list);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-        addView = (LinearLayout) findViewById(R.id.fl_addView);
+        setContentView(R.layout.activity_edit_list);
+        addView = (LinearLayout) findViewById(R.id.el_addView);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -84,15 +84,27 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
         Calendar calendartest = Calendar.getInstance();
 
         Intent intent = getIntent();
-        topic = intent.getStringExtra(topicsofonelist.EXTRA_MESSAGE);
+        listname = intent.getStringExtra(detailsoftopic.EXTRA_MESSAGE);
+
+        String time;
+        table = listname.split(",")[0];
+        time = listname.split(",")[1];
+        topic = table;
+
+        listHandler hd = new listHandler("whatever");
+        userList us = null;
+        try {
+            taglist = hd.getATableData(table,time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         userTag tag;
         TextView listTopic = (TextView) findViewById(R.id.listTopic);
 //        listTopic.setText(taglist.getListTitle());
-        listTopic.setText(topic);
+        listTopic.setText(table);
 
-        listHandler hd = new listHandler("whatever");
-        taglist = hd.getDataType(topic);
+
         for(int i=0;i<taglist.getListSize();i++) {
             if (taglist.getTag(taglist.getTitleList().get(i)).isCalendar()) {
                 LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.filllistitemtime, null);
@@ -101,6 +113,13 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 addView.addView(tagView);
 
                 dateEditText = tagView.findViewById(R.id.taginputdate);
+                Calendar calendar = Calendar.getInstance();
+                topic = taglist.getTitleList().get(i);
+                calendar.setTimeInMillis((long)(taglist.getTag(topic).getObject()));
+                //(Calendar) (us.getTag(topic).getObject());
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String dateStr = sdf.format(calendar.getTime());
+                dateEditText.setText(dateStr);
                 dateEditText.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
@@ -113,6 +132,9 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 });
 
                 timeEditText = tagView.findViewById(R.id.taginputtime);
+                SimpleDateFormat sdf1 = new SimpleDateFormat("HH:MM");
+                String timeStr = sdf1.format(calendar.getTime());
+                timeEditText.setText(timeStr);
                 timeEditText.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
@@ -128,6 +150,9 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.filllistitem, null);
                 TextView tagTopic = (TextView) tagView.findViewById(R.id.tagTopic);
                 tagTopic.setText(taglist.getTitleList().get(i));
+                EditText text = (EditText)tagView.findViewById(R.id.taginput);
+                topic = taglist.getTitleList().get(i);
+                text.setText((String)taglist.getTag(topic).getObject());
                 addView.addView(tagView);
             }
 //            else if(taglist.getTag(taglist.getTitleList().get(i)).isPosition()){
@@ -140,6 +165,9 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.filllistitem, null);
                 TextView tagTopic = (TextView) tagView.findViewById(R.id.tagTopic);
                 tagTopic.setText(taglist.getTitleList().get(i));
+                EditText text = (EditText)findViewById(R.id.taginput);
+                topic = taglist.getTitleList().get(i);
+                text.setText((String)taglist.getTag(topic).getObject().toString());
                 EditText editText = (EditText)tagView.findViewById(R.id.taginput);
                 editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 addView.addView(tagView);
@@ -157,11 +185,11 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
 
                 flag = true;
                 if(flag == true){
-                getData();
-                Intent intent = new Intent(this, topicsofonelist.class);
-                intent.putExtra(EXTRA_MESSAGE, topic);
-                startActivity(intent);
-                break;}
+                    getData();
+                    Intent intent = new Intent(this, topicsofonelist.class);
+                    intent.putExtra(EXTRA_MESSAGE, table);
+                    startActivity(intent);
+                    break;}
                 else
                     dialog();
 
@@ -172,12 +200,12 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
     }
 
     protected void showDatePickDlg() {
-       calendardate = Calendar.getInstance();
-        DatePickerDialog datePickerDialog = new DatePickerDialog(fillList.this, new DatePickerDialog.OnDateSetListener() {
+        calendardate = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(editList.this, new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                fillList.this.dateEditText.setText(year + "-" + ++monthOfYear + "-" + dayOfMonth);
+                editList.this.dateEditText.setText(year + "-" + ++monthOfYear + "-" + dayOfMonth);
             }
         }, calendardate.get(Calendar.YEAR), calendardate.get(Calendar.MONTH), calendardate.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
@@ -186,11 +214,11 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
 
     protected void showTimePickDlg() {
         calendartime = Calendar.getInstance();
-        TimePickerDialog timePickerDialog = new TimePickerDialog(fillList.this, new TimePickerDialog.OnTimeSetListener() {
+        TimePickerDialog timePickerDialog = new TimePickerDialog(editList.this, new TimePickerDialog.OnTimeSetListener() {
 
             @Override
             public void onTimeSet(TimePicker view, int hour, int munite) {
-                fillList.this.timeEditText.setText(hour + ":" + munite);
+                editList.this.timeEditText.setText(hour + ":" + munite);
             }
         }, calendartime.get(Calendar.HOUR), calendartime.get(Calendar.MINUTE),true);
         timePickerDialog.show();
