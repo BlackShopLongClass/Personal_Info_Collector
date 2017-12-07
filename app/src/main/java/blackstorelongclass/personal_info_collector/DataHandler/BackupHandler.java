@@ -481,12 +481,13 @@ public class BackupHandler {
                 indexOfRow++;
             }
             //end of writing a sheet
-            try {
-                book.write();
-            } catch (IOException e) {
-                Log.i("bslc","bslc_BackupHandler_writeXlsFile():write sheet ERROR! "+e.getMessage());
-            }
+
             indexOfSheet++;
+        }
+        try {
+            book.write();
+        } catch (IOException e) {
+            Log.i("bslc","bslc_BackupHandler_writeXlsFile():write sheet ERROR! "+e.getMessage());
         }
         try {
             book.close();
