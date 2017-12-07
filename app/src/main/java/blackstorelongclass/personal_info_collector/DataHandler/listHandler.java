@@ -370,10 +370,67 @@ public class listHandler extends AppCompatActivity{
      * @return
      */
     public boolean deleteData(String listName, Calendar calendar){
+        long time = calendar.getTimeInMillis();
+        userList demoList = getDataType(listName);
+        userTag timeTag = demoList.getTimeTag();
+        String sql = "DELETE FROM " + listName + " WHERE " + timeTag.getTitle() + "=" + time;
+        deleteBridgeNode(listName,calendar.getTimeInMillis());
+        DBOperate DBO = new DBOperate();
+        return DBO.deleteFile(sql);
+    }
+
+    /**
+     * 获得一个数据的所有关联项
+     * @param userlist
+     * 一个表单内的单独数据
+     * @return
+     * 返回<<表单名称,时间>,tag名称>
+     *     其中表单名称为被连接的数据的表单名称,时间为被连接的表单的一个数据项的时间,tag名称为被连接的tag名称.
+     */
+    public Pair<Pair<String,Long>,String> getBridge(userList userlist){
+        return null;
+    }
+
+    /**
+     * 获得一个数据所有被关联的项
+     * @param userlist 一个表单内的单独数据
+     * @return
+     * 返回<表单名称,时间>
+     *     其中表单名称为主动连接的数据表单名称,时间为主动连接的数据项的时间
+     */
+    public ArrayList<Pair<Pair<String,Long>,String>> getBeBridged(userList userlist){
 
     }
 
-    public ArrayList<Pair<Pair<String,Long>,String>> getBridge(userList userlist){
-        return null;
+    /**
+     * 将一个数据项与另一个数据项中的一个Tag进行关联
+     * @param list1
+     * 主动连接的表单名称
+     * @param time1
+     * 主动连接的数据项的时间,作为唯一标记
+     * @param list2
+     * 被连接的表单名称
+     * @param time2
+     * 被连接的数据项的时间,作为唯一标记
+     * @param tagName
+     * 被连接的数据项的Tag名称
+     * @return 返回添加成功与否.
+     */
+    public boolean addBridge(String list1, long time1, String list2, long time2, String tagName){
+
+    }
+
+    public boolean deleteBridge(String list1, long time1, String list2, long time2, String tagName){
+
+    }
+
+    public void deleteBridgeNode(String title, Long time){
+        Pair<Pair<String,Long>,String> outBridge = getBridge(userlist);
+        if(outBridge != null)
+            deleteBridge(userlist.getListTitle(),userlist.getTime(),outBridge.first.first,outBridge.first.second,outBridge.second);
+        ArrayList<Pair<Pair<String,Long>,String>> inBridgeList = getBeBridged(userlist);
+        for(Pair<Pair<String,Long>,String> inBridge:inBridgeList){
+            deleteBridge(inBridge.first.first,inBridge.first.second,userlist.getListTitle(),userlist.getTime(),inBridge.second);
+        }
     }
 }
