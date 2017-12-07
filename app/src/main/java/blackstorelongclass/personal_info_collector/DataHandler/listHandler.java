@@ -80,7 +80,7 @@ public class listHandler extends AppCompatActivity{
      * 添加的成功与否
      */
     public boolean addNewList(userList List){
-        BackupHandler.writeXlsFile("/data/data/blackstorelongclass.personal_info_collector/export.xls");
+        BackupHandler.writeXlsFile("/data/data/blackstorelongclass.personal_info_collector/export");
         addTable(List.getListTitle());
         int number = List.getListSize();
         String sentence = "CREATE TABLE "+ List.getListTitle() + "(ID INTEGER PRIMARY KEY AUTOINCREMENT,";
