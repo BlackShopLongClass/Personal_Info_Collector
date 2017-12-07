@@ -3,6 +3,7 @@ package blackstorelongclass.personal_info_collector.DatebaseControler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -32,8 +33,9 @@ public class DBHelper extends SQLiteOpenHelper {
         //创建数据表
         String SQL_createConfig="CREATE TABLE Config(ID INTEGER PRIMARY KEY AUTOINCREMENT, listName TEXT, tagType TEXT);";
         db.execSQL(SQL_createConfig);
-        String SQL_creatLink="CREAT TABLE Link(ID INTEGER PRIMARY KEY AUTOINCREMENT, list1Name TEXT, item1Time REAL, list2Name TEXT, item2Time REAL, tagName TEXT);";
+        String SQL_creatLink="CREATE TABLE Link(ID INTEGER PRIMARY KEY AUTOINCREMENT, list1Name TEXT, item1Time REAL, list2Name TEXT, item2Time REAL, tagName TEXT);";
         db.execSQL(SQL_creatLink);
+
     }
 
     @Override
