@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.Pair;
 
 import blackstorelongclass.personal_info_collector.listMonitor.*;
 
@@ -44,6 +45,23 @@ public class DBOperate extends AppCompatActivity {
         Log.i("bslc","bslc_DBOperate_create_newTable(): create success!");
         return true;
     }
+    public boolean delete_Table(String listName) {//删除表单时检查联系表中的项，存在也进行删除
+        String SQL_tableDROP="DROP TABLE "+listName+";";
+        try{
+            this.db.execSQL(SQL_tableDROP);
+        }catch(Exception e) {
+            Log.i("bslc","bslc_DBOperate_delete_Table(): delete fail!");
+            e.printStackTrace();
+        }
+        String SQL_deleteConfig="DELETE FROM Config WHERE listName='"+listName+"';";
+        try{
+            this.db.execSQL(SQL_deleteConfig);
+        }catch(Exception e) {
+            Log.i("bslc","bslc_DBOperate_delete_Table(): delete fail!");
+            e.printStackTrace();
+        }
+        return true;
+    }
     public boolean insert_newItem(String SQL_insert) {
         try{
             this.db.execSQL(SQL_insert);
@@ -54,6 +72,27 @@ public class DBOperate extends AppCompatActivity {
         Log.i("bslc","bslc_DBOperate_insert_newItem(): insert success!");
         return true;
     }
+    public boolean delete_item(String SQL_delete) {
+        try{
+            this.db.execSQL(SQL_delete);
+        }catch(Exception e){
+            Log.i("bslc","bslc_DBOperate_delete_Item(): delete fail!");
+            e.printStackTrace();
+        }
+        Log.i("bslc","bslc_DBOperate_delete_Item(): delete success!");
+        return true;
+    }
+    public boolean update_item(String SQL_update) {
+        try{
+            this.db.execSQL(SQL_update);
+        }catch(Exception e){
+            Log.i("bslc","bslc_DBOperate_update_Item(): update fail!");
+            e.printStackTrace();
+        }
+        Log.i("bslc","bslc_DBOperate_update_Item(): update success!");
+        return true;
+    }
+
     public ArrayList<String> get_tableNames() {
         ArrayList<String> tableNames=new ArrayList<String>();
         Cursor cursor;
@@ -76,13 +115,23 @@ public class DBOperate extends AppCompatActivity {
     public ArrayList<String> get_tagNames(String listName) {
         //String SQL_getTagName="pragma table_info("+listName+");";
         String SQL_getTagName="SELECT * FROM "+listName+";";
+        String tagTypes=get_tagTypes(listName);
         Cursor cursor;
         cursor=this.db.rawQuery(SQL_getTagName,null);
         ArrayList<String> tagNames=new ArrayList<String>();
         int i=0;
+        int count=0; //用于计数经纬度
         cursor.moveToNext();
         for (i=1;i<cursor.getColumnCount();i++) {
             String currentTagName = cursor.getColumnName(i);
+            if (tagTypes.charAt(i-1)=='4'&&count==0){
+                count++;
+                break;
+            }
+            else if (tagTypes.charAt(i-1)=='4')
+            {
+                currentTagName=currentTagName.substring(0,currentTagName.length()-1);
+            }
             Log.i("bslc","bslc_DBOperate_get_tagNames():currentTagName="+currentTagName);
             tagNames.add(currentTagName);
         }
@@ -134,6 +183,7 @@ public class DBOperate extends AppCompatActivity {
         cursor=this.db.rawQuery(SQL_getItems,null);
         while (cursor.moveToNext()) {
             userList temp1=new userList(listName);
+            double x=0,y=0;
             for (i=0;i<size;i++) {
                 String tag;
                 Object content;
@@ -141,7 +191,7 @@ public class DBOperate extends AppCompatActivity {
                 tag=tagName.elementAt(i);
                 if (tagType.charAt(i)=='1')
                 {
-                    content=(double)cursor.getInt(i+1);
+                    content=cursor.getDouble(i+1);
                 }
                 else if (tagType.charAt(i)=='2')
                 {
@@ -151,6 +201,25 @@ public class DBOperate extends AppCompatActivity {
                 else if (tagType.charAt(i)=='3')
                 {
                     content=(String)cursor.getString(i+1);
+                }
+                else if (tagType.charAt(i)=='4')   //经纬度分别为double
+                {
+                    if (tag.charAt(tag.length()-1)=='x')
+                    {
+                        x=cursor.getDouble(i+1);
+                        break;
+                    }
+                    else
+                    {
+                        y=cursor.getDouble(i+1);
+                        Pair<Double,Double> position=new Pair<>(x,y);
+                        content=position;
+                        tag=tag.substring(0,tag.length()-1);
+                        temp2=new userTag(tag,content);
+                        temp1.addTag(tag,temp2);
+                        Log.i("bslc","bslc_DBOperate_get_allItems():tagType=position;content="+content);
+                        break;
+                    }
                 }
                 else
                 {
@@ -188,25 +257,45 @@ public class DBOperate extends AppCompatActivity {
         //cursor.moveToNext();
         specificItem=new userList(listName);
         while (cursor.moveToNext()) {
+            double x=0,y=0;
             for (i=0;i<size;i++) {
                 userTag temp;
                 String tag;
                 Object content;
                 tag=tagNames.elementAt(i);
-                if (tagType.charAt(i)=='1')
+                if (tagType.charAt(i)=='1')  //数字类型为double
                 {
                     content=cursor.getDouble(i+1);
                     Log.i("bslc","bslc_DBOperate_get_specifigItem():tagType=double;content="+content);
                 }
-                else if (tagType.charAt(i)=='2')
+                else if (tagType.charAt(i)=='2')   //时间类型为long
                 {
                     content=cursor.getLong(i+1);
                     Log.i("bslc","bslc_DBOperate_get_specifigItem():tagType=time;content="+content);
                 }
-                else if (tagType.charAt(i)=='3')
+                else if (tagType.charAt(i)=='3')  //文字类型为string
                 {
                     content=(String)cursor.getString(i+1);
                     Log.i("bslc","bslc_DBOperate_get_specificItem():tagType=string;content="+content);
+                }
+                else if (tagType.charAt(i)=='4')   //经纬度分别为double
+                {
+                    if (tag.charAt(tag.length()-1)=='x')
+                    {
+                        x=cursor.getDouble(i+1);
+                        break;
+                    }
+                    else
+                    {
+                        y=cursor.getDouble(i+1);
+                        Pair<Double,Double> position=new Pair<>(x,y);
+                        content=position;
+                        tag=tag.substring(0,tag.length()-1);
+                        temp=new userTag(tag,content);
+                        specificItem.addTag(tag,temp);
+                        Log.i("bslc","bslc_DBOperate_get_specificItem():tagType=position;content="+content);
+                        break;
+                    }
                 }
                 else
                 {
@@ -220,5 +309,71 @@ public class DBOperate extends AppCompatActivity {
         cursor.close();
         Log.i("bslc","bslc_DBOperate_get_specificItem():finish!");
         return specificItem;
+    }
+    public boolean linkItemWithItemTag(String list1Name,double item1Time,String list2Name,double item2Time,String tagName){
+        String SQL_insert="INSERT INTO Link (list1Name,item1Time,list2Name,item2Time,tagName) VALUES ('"+list1Name+"', "+item1Time+", '"+
+                list2Name+"', "+item2Time+", '"+tagName+"' );";
+        try{
+            this.db.execSQL(SQL_insert);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return true;
+    }
+    public Pair<Pair<String,Long>,String> link_rightSearch(String list1Name,long item1Time) {
+        String SQL_search="SELECT * FROM Link WHERE list1Name='"+list1Name+"' AND item1Time="+item1Time+";";
+        Cursor cursor;
+        cursor=this.db.rawQuery(SQL_search,null);
+        if (cursor.moveToNext())
+        {
+            return null;
+        }
+        else
+        {
+            String list2Name,tagName;
+            long item2Time;
+            list2Name=cursor.getString(3);
+            item2Time=cursor.getLong(4);
+            tagName=cursor.getString(5);
+            Pair<String,Long> temp=new Pair<>(list2Name,item2Time);
+            Pair<Pair<String,Long>,String> rightItem=new Pair<>(temp,tagName);
+            return rightItem;
+        }
+
+    }
+    public ArrayList<Pair<Pair<String,Long>,String>> link_leftSearch(String list2Name,long item2Time) {
+        String SQL_search="SELECT * FROM Link WHERE list2Name='"+list2Name+"' AND item2Time="+item2Time+";";
+        Cursor cursor;
+        cursor=this.db.rawQuery(SQL_search,null);
+        ArrayList<Pair<Pair<String,Long>,String>> leftItems=new ArrayList<>();
+        if (cursor.moveToNext())
+        {
+            do{
+                String list1Name;
+                long item1Time;
+                String tagName;
+                list1Name=cursor.getString(1);
+                item1Time=cursor.getLong(2);
+                tagName=cursor.getString(5);
+                Pair<String,Long> temp=new Pair<>(list1Name,item1Time);
+                Pair<Pair<String,Long>,String> temp1=new Pair<>(temp,tagName);
+                leftItems.add(temp1);
+            }while(cursor.moveToNext());
+        }
+        else
+        {
+            return null;
+        }
+        return leftItems;
+    }
+    public boolean link_delete(String list1Name,long item1Time,String list2Name,long item2Time,String tagName) {
+        String SQL_delete="DELETE FROM Link WHERE list1Name ='"+list1Name+"' AND item1Time="+item1Time+" AND list2Name='"+list2Name
+                +"' AND item2Time="+item2Time+" AND tagName='"+tagName+"';";
+        try{
+            this.db.execSQL(SQL_delete);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return true;
     }
 }

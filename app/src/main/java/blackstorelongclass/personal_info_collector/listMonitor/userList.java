@@ -105,6 +105,16 @@ public class userList {
         return 0;
     }
 
+    public userTag getTimeTag(){
+        for(String item:titleOfTag){ //遍历每一个tag寻找时间类型
+            userTag tempTag = contentOfList.get(item);
+            if(tempTag.isCalendar()) {
+                return tempTag;
+            }
+        }
+        return null;
+    }
+
     public Pair<Double,Double> getPosition(){
         for(String item:titleOfTag){ //遍历每一个tag寻找时间类型
             userTag tempTag = contentOfList.get(item);

@@ -303,6 +303,7 @@ public class listHandler extends AppCompatActivity{
      */
     public ArrayList<Pair<String,Pair<Double,Double>>> getPositionWithTitle(){
         DBOperate DBO = new DBOperate();
+
         ArrayList<Pair<String,Pair<Double,Double>>> resultList = new ArrayList<>();
         for(String title:tableList){
             Log.i("bslc","bslc_listHandler_getTimeWithTitle():fetch list from DB names +" + title);
@@ -357,7 +358,7 @@ public class listHandler extends AppCompatActivity{
         sentence += "WHERE" + timeTagName +"=" + calendar.getTimeInMillis();
         Log.i("bslc","bslc_listHandler_editData():sentence_after="+sentence);
         DBOperate DBO=new DBOperate();
-        return DBO.insert_newItem(sentence);
+        return DBO.update_item(sentence);
     }
 
     /**
@@ -368,7 +369,78 @@ public class listHandler extends AppCompatActivity{
      * 被删除的项的时间
      * @return
      */
-//    public boolean deleteData(String listName, Calendar calendar){
-//
-//    }
+
+    public boolean deleteData(String listName, Calendar calendar){
+        long time = calendar.getTimeInMillis();
+        userList demoList = getDataType(listName);
+        userTag timeTag = demoList.getTimeTag();
+        String sql = "DELETE FROM " + listName + " WHERE " + timeTag.getTitle() + "=" + time;
+        deleteBridgeNode(listName,calendar.getTimeInMillis());
+        DBOperate DBO = new DBOperate();
+        return DBO.delete_item(sql);
+    }
+
+    /**
+     * 获得一个数据的所有关联项
+     * @param userlist
+     * 一个表单内的单独数据
+     * @return
+     * 返回<<表单名称,时间>,tag名称>
+     *     其中表单名称为被连接的数据的表单名称,时间为被连接的表单的一个数据项的时间,tag名称为被连接的tag名称.
+     */
+    public Pair<Pair<String,Long>,String> getBridge(String title, Long time){
+        DBOperate DBO = new DBOperate();
+        return DBO.link_rightSearch(title,time);
+    }
+
+    /**
+     * 获得一个数据所有被关联的项
+     * @param userlist 一个表单内的单独数据
+     * @return
+     * 返回<表单名称,时间>
+     *     其中表单名称为主动连接的数据表单名称,时间为主动连接的数据项的时间
+     */
+    public ArrayList<Pair<Pair<String,Long>,String>> getBeBridged(String title, Long time){
+        DBOperate DBO = new DBOperate();
+        return DBO.link_leftSearch(title,time);
+    }
+
+    /**
+     * 将一个数据项与另一个数据项中的一个Tag进行关联
+     * @param list1
+     * 主动连接的表单名称
+     * @param time1
+     * 主动连接的数据项的时间,作为唯一标记
+     * @param list2
+     * 被连接的表单名称
+     * @param time2
+     * 被连接的数据项的时间,作为唯一标记
+     * @param tagName
+     * 被连接的数据项的Tag名称
+     * @return 返回添加成功与否.
+     */
+    public boolean addBridge(String list1, long time1, String list2, long time2, String tagName){
+        DBOperate DBO = new DBOperate();
+        return DBO.linkItemWithItemTag(list1,time1,list2,time2,tagName);
+    }
+
+    public boolean deleteBridge(String list1, long time1, String list2, long time2, String tagName){
+        DBOperate DBO = new DBOperate();
+        return DBO.link_delete(list1,time1,list2,time2,tagName);
+    }
+
+    public void deleteBridgeNode(String title, Long time){
+        Pair<Pair<String,Long>,String> outBridge = getBridge(title,time);
+        if(outBridge != null)
+            deleteBridge(title,time,outBridge.first.first,outBridge.first.second,outBridge.second);
+        ArrayList<Pair<Pair<String,Long>,String>> inBridgeList = getBeBridged(title,time);
+        for(Pair<Pair<String,Long>,String> inBridge:inBridgeList){
+            deleteBridge(inBridge.first.first,inBridge.first.second,title,time,inBridge.second);
+        }
+    }
+
+    public boolean deleteList(String title){
+        DBOperate DBO = new DBOperate();
+        return DBO.delete_Table(title);
+    }
 }
