@@ -367,7 +367,10 @@ public class BackupHandler {
         ArrayList<String> tableList = listhandler.getTableList();
         WritableWorkbook book;
         try {
-            book = Workbook.createWorkbook(new File(Path));
+            File file = new File(Path);
+            if(!file.exists())
+                file.createNewFile();
+            book = Workbook.createWorkbook(file);
         } catch (IOException e) {
             Log.i("bslc","bslc_BackupHandler_writeXlsFile():create book ERROR! "+ e.getMessage());
             return false;
