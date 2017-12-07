@@ -368,12 +368,22 @@ public class BackupHandler {
         WritableWorkbook book;
         try {
             File file = new File(Path);
-            if(!file.exists())
-                file.createNewFile();
+
             book = Workbook.createWorkbook(file);
+
+
         } catch (IOException e) {
             Log.i("bslc","bslc_BackupHandler_writeXlsFile():create book ERROR! "+ e.getMessage());
             return false;
+        }
+        try {
+            String command = "chmod 777 " + Path;
+            Log.i("bslc", "bslc_BackupHandler_writeXlsFile():command = " + command);
+            Runtime runtime = Runtime.getRuntime();
+            Process proc = runtime.exec(command);
+        } catch (IOException e) {
+            Log.i("bslc", "bslc_BackupHandler_writeXlsFile():error chmod 777");
+            e.printStackTrace();
         }
         int indexOfSheet = 0;
         for(String title:tableList){
