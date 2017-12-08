@@ -200,24 +200,24 @@ public class DBOperate extends AppCompatActivity {
                 {
                     userList temp1=new userList(listsContainStrType.get(i));
                     double x=0,y=0;
-                    for (i=0;i<size;i++) {
+                    for (k=0;k<size;k++) {
                         String tag;
                         Object content;
                         userTag temp2;
-                        tag = tagName.elementAt(i);
-                        if (tagType.charAt(i) == '1') {
-                            content = cursor.getDouble(i + 1);
-                        } else if (tagType.charAt(i) == '2') {
-                            content = cursor.getLong(i + 1);
-                        } else if (tagType.charAt(i) == '3') {
-                            content = (String) cursor.getString(i + 1);
-                        } else if (tagType.charAt(i) == '4')   //经纬度分别为double
+                        tag = tagName.elementAt(k);
+                        if (tagType.charAt(k) == '1') {
+                            content = cursor.getDouble(k + 1);
+                        } else if (tagType.charAt(k) == '2') {
+                            content = cursor.getLong(k + 1);
+                        } else if (tagType.charAt(k) == '3') {
+                            content = (String) cursor.getString(k + 1);
+                        } else if (tagType.charAt(k) == '4')   //经纬度分别为double
                         {
                             if (tag.charAt(tag.length() - 1) == 'x') {
-                                x = cursor.getDouble(i + 1);
+                                x = cursor.getDouble(k + 1);
                                 break;
                             } else {
-                                y = cursor.getDouble(i + 1);
+                                y = cursor.getDouble(k + 1);
                                 Pair<Double, Double> position = new Pair<>(x, y);
                                 content = position;
                                 tag = tag.substring(0, tag.length() - 1);
@@ -287,24 +287,24 @@ public class DBOperate extends AppCompatActivity {
                 {
                     userList temp1=new userList(listsContainNumType.get(i));
                     double x=0,y=0;
-                    for (i=0;i<size;i++) {
+                    for (k=0;k<size;k++) {
                         String tag;
                         Object content;
                         userTag temp2;
-                        tag = tagName.elementAt(i);
-                        if (tagType.charAt(i) == '1') {
-                            content = cursor.getDouble(i + 1);
-                        } else if (tagType.charAt(i) == '2') {
-                            content = cursor.getLong(i + 1);
-                        } else if (tagType.charAt(i) == '3') {
-                            content = (String) cursor.getString(i + 1);
-                        } else if (tagType.charAt(i) == '4')   //经纬度分别为double
+                        tag = tagName.elementAt(k);
+                        if (tagType.charAt(k) == '1') {
+                            content = cursor.getDouble(k + 1);
+                        } else if (tagType.charAt(k) == '2') {
+                            content = cursor.getLong(k + 1);
+                        } else if (tagType.charAt(k) == '3') {
+                            content = (String) cursor.getString(k + 1);
+                        } else if (tagType.charAt(k) == '4')   //经纬度分别为double
                         {
                             if (tag.charAt(tag.length() - 1) == 'x') {
-                                x = cursor.getDouble(i + 1);
+                                x = cursor.getDouble(k + 1);
                                 break;
                             } else {
-                                y = cursor.getDouble(i + 1);
+                                y = cursor.getDouble(k + 1);
                                 Pair<Double, Double> position = new Pair<>(x, y);
                                 content = position;
                                 tag = tag.substring(0, tag.length() - 1);
