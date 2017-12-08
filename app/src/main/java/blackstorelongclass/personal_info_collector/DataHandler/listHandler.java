@@ -375,12 +375,17 @@ public class listHandler extends AppCompatActivity{
      * 被删除的项的时间
      * @return
      */
-    public boolean deleteData(String listName, Calendar calendar){
-        long time = calendar.getTimeInMillis();
+    public boolean deleteData(String listName, String timeString){
+        long time = 0;
+        try {
+            time = timeStr2Long(timeString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         userList demoList = getDataType(listName);
         userTag timeTag = demoList.getTimeTag();
         String sql = "DELETE FROM " + listName + " WHERE " + timeTag.getTitle() + "=" + time;
-        deleteBridgeNode(listName,calendar.getTimeInMillis());
+        deleteBridgeNode(listName,time);
         DBOperate DBO = new DBOperate();
         return DBO.delete_item(sql);
     }
@@ -447,9 +452,16 @@ public class listHandler extends AppCompatActivity{
         return DBO.delete_Table(title);
     }
 
+    /**
+     * 搜索数据
+     * @param type 搜索数据的类型,"文字"型和"数字"型
+     * @param content 搜索数据的内容,都为String,在搜索数字型时,会将string转换为double进行比对
+     * @return
+     * userList的列表,其中包含时间Tag,以及匹配到的Tag,其余tag都被过滤.
+     */
     public ArrayList<userList> searchItem(String type, String content){
         ArrayList<userList> list;
-        if(type.equals("STRING"))
+        if(type.equals("文字"))
             list = new ArrayList<>();
         else
             list = new ArrayList<>();
@@ -462,12 +474,12 @@ public class listHandler extends AppCompatActivity{
                 userTag currentTag = items.getTag(tagName);
                 if(currentTag.isCalendar())
                     currentList.addTag(currentTag.getTitle(),currentTag);
-                if(currentTag.isDouble() && type.equals("DOUBLE")){
+                if(currentTag.isDouble() && type.equals("数字")){
                     double testnum = Double.parseDouble(content);
                     if(testnum == (Double)currentTag.getObject())
                         currentList.addTag(currentTag.getTitle(),currentTag);
                 }
-                if(currentTag.isStr() && type.equals("STRING"))
+                if(currentTag.isStr() && type.equals("文字"))
                     if(((String)currentTag.getObject()).equals(content))
                         currentList.addTag(currentTag.getTitle(),currentTag);
 
