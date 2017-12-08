@@ -127,7 +127,7 @@ public class DBOperate extends AppCompatActivity {
             String currentTagName = cursor.getColumnName(i);
             if (tagTypes.charAt(i-1)=='4'&&count==0){
                 count++;
-                break;
+                continue;
             }
             else if (tagTypes.charAt(i-1)=='4')
             {

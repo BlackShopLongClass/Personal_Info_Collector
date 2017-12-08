@@ -108,7 +108,7 @@ public class listHandler extends AppCompatActivity{
             }
             else if(t.isPos()) {
                 sentence = sentence + t.getTitle() + "x REAL," + t.getTitle() + "y REAL";
-                config += "45";
+                config += "44";
             }
             if(i+1<number) sentence += ",";
         }
@@ -176,9 +176,10 @@ public class listHandler extends AppCompatActivity{
         String tagType = DBO.get_tagTypes(tableName);
         Log.i("bslc","bslc_listHandler_getDataType():types of each tag="+tagType+"(1 for num;2 for date; 3 for word.)");
         userList u = new userList(tableName);
+        int shadow=0;
         for(int i=0;i<tableStr.size();i++) {
             Class<?> type = java.lang.String.class;
-            switch (tagType.charAt(i)){
+            switch (tagType.charAt(i+shadow)){
                 case '1': type = java.lang.Double.class;
                     break;
                 case '2': type = java.util.Calendar.class;
@@ -186,6 +187,7 @@ public class listHandler extends AppCompatActivity{
                 case '3': type = java.lang.String.class;
                     break;
                 case '4': type = android.util.Pair.class;
+                    shadow++;
                     break;
             }
             userTag tag = new userTag(tableStr.get(i),type);
