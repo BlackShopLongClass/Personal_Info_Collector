@@ -106,6 +106,9 @@ public class listHandler extends AppCompatActivity{
                 sentence = sentence + t.getTitle() + " TEXT";
                 config += "3";
             }
+            else if(t.isPos()) {
+                sentence = sentence + t.getTitle() + "x REAL," + t.getTitle() + "y REAL";
+            }
             if(i+1<number) sentence += ",";
         }
         sentence += ");";
