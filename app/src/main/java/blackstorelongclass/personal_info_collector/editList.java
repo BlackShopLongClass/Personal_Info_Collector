@@ -52,6 +52,7 @@ public class editList extends AppCompatActivity implements View.OnClickListener 
     private boolean flag = true;
     private String position;
     private String table;
+    private String time;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -86,7 +87,7 @@ public class editList extends AppCompatActivity implements View.OnClickListener 
         Intent intent = getIntent();
         listname = intent.getStringExtra(detailsoftopic.EXTRA_MESSAGE);
 
-        String time;
+
         table = listname.split(",")[0];
         time = listname.split(",")[1];
         topic = table;
@@ -132,9 +133,7 @@ public class editList extends AppCompatActivity implements View.OnClickListener 
                 });
 
                 timeEditText = tagView.findViewById(R.id.taginputtime);
-                SimpleDateFormat sdf1 = new SimpleDateFormat("HH:MM");
-                String timeStr = sdf1.format(calendar.getTime());
-                timeEditText.setText(timeStr);
+                timeEditText.setText(calendar.get(Calendar.HOUR) + ":" +calendar.get(Calendar.MINUTE));
                 timeEditText.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
@@ -165,7 +164,7 @@ public class editList extends AppCompatActivity implements View.OnClickListener 
                 LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.filllistitem, null);
                 TextView tagTopic = (TextView) tagView.findViewById(R.id.tagTopic);
                 tagTopic.setText(taglist.getTitleList().get(i));
-                EditText text = (EditText)findViewById(R.id.taginput);
+                EditText text = (EditText)tagView.findViewById(R.id.taginput);
                 topic = taglist.getTitleList().get(i);
                 text.setText((String)taglist.getTag(topic).getObject().toString());
                 EditText editText = (EditText)tagView.findViewById(R.id.taginput);
@@ -185,8 +184,12 @@ public class editList extends AppCompatActivity implements View.OnClickListener 
 
                 flag = true;
                 if(flag == true){
-                    getData();
-                    Intent intent = new Intent(this, topicsofonelist.class);
+                    try {
+                        getData();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    Intent intent = new Intent(this, selecttofill.class);
                     intent.putExtra(EXTRA_MESSAGE, table);
                     startActivity(intent);
                     break;}
@@ -225,7 +228,7 @@ public class editList extends AppCompatActivity implements View.OnClickListener 
 
     }
 
-    private void getData(){
+    private void getData() throws ParseException {
         TextView listTopic = (TextView) findViewById(R.id.listTopic);
         String inputTitle = listTopic.getText().toString();
         userList inputlist = new userList(inputTitle);
@@ -284,7 +287,10 @@ public class editList extends AppCompatActivity implements View.OnClickListener 
 //            }
         }
         listHandler handler = new listHandler("333");
-        flag = handler.editData(inputlist,calendardate);
+        Long l = handler.timeStr2Long(time);
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(l);
+        flag = handler.editData(inputlist,c);
     }
 
     protected void dialog() {

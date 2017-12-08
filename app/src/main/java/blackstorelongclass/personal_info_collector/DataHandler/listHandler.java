@@ -333,7 +333,7 @@ public class listHandler extends AppCompatActivity{
     public boolean editData(userList List, Calendar calendar){
         int number = List.getListSize();
         ArrayList<String> titleSet = List.getTitleList();
-        String sentence = "UPDATE SET "+ List.getListTitle();
+        String sentence = "UPDATE SET "+ List.getListTitle() +" ";
         Log.i("bslc","bslc_listHandler_editData():sentence_before="+sentence);
         String timeTagName="TIME";
         for(int i=0; i<List.getListSize();i++){
@@ -361,20 +361,13 @@ public class listHandler extends AppCompatActivity{
             }
         }
 
-        sentence += "WHERE" + timeTagName +"=" + calendar.getTimeInMillis();
+        sentence += " WHERE " + timeTagName +"=" + calendar.getTimeInMillis();
         Log.i("bslc","bslc_listHandler_editData():sentence_after="+sentence);
         DBOperate DBO=new DBOperate();
         return DBO.update_item(sentence);
     }
 
-    /**
-     * 删除表单中的一项内容
-     * @param listName
-     * 表单名称
-     * @param calendar
-     * 被删除的项的时间
-     * @return
-     */
+
 
     public boolean deleteData(String listName, String timeString){
         long time = 0;
@@ -443,6 +436,7 @@ public class listHandler extends AppCompatActivity{
         if(outBridge != null)
             deleteBridge(title,time,outBridge.first.first,outBridge.first.second,outBridge.second);
         ArrayList<Pair<Pair<String,Long>,String>> inBridgeList = getBeBridged(title,time);
+        if(inBridgeList == null) return;
         for(Pair<Pair<String,Long>,String> inBridge:inBridgeList){
             deleteBridge(inBridge.first.first,inBridge.first.second,title,time,inBridge.second);
         }
@@ -462,10 +456,12 @@ public class listHandler extends AppCompatActivity{
      */
     public ArrayList<userList> searchItem(String type, String content){
         ArrayList<userList> list;
+        DBOperate DBO = new DBOperate();
         if(type.equals("文字"))
-            list = new ArrayList<>();
+            list = DBO.queryForString(content);
         else
-            list = new ArrayList<>();
+            list = DBO.queryForNum(Double.parseDouble(content));
+
 
         ArrayList<userList> resultList = new ArrayList<>();
         for(userList items:list){
