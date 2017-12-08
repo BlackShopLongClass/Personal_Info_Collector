@@ -250,7 +250,6 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 Double secondstr = Double.parseDouble(position.split(",")[1].substring(0,6));
                 Pair<Double,Double> p = new Pair<>(firststr,secondstr);
 
-                EditText taginput = (EditText) childAt.findViewById(R.id.taginput);
                 userTag us = new userTag((taglist.getTitleList().get(i)),p);
                 inputlist.addTag(taglist.getTitleList().get(i),us);
             }
