@@ -86,7 +86,7 @@ public class detailsoftopic extends AppCompatActivity implements View.OnClickLis
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis((long) (us.getTag(topic).getObject()));
                 //(Calendar) (us.getTag(topic).getObject());
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 dateStr = sdf.format(calendar.getTime());
                 tagcontent.setText(dateStr);
             }

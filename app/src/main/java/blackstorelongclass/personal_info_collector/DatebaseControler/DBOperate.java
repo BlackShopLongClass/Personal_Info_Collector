@@ -86,8 +86,7 @@ public class DBOperate extends AppCompatActivity {
         try{
             this.db.execSQL(SQL_update);
         }catch(Exception e){
-            Log.i("bslc","bslc_DBOperate_update_Item(): update fail!");
-            e.printStackTrace();
+            Log.i("bslc","bslc_DBOperate_update_Item(): update fail!" + e.getMessage());
         }
         Log.i("bslc","bslc_DBOperate_update_Item(): update success!");
         return true;

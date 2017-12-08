@@ -49,7 +49,7 @@ public class searchresult extends AppCompatActivity {
         String searchstr = intent.getStringExtra(searchactivity.EXTRA_MESSAGE);
         listHandler listHandler = new listHandler("333");
         ArrayList<userList> list;
-        list = listHandler.searchitem(searchstr.split(",")[0],searchstr.split(",")[1]);
+        list = listHandler.searchItem(searchstr.split(",")[0],searchstr.split(",")[1]);
 
 
         for(userList us : list) {
