@@ -189,6 +189,8 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
                     break;
                 case "时间":us = new userTag(hotelName.getText().toString(),java.util.Calendar.class);
                     break;
+                case "地点":us = new userTag(hotelName.getText().toString(),android.util.Pair.class);
+                    break;
                 default: us = new userTag(hotelName.getText().toString(),java.lang.String.class);
             }
 
