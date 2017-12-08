@@ -151,6 +151,180 @@ public class DBOperate extends AppCompatActivity {
         Log.i("bslc","bslc_DBOperate_get_tagTypes();tagTypes="+tagTypes);
         return tagTypes;
     }
+    public ArrayList<userList> queryForString(String item) {
+        ArrayList<userList> rt=new ArrayList<userList>();
+        ArrayList<String> allListName=get_tableNames();
+        ArrayList<String> listsContainStrType=new ArrayList<>();
+        ArrayList<ArrayList<String>> tagNamesForStr=new ArrayList<>();
+        int i,j;
+        //首先找到tag类型中包含String的表单名以及对应tag名
+        for (i=0;i<allListName.size();i++)
+        {
+            String listName_temp=allListName.get(i);
+            String tagType_temp=get_tagTypes(listName_temp);
+            ArrayList<String> tagNames_temp=get_tagNames(listName_temp);
+            ArrayList<String> oneListTagNames_temp=new ArrayList<String>();
+            for (j=0;j<tagType_temp.length();j++)
+            {
+                if (tagType_temp.charAt(j)=='3')
+                {
+                    oneListTagNames_temp.add(tagNames_temp.get(j));
+                }
+            }
+            listsContainStrType.add(listName_temp);
+            tagNamesForStr.add(oneListTagNames_temp);
+        }
+        //之后开始循环搜索tag下是否有待查项
+        for (i=0;i<listsContainStrType.size();i++)
+        {
+            for (j=0;j<tagNamesForStr.get(i).size();j++)
+            {
+                String SQL_search="SELECT * FROM "+listsContainStrType.get(i)+" WHERE "+tagNamesForStr.get(i).get(j)+"='"+item+"';";
+                String SQL_searchConfig="SELECT * FROM Config WHERE listName='"+listsContainStrType.get(i)+"';";
+                String SQL_getTagName="SELECT * FROM "+listsContainStrType.get(i)+";";
+                String tagType;
+                Cursor cursor;
+                cursor=this.db.rawQuery(SQL_searchConfig,null);
+                cursor.moveToNext();
+                tagType=cursor.getString(2);
+                cursor=this.db.rawQuery(SQL_getTagName,null);
+                Vector<String> tagName=new Vector<String>();
+                int k=0;
+                cursor.moveToNext();
+                for (k=1;k<cursor.getColumnCount();k++) {
+                    String currentTagName = cursor.getColumnName(k);
+                    tagName.add(currentTagName);
+                }
+                int size=tagType.length();
+                cursor=this.db.rawQuery(SQL_search,null);
+                while (cursor.moveToNext())
+                {
+                    userList temp1=new userList(listsContainStrType.get(i));
+                    double x=0,y=0;
+                    for (i=0;i<size;i++) {
+                        String tag;
+                        Object content;
+                        userTag temp2;
+                        tag = tagName.elementAt(i);
+                        if (tagType.charAt(i) == '1') {
+                            content = cursor.getDouble(i + 1);
+                        } else if (tagType.charAt(i) == '2') {
+                            content = cursor.getLong(i + 1);
+                        } else if (tagType.charAt(i) == '3') {
+                            content = (String) cursor.getString(i + 1);
+                        } else if (tagType.charAt(i) == '4')   //经纬度分别为double
+                        {
+                            if (tag.charAt(tag.length() - 1) == 'x') {
+                                x = cursor.getDouble(i + 1);
+                                break;
+                            } else {
+                                y = cursor.getDouble(i + 1);
+                                Pair<Double, Double> position = new Pair<>(x, y);
+                                content = position;
+                                tag = tag.substring(0, tag.length() - 1);
+                                temp2 = new userTag(tag, content);
+                                temp1.addTag(tag, temp2);
+                                break;
+                            }
+                        } else {
+                            content = null;
+                        }
+                        temp2 = new userTag(tag, content);
+                        temp1.addTag(tag, temp2);
+                    }
+                    rt.add(temp1);
+                }
+            }
+        }
+        return rt;
+    }
+    public ArrayList<userList> queryForNum(double item) {
+        ArrayList<userList> rt=new ArrayList<userList>();
+        ArrayList<String> allListName=get_tableNames();
+        ArrayList<String> listsContainNumType=new ArrayList<>();
+        ArrayList<ArrayList<String>> tagNamesForNum=new ArrayList<>();
+        int i,j;
+        //首先找到tag类型中包含double的表单名以及对应tag名
+        for (i=0;i<allListName.size();i++)
+        {
+            String listName_temp=allListName.get(i);
+            String tagType_temp=get_tagTypes(listName_temp);
+            ArrayList<String> tagNames_temp=get_tagNames(listName_temp);
+            ArrayList<String> oneListTagNames_temp=new ArrayList<String>();
+            for (j=0;j<tagType_temp.length();j++)
+            {
+                if (tagType_temp.charAt(j)=='1')
+                {
+                    oneListTagNames_temp.add(tagNames_temp.get(j));
+                }
+            }
+            listsContainNumType.add(listName_temp);
+            tagNamesForNum.add(oneListTagNames_temp);
+        }
+        //之后开始循环搜索tag下是否有待查项
+        for (i=0;i<listsContainNumType.size();i++)
+        {
+            for (j=0;j<tagNamesForNum.get(i).size();j++)
+            {
+                String SQL_search="SELECT * FROM "+listsContainNumType.get(i)+" WHERE "+tagNamesForNum.get(i).get(j)+"="+item+";";
+                String SQL_searchConfig="SELECT * FROM Config WHERE listName='"+listsContainNumType.get(i)+"';";
+                String SQL_getTagName="SELECT * FROM "+listsContainNumType.get(i)+";";
+                String tagType;
+                Cursor cursor;
+                cursor=this.db.rawQuery(SQL_searchConfig,null);
+                cursor.moveToNext();
+                tagType=cursor.getString(2);
+                cursor=this.db.rawQuery(SQL_getTagName,null);
+                Vector<String> tagName=new Vector<String>();
+                int k=0;
+                cursor.moveToNext();
+                for (k=1;k<cursor.getColumnCount();k++) {
+                    String currentTagName = cursor.getColumnName(k);
+                    tagName.add(currentTagName);
+                }
+                int size=tagType.length();
+                cursor=this.db.rawQuery(SQL_search,null);
+                while (cursor.moveToNext())
+                {
+                    userList temp1=new userList(listsContainNumType.get(i));
+                    double x=0,y=0;
+                    for (i=0;i<size;i++) {
+                        String tag;
+                        Object content;
+                        userTag temp2;
+                        tag = tagName.elementAt(i);
+                        if (tagType.charAt(i) == '1') {
+                            content = cursor.getDouble(i + 1);
+                        } else if (tagType.charAt(i) == '2') {
+                            content = cursor.getLong(i + 1);
+                        } else if (tagType.charAt(i) == '3') {
+                            content = (String) cursor.getString(i + 1);
+                        } else if (tagType.charAt(i) == '4')   //经纬度分别为double
+                        {
+                            if (tag.charAt(tag.length() - 1) == 'x') {
+                                x = cursor.getDouble(i + 1);
+                                break;
+                            } else {
+                                y = cursor.getDouble(i + 1);
+                                Pair<Double, Double> position = new Pair<>(x, y);
+                                content = position;
+                                tag = tag.substring(0, tag.length() - 1);
+                                temp2 = new userTag(tag, content);
+                                temp1.addTag(tag, temp2);
+                                break;
+                            }
+                        } else {
+                            content = null;
+                        }
+                        temp2 = new userTag(tag, content);
+                        temp1.addTag(tag, temp2);
+                    }
+                    rt.add(temp1);
+                }
+            }
+        }
+        return rt;
+    }
     public ArrayList<userList> get_allItems(String listName) {
         ArrayList<userList> info=new ArrayList<userList>();
         Log.i("bslc","bslc_DBOperate_get_allItems():listName="+listName);
