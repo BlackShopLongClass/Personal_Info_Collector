@@ -138,7 +138,10 @@ public class listHandler extends AppCompatActivity{
             if(t.isPos()){
                 sentence = sentence + t.getTitle()+"x," + t.getTitle()+"y";
             }
-            sentence += t.getTitle();
+            else
+            {
+                sentence += t.getTitle();
+            }
         }
         sentence += ") VALUES (";
         for (int i=0; i<List.getListSize();i++){
