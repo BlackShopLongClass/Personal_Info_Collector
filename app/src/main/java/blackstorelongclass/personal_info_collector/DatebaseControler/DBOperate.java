@@ -500,7 +500,7 @@ public class DBOperate extends AppCompatActivity {
         String SQL_search="SELECT * FROM Link WHERE list1Name='"+list1Name+"' AND item1Time="+item1Time+";";
         Cursor cursor;
         cursor=this.db.rawQuery(SQL_search,null);
-        if (cursor.moveToNext())
+        if (!cursor.moveToNext())
         {
             return null;
         }
@@ -535,12 +535,12 @@ public class DBOperate extends AppCompatActivity {
                 Pair<Pair<String,Long>,String> temp1=new Pair<>(temp,tagName);
                 leftItems.add(temp1);
             }while(cursor.moveToNext());
+            return leftItems;
         }
         else
         {
             return null;
         }
-        return leftItems;
     }
     public boolean link_delete(String list1Name,long item1Time,String list2Name,long item2Time,String tagName) {
         String SQL_delete="DELETE FROM Link WHERE list1Name ='"+list1Name+"' AND item1Time="+item1Time+" AND list2Name='"+list2Name
