@@ -81,9 +81,9 @@ public class listHandler extends AppCompatActivity{
      * 添加的成功与否
      */
     public boolean addNewList(userList List){
-        String file=Environment.getExternalStorageDirectory()+"/Download/export.xls";
+        //String file=Environment.getExternalStorageDirectory()+"/Download/export.xls";
         //"/data/data/blackstorelongclass.personal_info_collector/export"
-        BackupHandler.writeXlsFile(file);
+       // BackupHandler.writeXlsFile(file);
         //BackupHandler.readXlsFile("/data/data/blackstorelongclass.personal_info_collector/export.xls");
         addTable(List.getListTitle());
         int number = List.getListSize();
@@ -385,13 +385,24 @@ public class listHandler extends AppCompatActivity{
         return DBO.delete_item(sql);
     }
 
-
+    /**
+     * 获得它所关联的tag的有关信息
+     * @param title 当前userList数据的标题
+     * @param time 当前userList数据的时间
+     * @return
+     * <<列表标题,时间>,tag名称>
+     */
     public Pair<Pair<String,Long>,String> getBridge(String title, Long time){
         DBOperate DBO = new DBOperate();
         return DBO.link_rightSearch(title,time);
     }
 
-
+    /**
+     * 获得被关联的列表信息
+     * @param title 当前userList的数据标题
+     * @param time 当前userList数据的时间
+     * @return <<列表标题,时间>,被连接的tag名称>
+     */
     public ArrayList<Pair<Pair<String,Long>,String>> getBeBridged(String title, Long time){
         DBOperate DBO = new DBOperate();
         return DBO.link_leftSearch(title,time);
@@ -434,5 +445,35 @@ public class listHandler extends AppCompatActivity{
     public boolean deleteList(String title){
         DBOperate DBO = new DBOperate();
         return DBO.delete_Table(title);
+    }
+
+    public ArrayList<userList> searchItem(String type, String content){
+        ArrayList<userList> list;
+        if(type.equals("STRING"))
+            list = new ArrayList<>();
+        else
+            list = new ArrayList<>();
+
+        ArrayList<userList> resultList = new ArrayList<>();
+        for(userList items:list){
+            ArrayList<String> titleList = items.getTitleList();
+            userList currentList = new userList(items.getListTitle());
+            for(String tagName:titleList){
+                userTag currentTag = items.getTag(tagName);
+                if(currentTag.isCalendar())
+                    currentList.addTag(currentTag.getTitle(),currentTag);
+                if(currentTag.isDouble() && type.equals("DOUBLE")){
+                    double testnum = Double.parseDouble(content);
+                    if(testnum == (Double)currentTag.getObject())
+                        currentList.addTag(currentTag.getTitle(),currentTag);
+                }
+                if(currentTag.isStr() && type.equals("STRING"))
+                    if(((String)currentTag.getObject()).equals(content))
+                        currentList.addTag(currentTag.getTitle(),currentTag);
+
+            }
+            resultList.add(currentList);
+        }
+        return resultList;
     }
 }
