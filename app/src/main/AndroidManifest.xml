@@ -111,6 +111,14 @@
         <activity
             android:name=".firstchoose"
             android:label="@string/title_activity_firstchoose"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".secondchoose"
+            android:label="@string/title_activity_secondchoose"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".thirdchoose"
+            android:label="@string/title_activity_thirdchoose"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

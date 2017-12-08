@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:id="@+id/fillList">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/topicsofonelist">
 
 
         <RelativeLayout
@@ -35,69 +36,37 @@
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
                         android:background="@color/colorPrimary"
+                        android:orientation="horizontal"
                         android:gravity="center">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="20dp"
-                            android:text="Fill Your List"
+                            android:text="Data in List"
                             android:textAlignment="viewStart"
                             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                             android:textSize="24sp"
                             android:textStyle="bold"
                             android:typeface="sans" />
+
                     </LinearLayout>
                 </android.support.v7.widget.Toolbar>
 
             </android.support.design.widget.AppBarLayout>
 
-            <TextView
-                android:id="@+id/listTopic"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/secondchoose_addView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/toolbarlayout"
-                android:layout_weight="2"
-                android:text="表单名称"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:textAlignment="textStart"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
-
-
-            <LinearLayout
-                android:id="@+id/fl_addView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/listTopic"
                 android:padding="10dp"
                 android:orientation="vertical" />
-
-            <Button
-                android:id="@+id/addbridge"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/fl_addView"
-                android:layout_marginRight="50dp"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="3"
-                android:text="设置关联项" />
-
-            <Button
-                android:id="@+id/submit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/addbridge"
-                android:layout_marginRight="50dp"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="3"
-                android:text="提交" />
 
 
         </RelativeLayout>
     </ScrollView>
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="match_parent"
@@ -107,4 +76,5 @@
         app:itemIconTint="@color/selector_item_color"
         app:itemTextColor="@color/selector_item_color"
         app:menu="@menu/navigation" />
+
 </LinearLayout>

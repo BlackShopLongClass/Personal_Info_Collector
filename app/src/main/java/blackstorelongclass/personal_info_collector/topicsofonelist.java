@@ -59,7 +59,7 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
 
 //        topics = Arrays.asList("xxx", "yyy", "zzz", "yyy", "zzz", "yyy", "zzz", "yyy", "zzz", "yyy", "zzz", "yyy", "zzz", "yyy", "zzz");
 
-        ArrayList<userList> list;
+
 
         listHandler hd = new listHandler("whatever");
         Intent intent = getIntent();
@@ -70,6 +70,7 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
                 listname = intent.getStringExtra(editList.EXTRA_MESSAGE);
             }
         }
+        ArrayList<userList> list;
         list = hd.getTableAllData(listname);
 
         if(list != null) {
@@ -143,7 +144,8 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
             tString = tString + ":00";
             String gettopic = listname+ "," + tString;
 
-            //添加删除函数
+            listHandler listhandler = new listHandler("333");
+            listhandler.deleteData(listname,tString);
 
             Intent intent = new Intent(this, selecttofill.class);
             startActivity(intent);

@@ -57,7 +57,7 @@ public class detailsoftopic extends AppCompatActivity implements View.OnClickLis
         Intent intent = getIntent();
         listname = intent.getStringExtra(topicsofonelist.EXTRA_MESSAGE);
 
-        String table,time;
+        String table, time;
         table = listname.split(",")[0];
         time = listname.split(",")[1];
 
@@ -65,29 +65,27 @@ public class detailsoftopic extends AppCompatActivity implements View.OnClickLis
         listHandler hd = new listHandler("whatever");
         userList us = null;
         try {
-            us = hd.getATableData(table,time);
+            us = hd.getATableData(table, time);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         text.setText(us.getListTitle());
 
         addView = (LinearLayout) findViewById(R.id.dt_addView);
-        for(String topic : us.getTitleList()){
+        for (String topic : us.getTitleList()) {
             View tagView = View.inflate(this, R.layout.detailsitem, null);
             TextView tagtopic = tagView.findViewById(R.id.tagTopic);
             tagtopic.setText(topic);
             TextView tagcontent = tagView.findViewById(R.id.tagcontent);
-            if(us.getTag(topic).isDouble()){
+            if (us.getTag(topic).isDouble()) {
                 tagcontent.setText(us.getTag(topic).getObject().toString());
-            }
-            else if(us.getTag(topic).isStr()){
-                tagcontent.setText((String)us.getTag(topic).getObject());
-            }
-            else{
+            } else if (us.getTag(topic).isStr()) {
+                tagcontent.setText((String) us.getTag(topic).getObject());
+            } else {
 
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis((long)(us.getTag(topic).getObject()));
-                        //(Calendar) (us.getTag(topic).getObject());
+                calendar.setTimeInMillis((long) (us.getTag(topic).getObject()));
+                //(Calendar) (us.getTag(topic).getObject());
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
                 dateStr = sdf.format(calendar.getTime());
                 tagcontent.setText(dateStr);
@@ -97,6 +95,7 @@ public class detailsoftopic extends AppCompatActivity implements View.OnClickLis
         }
 
         findViewById(R.id.edit).setOnClickListener(this);
+        findViewById(R.id.addbridge).setOnClickListener(this);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -104,8 +103,15 @@ public class detailsoftopic extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(this, editList.class);
-        intent.putExtra(EXTRA_MESSAGE, listname);
-        startActivity(intent);
+        if (v.getId() == R.id.edit) {
+            Intent intent = new Intent(this, editList.class);
+            intent.putExtra(EXTRA_MESSAGE, listname);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(this, firstchoose.class);
+            intent.putExtra(EXTRA_MESSAGE, listname);
+            startActivity(intent);
+        }
     }
 }
+

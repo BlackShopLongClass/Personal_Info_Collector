@@ -284,7 +284,7 @@ public class editList extends AppCompatActivity implements View.OnClickListener 
 //            }
         }
         listHandler handler = new listHandler("333");
-        flag = handler.addNewData(inputlist);
+        flag = handler.editData(inputlist,calendardate);
     }
 
     protected void dialog() {

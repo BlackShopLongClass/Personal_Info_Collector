@@ -50,6 +50,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
     private String topic;
     private boolean flag = true;
     private String position;
+    private String addbridgestr;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -201,6 +202,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
         TextView listTopic = (TextView) findViewById(R.id.listTopic);
         String inputTitle = listTopic.getText().toString();
         userList inputlist = new userList(inputTitle);
+        String dt=null;
         for (int i = 0; i < addView.getChildCount(); i++) {
             if(taglist.getTag(taglist.getTitleList().get(i)).isCalendar()){
                 View childAt = addView.getChildAt(i);
@@ -210,7 +212,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 String datestr = taginputdate.getText().toString();
                 SimpleDateFormat stf= new SimpleDateFormat("HH:MM");
                 SimpleDateFormat sdf= new SimpleDateFormat("yyyy-mm-dd");
-                String dt = datestr + " " + timestr + ":00";
+                dt = datestr + " " + timestr + ":00";
                 listHandler LH=new listHandler("n");
                 long t=0;
                 try {
@@ -257,6 +259,13 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
         }
         listHandler handler = new listHandler("333");
         flag = handler.addNewData(inputlist);
+        if(addbridgestr != null){
+            try {
+                handler.addBridge(topic,handler.timeStr2Long(dt),addbridgestr.split(",")[0],handler.timeStr2Long(addbridgestr.split(",")[1]),addbridgestr.split(",")[2]);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     protected void dialog() {

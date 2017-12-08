@@ -111,4 +111,6 @@
     <string name="title_activity_search">search</string>
     <string name="title_activity_searchresult">searchresult</string>
     <string name="title_activity_firstchoose">firstchoose</string>
+    <string name="title_activity_secondchoose">secondchoose</string>
+    <string name="title_activity_thirdchoose">thirdchoose</string>
 </resources>
