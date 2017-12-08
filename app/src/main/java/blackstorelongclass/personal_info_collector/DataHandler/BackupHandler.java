@@ -367,11 +367,25 @@ public class BackupHandler {
         ArrayList<String> tableList = listhandler.getTableList();
         WritableWorkbook book;
         try {
-            book = Workbook.createWorkbook(new File(Path));
-        } catch (IOException e) {
+            //File file1 = new File(Path+"1.xls");
+            File file = new File(Path);
+            //Workbook inbook = Workbook.getWorkbook(file);
+            book = Workbook.createWorkbook(file);
+
+
+        } catch (Exception e) {
             Log.i("bslc","bslc_BackupHandler_writeXlsFile():create book ERROR! "+ e.getMessage());
             return false;
         }
+//        try {
+//            String command = "chmod 777 " + Path+"1.xls";
+//            Log.i("bslc", "bslc_BackupHandler_writeXlsFile():command = " + command);
+//            Runtime runtime = Runtime.getRuntime();
+//            Process proc = runtime.exec(command);
+//        } catch (IOException e) {
+//            Log.i("bslc", "bslc_BackupHandler_writeXlsFile():error chmod 777");
+//            e.printStackTrace();
+//        }
         int indexOfSheet = 0;
         for(String title:tableList){
             ArrayList<userList> currentList = listhandler.getTableAllData(title);
@@ -467,12 +481,13 @@ public class BackupHandler {
                 indexOfRow++;
             }
             //end of writing a sheet
-            try {
-                book.write();
-            } catch (IOException e) {
-                Log.i("bslc","bslc_BackupHandler_writeXlsFile():write sheet ERROR! "+e.getMessage());
-            }
+
             indexOfSheet++;
+        }
+        try {
+            book.write();
+        } catch (IOException e) {
+            Log.i("bslc","bslc_BackupHandler_writeXlsFile():write sheet ERROR! "+e.getMessage());
         }
         try {
             book.close();

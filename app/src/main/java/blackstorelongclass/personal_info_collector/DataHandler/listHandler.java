@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -68,6 +69,7 @@ public class listHandler extends AppCompatActivity{
     }
 
     public String getUserName(){
+
         return name;
     }
 
@@ -79,6 +81,10 @@ public class listHandler extends AppCompatActivity{
      * 添加的成功与否
      */
     public boolean addNewList(userList List){
+        //String file=Environment.getExternalStorageDirectory()+"/Download/export.xls";
+        //"/data/data/blackstorelongclass.personal_info_collector/export"
+       // BackupHandler.writeXlsFile(file);
+        //BackupHandler.readXlsFile("/data/data/blackstorelongclass.personal_info_collector/export.xls");
         addTable(List.getListTitle());
         int number = List.getListSize();
         String sentence = "CREATE TABLE "+ List.getListTitle() + "(ID INTEGER PRIMARY KEY AUTOINCREMENT,";
@@ -370,23 +376,27 @@ public class listHandler extends AppCompatActivity{
      * @return
      */
 
-    public boolean deleteData(String listName, Calendar calendar){
-        long time = calendar.getTimeInMillis();
+    public boolean deleteData(String listName, String timeString){
+        long time = 0;
+        try {
+            time = timeStr2Long(timeString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         userList demoList = getDataType(listName);
         userTag timeTag = demoList.getTimeTag();
         String sql = "DELETE FROM " + listName + " WHERE " + timeTag.getTitle() + "=" + time;
-        deleteBridgeNode(listName,calendar.getTimeInMillis());
+        deleteBridgeNode(listName,time);
         DBOperate DBO = new DBOperate();
         return DBO.delete_item(sql);
     }
 
     /**
-     * 获得一个数据的所有关联项
-     * @param userlist
-     * 一个表单内的单独数据
+     * 获得它所关联的tag的有关信息
+     * @param title 当前userList数据的标题
+     * @param time 当前userList数据的时间
      * @return
-     * 返回<<表单名称,时间>,tag名称>
-     *     其中表单名称为被连接的数据的表单名称,时间为被连接的表单的一个数据项的时间,tag名称为被连接的tag名称.
+     * <<列表标题,时间>,tag名称>
      */
     public Pair<Pair<String,Long>,String> getBridge(String title, Long time){
         DBOperate DBO = new DBOperate();
@@ -394,11 +404,10 @@ public class listHandler extends AppCompatActivity{
     }
 
     /**
-     * 获得一个数据所有被关联的项
-     * @param userlist 一个表单内的单独数据
-     * @return
-     * 返回<表单名称,时间>
-     *     其中表单名称为主动连接的数据表单名称,时间为主动连接的数据项的时间
+     * 获得被关联的列表信息
+     * @param title 当前userList的数据标题
+     * @param time 当前userList数据的时间
+     * @return <<列表标题,时间>,被连接的tag名称>
      */
     public ArrayList<Pair<Pair<String,Long>,String>> getBeBridged(String title, Long time){
         DBOperate DBO = new DBOperate();
@@ -442,5 +451,42 @@ public class listHandler extends AppCompatActivity{
     public boolean deleteList(String title){
         DBOperate DBO = new DBOperate();
         return DBO.delete_Table(title);
+    }
+
+    /**
+     * 搜索数据
+     * @param type 搜索数据的类型,"文字"型和"数字"型
+     * @param content 搜索数据的内容,都为String,在搜索数字型时,会将string转换为double进行比对
+     * @return
+     * userList的列表,其中包含时间Tag,以及匹配到的Tag,其余tag都被过滤.
+     */
+    public ArrayList<userList> searchItem(String type, String content){
+        ArrayList<userList> list;
+        if(type.equals("文字"))
+            list = new ArrayList<>();
+        else
+            list = new ArrayList<>();
+
+        ArrayList<userList> resultList = new ArrayList<>();
+        for(userList items:list){
+            ArrayList<String> titleList = items.getTitleList();
+            userList currentList = new userList(items.getListTitle());
+            for(String tagName:titleList){
+                userTag currentTag = items.getTag(tagName);
+                if(currentTag.isCalendar())
+                    currentList.addTag(currentTag.getTitle(),currentTag);
+                if(currentTag.isDouble() && type.equals("数字")){
+                    double testnum = Double.parseDouble(content);
+                    if(testnum == (Double)currentTag.getObject())
+                        currentList.addTag(currentTag.getTitle(),currentTag);
+                }
+                if(currentTag.isStr() && type.equals("文字"))
+                    if(((String)currentTag.getObject()).equals(content))
+                        currentList.addTag(currentTag.getTitle(),currentTag);
+
+            }
+            resultList.add(currentList);
+        }
+        return resultList;
     }
 }
