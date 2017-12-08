@@ -443,6 +443,7 @@ public class listHandler extends AppCompatActivity{
         if(outBridge != null)
             deleteBridge(title,time,outBridge.first.first,outBridge.first.second,outBridge.second);
         ArrayList<Pair<Pair<String,Long>,String>> inBridgeList = getBeBridged(title,time);
+        if(inBridgeList == null) return;
         for(Pair<Pair<String,Long>,String> inBridge:inBridgeList){
             deleteBridge(inBridge.first.first,inBridge.first.second,title,time,inBridge.second);
         }
@@ -462,10 +463,12 @@ public class listHandler extends AppCompatActivity{
      */
     public ArrayList<userList> searchItem(String type, String content){
         ArrayList<userList> list;
+        DBOperate DBO = new DBOperate();
         if(type.equals("文字"))
-            list = new ArrayList<>();
+            list = DBO.queryForString(content);
         else
-            list = new ArrayList<>();
+            list = DBO.queryForNum(Double.parseDouble(content));
+
 
         ArrayList<userList> resultList = new ArrayList<>();
         for(userList items:list){
