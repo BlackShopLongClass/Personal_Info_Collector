@@ -131,12 +131,12 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 tagTopic.setText(taglist.getTitleList().get(i));
                 addView.addView(tagView);
             }
-//            else if(taglist.getTag(taglist.getTitleList().get(i)).isPosition()){
-//                LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.filllistitemposition, null);
-//                TextView tagTopic = (TextView) tagView.findViewById(R.id.tagTopic);
-//                tagTopic.setText(taglist.getTitleList().get(i));
-//                addView.addView(tagView);
-//            }
+            else if(taglist.getTag(taglist.getTitleList().get(i)).isPos()){
+                LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.filllistitemposition, null);
+                TextView tagTopic = (TextView) tagView.findViewById(R.id.tagTopic);
+                tagTopic.setText(taglist.getTitleList().get(i));
+                addView.addView(tagView);
+            }
             else {
                 LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.filllistitem, null);
                 TextView tagTopic = (TextView) tagView.findViewById(R.id.tagTopic);
@@ -242,19 +242,18 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 userTag us = new userTag((taglist.getTitleList().get(i)),taginput.getText().toString());
                 inputlist.addTag(taglist.getTitleList().get(i),us);
             }
-//            else if(taglist.getTag(taglist.getTitleList().get(i)).isPosition()){
-//                View childAt = addView.getChildAt(i);
-//
-//                Intent intent2 = getIntent();
-//                position = intent2.getStringExtra(MapsActivity.EXTRA_MESSAGE);
-//                Long firststr = Long.parseLong(position.split(",")[0].substring(1));
-//                Long secondstr = Long.parseLong(position.split(",")[1].substring(0,6));
-//                Pair<Long,Long> p = new Pair<>(firststr,secondstr);
-//
-//                EditText taginput = (EditText) childAt.findViewById(R.id.taginput);
-//                userTag us = new userTag((taglist.getTitleList().get(i)),p);
-//                inputlist.addTag(taglist.getTitleList().get(i),us);
-//            }
+            else if(taglist.getTag(taglist.getTitleList().get(i)).isPos()){
+                View childAt = addView.getChildAt(i);
+                Intent intent2 = getIntent();
+                position = intent2.getStringExtra(MapsActivity.EXTRA_MESSAGE);
+                Double firststr = Double.parseDouble(position.split(",")[0].substring(1));
+                Double secondstr = Double.parseDouble(position.split(",")[1].substring(0,6));
+                Pair<Double,Double> p = new Pair<>(firststr,secondstr);
+
+                EditText taginput = (EditText) childAt.findViewById(R.id.taginput);
+                userTag us = new userTag((taglist.getTitleList().get(i)),p);
+                inputlist.addTag(taglist.getTitleList().get(i),us);
+            }
         }
         listHandler handler = new listHandler("333");
         flag = handler.addNewData(inputlist);

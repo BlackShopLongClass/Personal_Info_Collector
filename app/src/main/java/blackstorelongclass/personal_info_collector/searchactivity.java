@@ -18,6 +18,8 @@ public class searchactivity extends AppCompatActivity implements View.OnClickLis
 
     public final static String EXTRA_MESSAGE = "blackstorelongclass.personal_info_collector.MESSAGE";
     private String searchstr;
+    private Spinner spinner;
+    private EditText hotelName;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -47,12 +49,7 @@ public class searchactivity extends AppCompatActivity implements View.OnClickLis
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        Spinner spinner = (Spinner) findViewById(R.id.type_spinner);
-        String str = (String) spinner.getSelectedItem();
 
-        EditText hotelName = (EditText) findViewById(R.id.ed_inputname);
-
-        searchstr = str + "," + hotelName;
 
         Button searchbutton = (Button) findViewById(R.id.submit);
         searchbutton.setOnClickListener(this);
@@ -60,6 +57,12 @@ public class searchactivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
+        spinner = (Spinner) findViewById(R.id.type_spinner);
+        String str = (String) spinner.getSelectedItem();
+
+        hotelName = (EditText) findViewById(R.id.sc_input);
+
+        searchstr = str + "," + hotelName.getText();
         Intent intent = new Intent(this, searchresult.class);
         intent.putExtra(EXTRA_MESSAGE, searchstr);
         startActivity(intent);
