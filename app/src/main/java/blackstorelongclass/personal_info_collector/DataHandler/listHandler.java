@@ -333,7 +333,7 @@ public class listHandler extends AppCompatActivity{
     public boolean editData(userList List, Calendar calendar){
         int number = List.getListSize();
         ArrayList<String> titleSet = List.getTitleList();
-        String sentence = "UPDATE SET "+ List.getListTitle();
+        String sentence = "UPDATE SET "+ List.getListTitle() +" ";
         Log.i("bslc","bslc_listHandler_editData():sentence_before="+sentence);
         String timeTagName="TIME";
         for(int i=0; i<List.getListSize();i++){
@@ -361,20 +361,13 @@ public class listHandler extends AppCompatActivity{
             }
         }
 
-        sentence += "WHERE" + timeTagName +"=" + calendar.getTimeInMillis();
+        sentence += " WHERE " + timeTagName +"=" + calendar.getTimeInMillis();
         Log.i("bslc","bslc_listHandler_editData():sentence_after="+sentence);
         DBOperate DBO=new DBOperate();
         return DBO.update_item(sentence);
     }
 
-    /**
-     * 删除表单中的一项内容
-     * @param listName
-     * 表单名称
-     * @param calendar
-     * 被删除的项的时间
-     * @return
-     */
+
 
     public boolean deleteData(String listName, String timeString){
         long time = 0;

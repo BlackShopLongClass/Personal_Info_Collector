@@ -110,6 +110,7 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
                         h + ":" + m;
                 text.setText(timestring);
                 bn.setTag(timestring);
+                deletebn.setTag(timestring);
                 Log.i("bslc","bslc_topicsofonelist_onCreate():time="+timestring);
                 addView.addView(tagView);
                 addView.requestLayout();

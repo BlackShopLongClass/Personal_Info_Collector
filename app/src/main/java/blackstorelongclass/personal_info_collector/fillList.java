@@ -210,8 +210,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 EditText taginputdate = childAt.findViewById(R.id.taginputdate);
                 String timestr = taginputtime.getText().toString();
                 String datestr = taginputdate.getText().toString();
-                SimpleDateFormat stf= new SimpleDateFormat("HH:MM");
-                SimpleDateFormat sdf= new SimpleDateFormat("yyyy-mm-dd");
+
                 dt = datestr + " " + timestr + ":00";
                 listHandler LH=new listHandler("n");
                 long t=0;
