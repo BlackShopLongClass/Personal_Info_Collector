@@ -106,6 +106,9 @@ public class listHandler extends AppCompatActivity{
                 sentence = sentence + t.getTitle() + " TEXT";
                 config += "3";
             }
+            else if(t.isPos()) {
+                sentence = sentence + t.getTitle() + "x REAL," + t.getTitle() + "y REAL";
+            }
             if(i+1<number) sentence += ",";
         }
         sentence += ");";
@@ -333,7 +336,7 @@ public class listHandler extends AppCompatActivity{
     public boolean editData(userList List, Calendar calendar){
         int number = List.getListSize();
         ArrayList<String> titleSet = List.getTitleList();
-        String sentence = "UPDATE SET "+ List.getListTitle() +" ";
+        String sentence = "UPDATE "+ List.getListTitle() +" SET ";
         Log.i("bslc","bslc_listHandler_editData():sentence_before="+sentence);
         String timeTagName="TIME";
         for(int i=0; i<List.getListSize();i++){
