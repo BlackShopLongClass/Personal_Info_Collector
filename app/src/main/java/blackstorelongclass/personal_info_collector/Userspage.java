@@ -56,8 +56,7 @@ public class Userspage extends AppCompatActivity implements View.OnClickListener
             startActivity(intent);
         }
         else if(v.getId()==R.id.confirmfile){
-            String x = Environment.getExternalStorageDirectory().getPath() + "/tencent/QQfile_recv/lists(1).xls";
-            BackupHandler.readXlsFile(x);
+            BackupHandler.readXlsFile(inputPath);
         }
         else {
             showFileChooser();
@@ -89,12 +88,7 @@ public class Userspage extends AppCompatActivity implements View.OnClickListener
                     Uri uri = data.getData();
                     Log.d(TAG, "File Uri: " + uri.toString());
                     // Get the path
-
-                    try {
-                        inputPath = Userspage.getPath(this, uri);
-                    } catch (URISyntaxException e) {
-                        e.printStackTrace();
-                    }
+                        inputPath = GetPathFromUri4kitkat.getPath(this,uri);
                     Log.d(TAG, "File Path: " + inputPath);
                     // Get the file instance
                     // File file = new File(path);
@@ -104,25 +98,4 @@ public class Userspage extends AppCompatActivity implements View.OnClickListener
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-    public static String getPath(Context context, Uri uri) throws URISyntaxException {
-        if ("content".equalsIgnoreCase(uri.getScheme())) {
-            String[] projection = { "_data" };
-            Cursor cursor = null;
-            try {
-                cursor = context.getContentResolver().query(uri, projection, null, null, null);
-                int column_index = cursor.getColumnIndexOrThrow("_data");
-                if (cursor.moveToFirst()) {
-                    return cursor.getString(column_index);
-                }
-            } catch (Exception e) {
-                // Eat it  Or Log it.
-            }
-        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            return uri.getPath();
-        }
-        return null;
-    }
-
-
 }
