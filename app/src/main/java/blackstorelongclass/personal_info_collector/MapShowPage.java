@@ -37,13 +37,15 @@ public class MapShowPage extends AppCompatActivity {
         AMap aMap = mapView.getMap();
 
         listHandler listhandler = new listHandler("1");
-        pairList = listhandler.getPositionWithTitle();
+//        pairList = listhandler.getPositionWithTitle();
+        Pair<Double,Double> q1 = new Pair<>(40.224956,116.588508);
+        Pair<Double,Double> q2 = new Pair<>(43.224956,113.588508);
 
-//        Pair<Long , Pair<Long,Long>> p1 = new Pair<>("eating",(40.224956,116.588508));
-//        Pair<Long , String> p2 = new Pair<>(1511451210000L,"eating");
-//
-//        pairList.add(p1);
-//        pairList.add(p2);
+        Pair<String , Pair<Double,Double>> p1 = new Pair<>("eating",q1);
+        Pair<String , Pair<Double,Double>> p2 = new Pair<>("sleeping",q2);
+
+        pairList.add(p1);
+        pairList.add(p2);
 
 
         for(Pair<String,Pair<Double,Double>> p : pairList){

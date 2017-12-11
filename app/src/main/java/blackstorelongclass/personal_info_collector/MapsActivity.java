@@ -81,8 +81,10 @@ public class MapsActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(this, fillList.class);
-        intent.putExtra(EXTRA_MESSAGE, position.toString());
-        startActivity(intent);
+        String p = "(" + position.latitude + "," + position.longitude + ")";
+        intent.putExtra(EXTRA_MESSAGE, p);
+        this.setResult(1, intent);
+        this.finish();
     }
 
 }

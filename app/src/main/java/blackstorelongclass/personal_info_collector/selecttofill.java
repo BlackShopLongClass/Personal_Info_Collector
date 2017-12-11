@@ -96,7 +96,8 @@ public class selecttofill extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
         }
         else if(v.getId()==R.id.searchdata){
-            Intent intent = new Intent(this, searchactivity.class);
+//            Intent intent = new Intent(this, searchactivity.class);
+            Intent intent = new Intent(this, MapShowPage.class);
             startActivity(intent);
         }
         else {
