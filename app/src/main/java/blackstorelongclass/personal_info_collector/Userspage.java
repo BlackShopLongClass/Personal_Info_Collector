@@ -33,37 +33,10 @@ public class Userspage extends AppCompatActivity implements View.OnClickListener
     private static final String TAG = "ChooseFile";
     private String inputPath = null;
 
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    Intent intentNavigation3 = new Intent(Userspage.this, selecttofill.class);
-                    startActivity(intentNavigation3);
-                    return true;
-                case R.id.navigation_dashboard:
-                    Intent intentNavigation = new Intent(Userspage.this, timeLine.class);
-                    startActivity(intentNavigation);
-                    return true;
-                case R.id.navigation_user:
-
-                    return true;
-            }
-            return false;
-        }
-
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userspage);
-
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         Button createnewlistbutton = (Button) findViewById(R.id.selectfile);
         createnewlistbutton.setOnClickListener(this);
