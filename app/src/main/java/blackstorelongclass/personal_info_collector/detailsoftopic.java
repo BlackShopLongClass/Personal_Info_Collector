@@ -95,7 +95,7 @@ public class detailsoftopic extends AppCompatActivity implements View.OnClickLis
                 tagtopic.setText(topic);
                 Button bn = tagView.findViewById(R.id.positionbutton);
                 Pair<Double,Double> p = (Pair)us.getTag(topic).getObject();
-                positionstr = "("+p.first+","+p.second+")";
+                positionstr = p.first+","+p.second;
                 bn.setOnClickListener(this);
             }
             else {

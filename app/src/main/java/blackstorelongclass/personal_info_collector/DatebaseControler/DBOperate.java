@@ -382,7 +382,7 @@ public class DBOperate extends AppCompatActivity {
                     if (tag.charAt(tag.length()-1)=='x')
                     {
                         x=cursor.getDouble(i+1);
-                        break;
+                        continue;
                     }
                     else
                     {
@@ -393,7 +393,7 @@ public class DBOperate extends AppCompatActivity {
                         temp2=new userTag(tag,content);
                         temp1.addTag(tag,temp2);
                         Log.i("bslc","bslc_DBOperate_get_allItems():tagType=position;content="+content);
-                        break;
+                        continue;
                     }
                 }
                 else

@@ -14,6 +14,7 @@ import java.util.zip.ZipFile;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.os.Environment;
 import android.util.Log;
 import android.util.Pair;
 import android.util.Xml;
@@ -96,7 +97,11 @@ public class BackupHandler {
         return dataList;
     }
 
-    public static ArrayList<ArrayList<userList>> readXlsFile(String path){
+    public static ArrayList<ArrayList<userList>> readXlsFile(String path1){
+        String path= Environment.getExternalStorageDirectory()+"/Download/export.xls";
+        //"/data/data/blackstorelongclass.personal_info_collector/export"
+        //BackupHandler.writeXlsFile(file);
+        //BackupHandler.readXlsFile("/data/data/blackstorelongclass.personal_info_collector/export.xls");
         ArrayList<ArrayList<userList>> userData = new ArrayList<>();
         try {
             Workbook workbook = Workbook.getWorkbook(new File(path));
@@ -146,6 +151,8 @@ public class BackupHandler {
                     case "NUMBER": cellType = java.lang.Double.class;
                         break;
                     case "TIME": cellType = java.lang.Long.class;
+                        break;
+                    case "POSITION": cellType = android.util.Pair.class;
                         break;
                     default:
                         break;
@@ -204,6 +211,7 @@ public class BackupHandler {
                         }
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime(date);
+                        calendar.set(Calendar.SECOND,0);
                         userTag currentTag = new userTag(demoTag.getTitle(),calendar);
                         currentUserList.addTag(demoTag.getTitle(),currentTag);
                     }

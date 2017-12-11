@@ -241,8 +241,8 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 inputlist.addTag(taglist.getTitleList().get(i), us);
             } else if (taglist.getTag(taglist.getTitleList().get(i)).isPos()) {
                 View childAt = addView.getChildAt(i);
-                Double firststr = Double.parseDouble(position.split(",")[0].substring(1));
-                Double secondstr = Double.parseDouble(position.split(",")[1].substring(0,9));
+                Double firststr = Double.parseDouble(position.split(",")[0]);
+                Double secondstr = Double.parseDouble(position.split(",")[1]);
                 Pair<Double, Double> p = new Pair<>(firststr, secondstr);
 
                 userTag us = new userTag((taglist.getTitleList().get(i)), p);

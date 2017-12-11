@@ -68,7 +68,7 @@ public class Userspage extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         showFileChooser();
-        String x=Environment.getExternalStorageDirectory().getPath()+"/tencent/QQfile_recv/lists(1).xls";
+        String x=Environment.getExternalStorageDirectory().getPath()+"/Download/export.xls";
         BackupHandler.readXlsFile(x);
     }
 

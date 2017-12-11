@@ -81,10 +81,6 @@ public class listHandler extends AppCompatActivity{
      * 添加的成功与否
      */
     public boolean addNewList(userList List){
-        //String file=Environment.getExternalStorageDirectory()+"/Download/export.xls";
-        //"/data/data/blackstorelongclass.personal_info_collector/export"
-       // BackupHandler.writeXlsFile(file);
-        //BackupHandler.readXlsFile("/data/data/blackstorelongclass.personal_info_collector/export.xls");
         addTable(List.getListTitle());
         int number = List.getListSize();
         String sentence = "CREATE TABLE "+ List.getListTitle() + "(ID INTEGER PRIMARY KEY AUTOINCREMENT,";
@@ -290,7 +286,7 @@ public class listHandler extends AppCompatActivity{
         }
         ArrayList<Pair> resultList = new ArrayList<>();
         Log.i("bslc","bslc_listHandler_getTimeWithTitle():fetch finish, start to sort");
-        while (true){
+        while (!allTableArrary.isEmpty()){
             int numOfTable = allTableArrary.size();
             int flag = 0;
             for(int i=1;i<numOfTable;i++){
