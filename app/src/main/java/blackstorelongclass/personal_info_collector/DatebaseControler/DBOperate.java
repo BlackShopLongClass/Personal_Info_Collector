@@ -468,7 +468,9 @@ public class DBOperate extends AppCompatActivity {
                         tag=tag.substring(0,tag.length()-1);
                         temp=new userTag(tag,content);
                         specificItem.addTag(tag,temp);
-                        Log.i("bslc","bslc_DBOperate_get_specificItem():tagType=position;content="+content);
+                        Log.i("bslc","bslc_DBOperate_get_specificItem():tagType=position;content="
+                                +((Pair<Double,Double>)content).first+","
+                                +((Pair<Double,Double>)content).second);
                         continue;
                     }
                 }

@@ -41,8 +41,8 @@ public class MapShowPage extends AppCompatActivity {
         Intent intent = getIntent();
         positionstr = intent.getStringExtra(detailsoftopic.EXTRA_MESSAGE);
         if(positionstr != null){
-            Double firststr = Double.parseDouble(positionstr.split(",")[0].substring(1));
-            Double secondstr = Double.parseDouble(positionstr.split(",")[1].substring(0,9));
+            Double firststr = Double.parseDouble(positionstr.split(",")[0]);
+            Double secondstr = Double.parseDouble(positionstr.split(",")[1]);
             Pair<Double, Double> p = new Pair<>(firststr, secondstr);
             Pair<String , Pair<Double,Double>> p1 = new Pair<>("",p);
             pairList.add(p1);
