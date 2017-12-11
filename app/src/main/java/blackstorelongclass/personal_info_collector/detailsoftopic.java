@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.util.Pair;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,6 +29,7 @@ public class detailsoftopic extends AppCompatActivity implements View.OnClickLis
     private userList us;
     private String dateStr;
     private String listname;
+    private String positionstr;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -73,16 +76,34 @@ public class detailsoftopic extends AppCompatActivity implements View.OnClickLis
 
         addView = (LinearLayout) findViewById(R.id.dt_addView);
         for (String topic : us.getTitleList()) {
-            View tagView = View.inflate(this, R.layout.detailsitem, null);
-            TextView tagtopic = tagView.findViewById(R.id.tagTopic);
-            tagtopic.setText(topic);
-            TextView tagcontent = tagView.findViewById(R.id.tagcontent);
+            View tagView;
             if (us.getTag(topic).isDouble()) {
+                tagView = View.inflate(this, R.layout.detailsitem, null);
+                TextView tagtopic = tagView.findViewById(R.id.tagTopic);
+                tagtopic.setText(topic);
+                TextView tagcontent = tagView.findViewById(R.id.tagcontent);
                 tagcontent.setText(us.getTag(topic).getObject().toString());
             } else if (us.getTag(topic).isStr()) {
+                tagView = View.inflate(this, R.layout.detailsitem, null);
+                TextView tagtopic = tagView.findViewById(R.id.tagTopic);
+                tagtopic.setText(topic);
+                TextView tagcontent = tagView.findViewById(R.id.tagcontent);
                 tagcontent.setText((String) us.getTag(topic).getObject());
-            } else {
+            } else if (us.getTag(topic).isPos()){
+                tagView = View.inflate(this, R.layout.detailsitemposition, null);
+                TextView tagtopic = tagView.findViewById(R.id.tagTopic);
+                tagtopic.setText(topic);
+                Button bn = tagView.findViewById(R.id.positionbutton);
+                Pair<Double,Double> p = (Pair)us.getTag(topic).getObject();
+                positionstr = "("+p.first+","+p.second+")";
+                bn.setOnClickListener(this);
+            }
+            else {
 
+                tagView = View.inflate(this, R.layout.detailsitem, null);
+                TextView tagtopic = tagView.findViewById(R.id.tagTopic);
+                tagtopic.setText(topic);
+                TextView tagcontent = tagView.findViewById(R.id.tagcontent);
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis((long) (us.getTag(topic).getObject()));
                 //(Calendar) (us.getTag(topic).getObject());
@@ -107,7 +128,12 @@ public class detailsoftopic extends AppCompatActivity implements View.OnClickLis
             Intent intent = new Intent(this, editList.class);
             intent.putExtra(EXTRA_MESSAGE, listname);
             startActivity(intent);
-        } else {
+        }else if(v.getId() == R.id.positionbutton){
+            Intent intent = new Intent(this, MapShowPage.class);
+            intent.putExtra(EXTRA_MESSAGE, positionstr);
+            startActivity(intent);
+        }
+        else {
             Intent intent = new Intent(this, firstchoose.class);
             intent.putExtra(EXTRA_MESSAGE, listname);
             startActivity(intent);

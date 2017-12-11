@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/detailsitem"
+    android:id="@+id/detailsitemposition"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,13 +13,14 @@
         android:layout_weight="2"
         android:padding="5dp" />
 
-    <TextView
-        android:id="@+id/tagcontent"
+    <Button
+        android:id="@+id/positionbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="2"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:text="查看地点"
         android:padding="5dp" />
 
 </LinearLayout>
