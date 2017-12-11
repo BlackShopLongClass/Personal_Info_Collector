@@ -41,11 +41,15 @@ public class Userspage extends AppCompatActivity implements View.OnClickListener
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-//                    mTextMessage.setText(R.string.title_home);
+                    Intent intentNavigation3 = new Intent(Userspage.this, selecttofill.class);
+                    startActivity(intentNavigation3);
                     return true;
                 case R.id.navigation_dashboard:
-//                    Intent intentNavigation = new Intent(selecttofill.this, timeLine.class);
-//                    startActivity(intentNavigation);
+                    Intent intentNavigation = new Intent(Userspage.this, timeLine.class);
+                    startActivity(intentNavigation);
+                    return true;
+                case R.id.navigation_user:
+
                     return true;
             }
             return false;
@@ -63,13 +67,28 @@ public class Userspage extends AppCompatActivity implements View.OnClickListener
 
         Button createnewlistbutton = (Button) findViewById(R.id.selectfile);
         createnewlistbutton.setOnClickListener(this);
+
+        Button homebutton = (Button) findViewById(R.id.homebutton);
+        homebutton.setOnClickListener(this);
+
+        Button confirmbutton = (Button) findViewById(R.id.confirmfile);
+        confirmbutton.setOnClickListener(this);
+
     }
 
     @Override
     public void onClick(View v) {
-        showFileChooser();
-        String x=Environment.getExternalStorageDirectory().getPath()+"/tencent/QQfile_recv/lists(1).xls";
-        BackupHandler.readXlsFile(x);
+        if(v.getId()==R.id.homebutton) {
+            Intent intent = new Intent(this, selecttofill.class);
+            startActivity(intent);
+        }
+        else if(v.getId()==R.id.confirmfile){
+            String x = Environment.getExternalStorageDirectory().getPath() + "/tencent/QQfile_recv/lists(1).xls";
+            BackupHandler.readXlsFile(x);
+        }
+        else {
+            showFileChooser();
+        }
     }
 
     private void showFileChooser() {
@@ -103,10 +122,6 @@ public class Userspage extends AppCompatActivity implements View.OnClickListener
                     } catch (URISyntaxException e) {
                         e.printStackTrace();
                     }
-                    String reg = "^.*\\.(?:xls)$";
-                    Pattern pattern = Pattern.compile(reg);
-                    Matcher matcher = pattern.matcher(inputPath);
-
                     Log.d(TAG, "File Path: " + inputPath);
                     // Get the file instance
                     // File file = new File(path);

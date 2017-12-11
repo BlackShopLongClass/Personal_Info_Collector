@@ -42,7 +42,12 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
 //                    mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_dashboard:
-//                    mTextMessage.setText(R.string.title_dashboard);
+                    Intent intentNavigation = new Intent(topicsofonelist.this, timeLine.class);
+                    startActivity(intentNavigation);
+                    return true;
+                case R.id.navigation_user:
+                    Intent intentNavigation3 = new Intent(topicsofonelist.this, Userspage.class);
+                    startActivity(intentNavigation3);
                     return true;
             }
             return false;
@@ -121,6 +126,9 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
         Button createnewlistbutton = (Button) findViewById(R.id.addData);
         createnewlistbutton.setOnClickListener(this);
 
+        Button homebutton = (Button) findViewById(R.id.homebutton);
+        homebutton.setOnClickListener(this);
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
@@ -133,11 +141,15 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
             startActivity(intent);
         }
         else if(v.getId()==R.id.detailoftopic) {
-            String tString = (String)v.getTag();
-            tString = tString + ":00";
-            String gettopic = listname+ "," + tString;
-            Intent intent = new Intent(this, detailsoftopic.class);
-            intent.putExtra(EXTRA_MESSAGE, gettopic);
+                String tString = (String)v.getTag();
+                tString = tString + ":00";
+                String gettopic = listname+ "," + tString;
+                Intent intent = new Intent(this, detailsoftopic.class);
+                intent.putExtra(EXTRA_MESSAGE, gettopic);
+                startActivity(intent);
+        }
+        else if(v.getId()==R.id.homebutton) {
+            Intent intent = new Intent(this, selecttofill.class);
             startActivity(intent);
         }
         else if(v.getId()==R.id.delete) {

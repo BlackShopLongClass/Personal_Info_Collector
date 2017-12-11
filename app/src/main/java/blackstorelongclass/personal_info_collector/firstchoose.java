@@ -31,7 +31,12 @@ public class firstchoose extends AppCompatActivity implements View.OnClickListen
 //                    mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_dashboard:
-//                    mTextMessage.setText(R.string.title_dashboard);
+                    Intent intentNavigation = new Intent(firstchoose.this, timeLine.class);
+                    startActivity(intentNavigation);
+                    return true;
+                case R.id.navigation_user:
+                    Intent intentNavigation3 = new Intent(firstchoose.this, Userspage.class);
+                    startActivity(intentNavigation3);
                     return true;
             }
             return false;
@@ -61,11 +66,20 @@ public class firstchoose extends AppCompatActivity implements View.OnClickListen
             bn.setOnClickListener(this);
             addView.addView(tagView);
         }
+
+        Button homebutton = (Button) findViewById(R.id.homebutton);
+        homebutton.setOnClickListener(this);
     }
 
     public void onClick(View v) {
-        Intent intent = new Intent(this, secondchoose.class);
-        intent.putExtra(EXTRA_MESSAGE, listname + "," + v.getTag().toString());
-        startActivity(intent);
+        if(v.getId()==R.id.homebutton) {
+            Intent intent = new Intent(this, selecttofill.class);
+            startActivity(intent);
+        }
+        else {
+            Intent intent = new Intent(this, secondchoose.class);
+            intent.putExtra(EXTRA_MESSAGE, listname + "," + v.getTag().toString());
+            startActivity(intent);
+        }
     }
 }

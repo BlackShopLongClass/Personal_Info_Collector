@@ -38,10 +38,15 @@ public class timeLine extends AppCompatActivity implements View.OnClickListener 
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-//                    mTextMessage.setText(R.string.title_home);
+                    Intent intentNavigation = new Intent(timeLine.this, selecttofill.class);
+                    startActivity(intentNavigation);
                     return true;
                 case R.id.navigation_dashboard:
-//                    mTextMessage.setText(R.string.title_dashboard);
+
+                    return true;
+                case R.id.navigation_user:
+                    Intent intentNavigation3 = new Intent(timeLine.this, Userspage.class);
+                    startActivity(intentNavigation3);
                     return true;
             }
             return false;
@@ -98,18 +103,27 @@ public class timeLine extends AppCompatActivity implements View.OnClickListener 
         }
 
 
+        Button homebutton = (Button) findViewById(R.id.homebutton);
+        homebutton.setOnClickListener(this);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
     }
 
     @Override
     public void onClick(View v) {
-            String tString = (String)v.getTag();
+        if(v.getId()==R.id.homebutton) {
+            Intent intent = new Intent(this, selecttofill.class);
+            startActivity(intent);
+        }
+        else {
+            String tString = (String) v.getTag();
             String gettopic = tString;
             Intent intent = new Intent(this, detailsoftopic.class);
             intent.putExtra(EXTRA_MESSAGE, gettopic);
             startActivity(intent);
+        }
 
     }
 }

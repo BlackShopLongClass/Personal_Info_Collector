@@ -39,7 +39,12 @@ public class secondchoose extends AppCompatActivity implements View.OnClickListe
 //                    mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_dashboard:
-//                    mTextMessage.setText(R.string.title_dashboard);
+                    Intent intentNavigation = new Intent(secondchoose.this, timeLine.class);
+                    startActivity(intentNavigation);
+                    return true;
+                case R.id.navigation_user:
+                    Intent intentNavigation3 = new Intent(secondchoose.this, Userspage.class);
+                    startActivity(intentNavigation3);
                     return true;
             }
             return false;
@@ -59,6 +64,9 @@ public class secondchoose extends AppCompatActivity implements View.OnClickListe
         listname = intent.getStringExtra(firstchoose.EXTRA_MESSAGE).split(",")[0] + "," +
                 intent.getStringExtra(firstchoose.EXTRA_MESSAGE).split(",")[1];
 
+
+        Button homebutton = (Button) findViewById(R.id.homebutton);
+        homebutton.setOnClickListener(this);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -107,11 +115,17 @@ public class secondchoose extends AppCompatActivity implements View.OnClickListe
     }
 
     public void onClick(View v) {
-        String tString = (String)v.getTag();
-        tString = tString + ":00";
-        String gettopic = topic+ "," + tString;
-        Intent intent = new Intent(this, thirdchoose.class);
-        intent.putExtra(EXTRA_MESSAGE, listname + "," +gettopic);
-        startActivity(intent);
+        if(v.getId()==R.id.homebutton) {
+            Intent intent = new Intent(this, selecttofill.class);
+            startActivity(intent);
+        }
+        else {
+            String tString = (String) v.getTag();
+            tString = tString + ":00";
+            String gettopic = topic + "," + tString;
+            Intent intent = new Intent(this, thirdchoose.class);
+            intent.putExtra(EXTRA_MESSAGE, listname + "," + gettopic);
+            startActivity(intent);
+        }
     }
 }

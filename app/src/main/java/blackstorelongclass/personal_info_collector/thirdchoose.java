@@ -39,7 +39,12 @@ public class thirdchoose extends AppCompatActivity implements View.OnClickListen
 //                    mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_dashboard:
-//                    mTextMessage.setText(R.string.title_dashboard);
+                    Intent intentNavigation = new Intent(thirdchoose.this, timeLine.class);
+                    startActivity(intentNavigation);
+                    return true;
+                case R.id.navigation_user:
+                    Intent intentNavigation3 = new Intent(thirdchoose.this, Userspage.class);
+                    startActivity(intentNavigation3);
                     return true;
             }
             return false;
@@ -96,20 +101,31 @@ public class thirdchoose extends AppCompatActivity implements View.OnClickListen
             addView.addView(tagView);
             addView.requestLayout();
         }
+        Button homebutton = (Button) findViewById(R.id.homebutton);
+        homebutton.setOnClickListener(this);
+
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
     @Override
     public void onClick(View v) {
-        String tString = (String)v.getTag();
-        String gettopic = listname+ "," + tString;
-        listHandler handler = new listHandler("333");
-        try {
-            handler.addBridge(listname.split(",")[0],handler.timeStr2Long(listname.split(",")[1]),
-                    listname.split(",")[2],handler.timeStr2Long(listname.split(",")[3]),tString);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if(v.getId()==R.id.homebutton) {
+            Intent intent = new Intent(this, selecttofill.class);
+            startActivity(intent);
         }
-        Intent intent = new Intent(this, selecttofill.class);
-        startActivity(intent);
+        else {
+            String tString = (String) v.getTag();
+            String gettopic = listname + "," + tString;
+            listHandler handler = new listHandler("333");
+            try {
+                handler.addBridge(listname.split(",")[0], handler.timeStr2Long(listname.split(",")[1]),
+                        listname.split(",")[2], handler.timeStr2Long(listname.split(",")[3]), tString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Intent intent = new Intent(this, selecttofill.class);
+            startActivity(intent);
+        }
     }
 }
