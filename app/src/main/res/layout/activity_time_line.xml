@@ -42,10 +42,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="20dp"
-                            android:layout_marginRight="180dp"
+                            android:layout_marginRight="140dp"
                             android:text="时间展示"
                             android:textAlignment="viewStart"
                             android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+                        <Button
+                            android:id="@+id/mapshow"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_home_white_24dp" />
 
                         <Button
                             android:id="@+id/homebutton"

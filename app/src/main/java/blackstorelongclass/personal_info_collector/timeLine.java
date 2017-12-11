@@ -81,6 +81,9 @@ public class timeLine extends AppCompatActivity implements View.OnClickListener 
         }
 
 
+        Button mapshow = (Button) findViewById(R.id.mapshow);
+        mapshow.setOnClickListener(this);
+
         Button homebutton = (Button) findViewById(R.id.homebutton);
         homebutton.setOnClickListener(this);
 
@@ -91,6 +94,10 @@ public class timeLine extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View v) {
         if(v.getId()==R.id.homebutton) {
             Intent intent = new Intent(this, selecttofill.class);
+            startActivity(intent);
+        }
+        else if(v.getId()==R.id.mapshow){
+            Intent intent = new Intent(this, MapShowPage.class);
             startActivity(intent);
         }
         else {

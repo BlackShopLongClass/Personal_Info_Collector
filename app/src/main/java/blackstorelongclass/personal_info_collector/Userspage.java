@@ -1,6 +1,7 @@
 package blackstorelongclass.personal_info_collector;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -10,8 +11,10 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.BaseKeyListener;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +35,8 @@ public class Userspage extends AppCompatActivity implements View.OnClickListener
     private static final int FILE_SELECT_CODE = 1;
     private static final String TAG = "ChooseFile";
     private String inputPath = null;
+    private boolean inflag;
+    private boolean outflag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +52,9 @@ public class Userspage extends AppCompatActivity implements View.OnClickListener
         Button confirmbutton = (Button) findViewById(R.id.confirmfile);
         confirmbutton.setOnClickListener(this);
 
+        Button outputbutton = (Button) findViewById(R.id.outputfile);
+        outputbutton.setOnClickListener(this);
+
     }
 
     @Override
@@ -56,7 +64,14 @@ public class Userspage extends AppCompatActivity implements View.OnClickListener
             startActivity(intent);
         }
         else if(v.getId()==R.id.confirmfile){
+//            inflag = BackupHandler.readXlsFile(inputPath);
             BackupHandler.readXlsFile(inputPath);
+            if(!inflag) dialogin();
+
+        }
+        else if(v.getId()==R.id.outputfile){
+            outflag = BackupHandler.writeXlsFile(inputPath);
+            if(!outflag) dialogout();
         }
         else {
             showFileChooser();
@@ -97,5 +112,37 @@ public class Userspage extends AppCompatActivity implements View.OnClickListener
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    protected void dialogin() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("读取文件失败");
+        builder.setTitle("提示");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+
+        });
+        builder.create().show();
+
+    }
+
+    protected void dialogout() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("导出文件失败");
+        builder.setTitle("提示");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+
+        });
+        builder.create().show();
+
     }
 }

@@ -87,15 +87,19 @@
                     android:id="@+id/selectfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="SELECTFILE"
-                    android:onClick="selectfile"/>
+                    android:text="选择文件" />
 
                 <Button
                     android:id="@+id/confirmfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="CONFIRM"
-                    android:onClick="selectfile"/>
+                    android:text="导入数据" />
+
+                <Button
+                    android:id="@+id/outputfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="导出数据" />
 
             </LinearLayout>
 

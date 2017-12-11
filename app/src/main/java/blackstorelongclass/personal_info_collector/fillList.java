@@ -48,7 +48,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
     private userList taglist;
     private Calendar calendardate, calendartime;
     private String topic;
-    private boolean flag = true;
+    private boolean flag;
     private String position;
     private String addbridgestr;
 
@@ -162,9 +162,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
         switch (v.getId()) {
             case R.id.submit:
                 listHandler lh = new listHandler("2");
-
-                flag = true;
-                if (flag == true) {
+                if (flag) {
                     getData();
                     Intent intent = new Intent(this, topicsofonelist.class);
                     intent.putExtra(EXTRA_MESSAGE, topic);
@@ -224,6 +222,8 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 String timestr = taginputtime.getText().toString();
                 String datestr = taginputdate.getText().toString();
 
+                if((timestr==null) ||(datestr==null)) flag = false;
+
                 dt = datestr + " " + timestr + ":00";
                 listHandler LH = new listHandler("n");
                 long t = 0;
@@ -244,16 +244,19 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
             } else if (taglist.getTag(taglist.getTitleList().get(i)).isDouble()) {
                 View childAt = addView.getChildAt(i);
                 EditText taginput = (EditText) childAt.findViewById(R.id.taginput);
+                if(taginput.getText()==null) flag = false;
                 double d = Double.valueOf(taginput.getText().toString());
                 userTag us = new userTag((taglist.getTitleList().get(i)), d);
                 inputlist.addTag(taglist.getTitleList().get(i), us);
             } else if (taglist.getTag(taglist.getTitleList().get(i)).isStr()) {
                 View childAt = addView.getChildAt(i);
                 EditText taginput = (EditText) childAt.findViewById(R.id.taginput);
+                if(taginput.getText()==null) flag = false;
                 userTag us = new userTag((taglist.getTitleList().get(i)), taginput.getText().toString());
                 inputlist.addTag(taglist.getTitleList().get(i), us);
             } else if (taglist.getTag(taglist.getTitleList().get(i)).isPos()) {
                 View childAt = addView.getChildAt(i);
+                if(position==null) flag = false;
                 Double firststr = Double.parseDouble(position.split(",")[0].substring(1));
                 Double secondstr = Double.parseDouble(position.split(",")[1].substring(0,9));
                 Pair<Double, Double> p = new Pair<>(firststr, secondstr);
@@ -274,13 +277,9 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
     }
 
     protected void dialog() {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setMessage("确认退出吗？");
-
+        builder.setMessage("页面输入错误！");
         builder.setTitle("提示");
-
         builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 
             @Override
@@ -289,8 +288,6 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
             }
 
         });
-
-
         builder.create().show();
 
     }
