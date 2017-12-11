@@ -31,7 +31,12 @@ public class searchresult extends AppCompatActivity {
 //                    mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_dashboard:
-//                    mTextMessage.setText(R.string.title_dashboard);
+                    Intent intentNavigation = new Intent(searchresult.this, timeLine.class);
+                    startActivity(intentNavigation);
+                    return true;
+                case R.id.navigation_user:
+                    Intent intentNavigation3 = new Intent(searchresult.this, Userspage.class);
+                    startActivity(intentNavigation3);
                     return true;
             }
             return false;
@@ -64,6 +69,8 @@ public class searchresult extends AppCompatActivity {
                 }
             }
         }
+
+
     }
 
 }

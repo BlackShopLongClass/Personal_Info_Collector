@@ -65,7 +65,12 @@ public class editList extends AppCompatActivity implements View.OnClickListener 
 //                    mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_dashboard:
-//                    mTextMessage.setText(R.string.title_dashboard);
+                    Intent intentNavigation = new Intent(editList.this, timeLine.class);
+                    startActivity(intentNavigation);
+                    return true;
+                case R.id.navigation_user:
+                    Intent intentNavigation3 = new Intent(editList.this, Userspage.class);
+                    startActivity(intentNavigation3);
                     return true;
             }
             return false;
@@ -174,6 +179,9 @@ public class editList extends AppCompatActivity implements View.OnClickListener 
         }
         findViewById(R.id.submit).setOnClickListener(this);
 
+        Button homebutton = (Button) findViewById(R.id.homebutton);
+        homebutton.setOnClickListener(this);
+
     }
 
     @Override
@@ -195,6 +203,10 @@ public class editList extends AppCompatActivity implements View.OnClickListener 
                     break;}
                 else
                     dialog();
+            case R.id.homebutton:
+                Intent intent1 = new Intent(this, selecttofill.class);
+                startActivity(intent1);
+                break;
 
             case R.id.positionbutton:
                 Intent intent = new Intent(this, MapsActivity.class);

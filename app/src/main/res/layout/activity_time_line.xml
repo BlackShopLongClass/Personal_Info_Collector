@@ -42,10 +42,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="20dp"
-                            android:layout_marginRight="280dp"
+                            android:layout_marginRight="180dp"
                             android:text="时间展示"
                             android:textAlignment="viewStart"
                             android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+                        <Button
+                            android:id="@+id/homebutton"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_home_white_24dp" />
 
                     </LinearLayout>
                 </android.support.v7.widget.Toolbar>
@@ -63,14 +70,5 @@
         </RelativeLayout>
     </ScrollView>
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="?android:attr/windowBackground"
-        app:itemIconTint="@color/selector_item_color"
-        app:itemTextColor="@color/selector_item_color"
-        app:menu="@menu/navigation2" />
 
 </LinearLayout>

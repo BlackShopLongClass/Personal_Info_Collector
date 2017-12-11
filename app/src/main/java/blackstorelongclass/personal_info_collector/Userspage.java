@@ -33,43 +33,34 @@ public class Userspage extends AppCompatActivity implements View.OnClickListener
     private static final String TAG = "ChooseFile";
     private String inputPath = null;
 
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-//                    mTextMessage.setText(R.string.title_home);
-                    return true;
-                case R.id.navigation_dashboard:
-//                    Intent intentNavigation = new Intent(selecttofill.this, timeLine.class);
-//                    startActivity(intentNavigation);
-                    return true;
-            }
-            return false;
-        }
-
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userspage);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
         Button createnewlistbutton = (Button) findViewById(R.id.selectfile);
         createnewlistbutton.setOnClickListener(this);
+
+        Button homebutton = (Button) findViewById(R.id.homebutton);
+        homebutton.setOnClickListener(this);
+
+        Button confirmbutton = (Button) findViewById(R.id.confirmfile);
+        confirmbutton.setOnClickListener(this);
+
     }
 
     @Override
     public void onClick(View v) {
-        showFileChooser();
-        String x=Environment.getExternalStorageDirectory().getPath()+"/Download/export.xls";
-        BackupHandler.readXlsFile(x);
+        if(v.getId()==R.id.homebutton) {
+            Intent intent = new Intent(this, selecttofill.class);
+            startActivity(intent);
+        }
+        else if(v.getId()==R.id.confirmfile){
+            BackupHandler.readXlsFile(inputPath);
+        }
+        else {
+            showFileChooser();
+        }
     }
 
     private void showFileChooser() {
@@ -97,16 +88,7 @@ public class Userspage extends AppCompatActivity implements View.OnClickListener
                     Uri uri = data.getData();
                     Log.d(TAG, "File Uri: " + uri.toString());
                     // Get the path
-
-                    try {
-                        inputPath = Userspage.getPath(this, uri);
-                    } catch (URISyntaxException e) {
-                        e.printStackTrace();
-                    }
-                    String reg = "^.*\\.(?:xls)$";
-                    Pattern pattern = Pattern.compile(reg);
-                    Matcher matcher = pattern.matcher(inputPath);
-
+                        inputPath = GetPathFromUri4kitkat.getPath(this,uri);
                     Log.d(TAG, "File Path: " + inputPath);
                     // Get the file instance
                     // File file = new File(path);
@@ -116,25 +98,4 @@ public class Userspage extends AppCompatActivity implements View.OnClickListener
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-    public static String getPath(Context context, Uri uri) throws URISyntaxException {
-        if ("content".equalsIgnoreCase(uri.getScheme())) {
-            String[] projection = { "_data" };
-            Cursor cursor = null;
-            try {
-                cursor = context.getContentResolver().query(uri, projection, null, null, null);
-                int column_index = cursor.getColumnIndexOrThrow("_data");
-                if (cursor.moveToFirst()) {
-                    return cursor.getString(column_index);
-                }
-            } catch (Exception e) {
-                // Eat it  Or Log it.
-            }
-        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            return uri.getPath();
-        }
-        return null;
-    }
-
-
 }

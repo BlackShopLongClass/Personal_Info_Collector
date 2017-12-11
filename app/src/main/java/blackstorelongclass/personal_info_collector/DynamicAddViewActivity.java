@@ -72,7 +72,12 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
 //                    mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_dashboard:
-//                    mTextMessage.setText(R.string.title_dashboard);
+                    Intent intentNavigation = new Intent(DynamicAddViewActivity.this, timeLine.class);
+                    startActivity(intentNavigation);
+                    return true;
+                case R.id.navigation_user:
+                    Intent intentNavigation3 = new Intent(DynamicAddViewActivity.this, Userspage.class);
+                    startActivity(intentNavigation3);
                     return true;
             }
             return false;
@@ -90,6 +95,9 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
         //默认添加一个Item
 
         addViewItem(null);
+
+        Button homebutton = (Button) findViewById(R.id.homebutton);
+        homebutton.setOnClickListener(this);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -109,6 +117,10 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
                 getData();
                 Intent intent = new Intent(this,selecttofill.class);
                 startActivity(intent);
+                break;
+            case R.id.homebutton:
+                Intent intent1 = new Intent(this, selecttofill.class);
+                startActivity(intent1);
                 break;
         }
     }

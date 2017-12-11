@@ -43,7 +43,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="20dp"
+<<<<<<< HEAD
                             android:layout_marginRight="80dp"
+=======
+                            android:layout_marginRight="30dp"
+>>>>>>> 918841b3a5153004107c6bf123d8b8dcb1ded997
                             android:text="选择表单"
                             android:textAlignment="viewStart"
                             android:textAppearance="@style/TextAppearance.AppCompat.Headline" />

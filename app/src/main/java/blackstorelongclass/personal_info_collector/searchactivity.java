@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import static blackstorelongclass.personal_info_collector.R.id.navigation_home;
+
 public class searchactivity extends AppCompatActivity implements View.OnClickListener {
 
     public final static String EXTRA_MESSAGE = "blackstorelongclass.personal_info_collector.MESSAGE";
@@ -31,7 +33,12 @@ public class searchactivity extends AppCompatActivity implements View.OnClickLis
 //                    mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_dashboard:
-//                    mTextMessage.setText(R.string.title_dashboard);
+                    Intent intentNavigation = new Intent(searchactivity.this, timeLine.class);
+                    startActivity(intentNavigation);
+                    return true;
+                case R.id.navigation_user:
+                    Intent intentNavigation3 = new Intent(searchactivity.this, Userspage.class);
+                    startActivity(intentNavigation3);
                     return true;
             }
             return false;
@@ -53,18 +60,27 @@ public class searchactivity extends AppCompatActivity implements View.OnClickLis
 
         Button searchbutton = (Button) findViewById(R.id.submit);
         searchbutton.setOnClickListener(this);
+
+        Button homebutton = (Button) findViewById(R.id.homebutton);
+        homebutton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        spinner = (Spinner) findViewById(R.id.type_spinner);
-        String str = (String) spinner.getSelectedItem();
+        if(v.getId()==R.id.homebutton) {
+            Intent intent = new Intent(this, selecttofill.class);
+            startActivity(intent);
+        }
+        else {
+            spinner = (Spinner) findViewById(R.id.type_spinner);
+            String str = (String) spinner.getSelectedItem();
 
-        hotelName = (EditText) findViewById(R.id.sc_input);
+            hotelName = (EditText) findViewById(R.id.sc_input);
 
-        searchstr = str + "," + hotelName.getText();
-        Intent intent = new Intent(this, searchresult.class);
-        intent.putExtra(EXTRA_MESSAGE, searchstr);
-        startActivity(intent);
+            searchstr = str + "," + hotelName.getText();
+            Intent intent = new Intent(this, searchresult.class);
+            intent.putExtra(EXTRA_MESSAGE, searchstr);
+            startActivity(intent);
+        }
     }
 }

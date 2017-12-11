@@ -41,7 +41,12 @@ public class detailsoftopic extends AppCompatActivity implements View.OnClickLis
 //                    mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_dashboard:
-//                    mTextMessage.setText(R.string.title_dashboard);
+                    Intent intentNavigation = new Intent(detailsoftopic.this, timeLine.class);
+                    startActivity(intentNavigation);
+                    return true;
+                case R.id.navigation_user:
+                    Intent intentNavigation3 = new Intent(detailsoftopic.this, Userspage.class);
+                    startActivity(intentNavigation3);
                     return true;
             }
             return false;
@@ -118,6 +123,9 @@ public class detailsoftopic extends AppCompatActivity implements View.OnClickLis
         findViewById(R.id.edit).setOnClickListener(this);
         findViewById(R.id.addbridge).setOnClickListener(this);
 
+        Button homebutton = (Button) findViewById(R.id.homebutton);
+        homebutton.setOnClickListener(this);
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
@@ -127,6 +135,9 @@ public class detailsoftopic extends AppCompatActivity implements View.OnClickLis
         if (v.getId() == R.id.edit) {
             Intent intent = new Intent(this, editList.class);
             intent.putExtra(EXTRA_MESSAGE, listname);
+            startActivity(intent);
+        }else if(v.getId()==R.id.homebutton) {
+            Intent intent = new Intent(this, selecttofill.class);
             startActivity(intent);
         }else if(v.getId() == R.id.positionbutton){
             Intent intent = new Intent(this, MapShowPage.class);
