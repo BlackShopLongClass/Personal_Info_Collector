@@ -26,6 +26,7 @@ import blackstorelongclass.personal_info_collector.DataHandler.listHandler;
 public class MapShowPage extends AppCompatActivity {
 
     ArrayList<Pair<String,Pair<Double,Double>>> pairList = new ArrayList<Pair<String,Pair<Double,Double>>>();
+    private String positionstr="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,17 +37,30 @@ public class MapShowPage extends AppCompatActivity {
         mapView.onCreate(savedInstanceState);// 此方法必须重写
         AMap aMap = mapView.getMap();
 
-        listHandler listhandler = new listHandler("1");
-//        pairList = listhandler.getPositionWithTitle();
-        Pair<Double,Double> q1 = new Pair<>(40.224956,116.588508);
-        Pair<Double,Double> q2 = new Pair<>(43.224956,113.588508);
 
-        Pair<String , Pair<Double,Double>> p1 = new Pair<>("eating",q1);
-        Pair<String , Pair<Double,Double>> p2 = new Pair<>("sleeping",q2);
+        Intent intent = getIntent();
+        positionstr = intent.getStringExtra(detailsoftopic.EXTRA_MESSAGE);
+        if(positionstr != null){
+            Double firststr = Double.parseDouble(positionstr.split(",")[0].substring(1));
+            Double secondstr = Double.parseDouble(positionstr.split(",")[1].substring(0,9));
+            Pair<Double, Double> p = new Pair<>(firststr, secondstr);
+            Pair<String , Pair<Double,Double>> p1 = new Pair<>("",p);
+            pairList.add(p1);
+        }
+        else{
+            listHandler listhandler = new listHandler("1");
+            pairList = listhandler.getPositionWithTitle();
+        }
 
-        pairList.add(p1);
-        pairList.add(p2);
-
+//        Pair<Double,Double> q1 = new Pair<>(40.224956,116.588508);
+//        Pair<Double,Double> q2 = new Pair<>(43.224956,113.588508);
+//
+//        Pair<String , Pair<Double,Double>> p1 = new Pair<>("eating",q1);
+//        Pair<String , Pair<Double,Double>> p2 = new Pair<>("sleeping",q2);
+//
+//        pairList.add(p1);
+//        pairList.add(p2);
+//
 
         for(Pair<String,Pair<Double,Double>> p : pairList){
             LatLng latLng = new LatLng(p.second.first,p.second.second);
