@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -84,9 +85,12 @@ public class thirdchoose extends AppCompatActivity implements View.OnClickListen
                 tagtopic.setText(topic + " : " + us.getTag(topic).getObject().toString());
                 bn.setTag(topic);
             }
-            else if(us.getTag(topic).isStr()){
+            else if(us.getTag(topic).isStr() ){
                 tagtopic.setText(topic + " : " + (String)us.getTag(topic).getObject());
                 bn.setTag(topic);
+            }
+            else if(us.getTag(topic).isPos()){
+                tagtopic.setText(topic);
             }
             else{
 

@@ -464,8 +464,19 @@ public class listHandler extends AppCompatActivity{
         DBOperate DBO = new DBOperate();
         if(type.equals("文字"))
             list = DBO.queryForString(content);
-        else
-            list = DBO.queryForNum(Double.parseDouble(content));
+        else if(type.equals("数字")){
+            double num = 0;
+            try{
+                num = Double.parseDouble(content);
+            }catch (Exception e){
+                return new ArrayList<userList>();
+            }
+            list = DBO.queryForNum(num);
+        }
+        else {
+            return new ArrayList<userList>();
+        }
+
 
 
         ArrayList<userList> resultList = new ArrayList<>();
@@ -477,7 +488,12 @@ public class listHandler extends AppCompatActivity{
                 if(currentTag.isCalendar())
                     currentList.addTag(currentTag.getTitle(),currentTag);
                 if(currentTag.isDouble() && type.equals("数字")){
-                    double testnum = Double.parseDouble(content);
+                    double testnum=0;
+                    try {
+                        testnum = Double.parseDouble(content);
+                    }catch (Exception e){
+                        continue;
+                    }
                     if(testnum == (Double)currentTag.getObject())
                         currentList.addTag(currentTag.getTitle(),currentTag);
                 }

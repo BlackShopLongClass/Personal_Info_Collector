@@ -48,7 +48,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
     private userList taglist;
     private Calendar calendardate, calendartime;
     private String topic;
-    private boolean flag = true;
+    private boolean flag=true;
     private String position;
     private String addbridgestr;
 
@@ -162,16 +162,14 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
         switch (v.getId()) {
             case R.id.submit:
                 listHandler lh = new listHandler("2");
-
-                flag = true;
-                if (flag == true) {
-                    getData();
+                boolean f = getData();
+                if(f) {
                     Intent intent = new Intent(this, topicsofonelist.class);
                     intent.putExtra(EXTRA_MESSAGE, topic);
                     startActivity(intent);
-                    break;
-                } else
-                    dialog();
+                }
+                else break;
+
 
             case R.id.homebutton:
                 Intent intent1 = new Intent(this, selecttofill.class);
@@ -179,8 +177,8 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 break;
 
             case R.id.positionbutton:
-                Intent intent = new Intent(this, MapsActivity.class);
-                startActivityForResult(intent, 1);
+                Intent intent2 = new Intent(this, MapsActivity.class);
+                startActivityForResult(intent2, 1);
 
         }
     }
@@ -211,7 +209,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
 
     }
 
-    private void getData() {
+    private boolean getData() {
         TextView listTopic = (TextView) findViewById(R.id.listTopic);
         String inputTitle = listTopic.getText().toString();
         userList inputlist = new userList(inputTitle);
@@ -223,6 +221,8 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 EditText taginputdate = childAt.findViewById(R.id.taginputdate);
                 String timestr = taginputtime.getText().toString();
                 String datestr = taginputdate.getText().toString();
+
+                if((timestr==null) ||(datestr==null)) flag = false;
 
                 dt = datestr + " " + timestr + ":00";
                 listHandler LH = new listHandler("n");
@@ -244,12 +244,14 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
             } else if (taglist.getTag(taglist.getTitleList().get(i)).isDouble()) {
                 View childAt = addView.getChildAt(i);
                 EditText taginput = (EditText) childAt.findViewById(R.id.taginput);
+                if(taginput.getText()==null) flag = false;
                 double d = Double.valueOf(taginput.getText().toString());
                 userTag us = new userTag((taglist.getTitleList().get(i)), d);
                 inputlist.addTag(taglist.getTitleList().get(i), us);
             } else if (taglist.getTag(taglist.getTitleList().get(i)).isStr()) {
                 View childAt = addView.getChildAt(i);
                 EditText taginput = (EditText) childAt.findViewById(R.id.taginput);
+                if(taginput.getText()==null) flag = false;
                 userTag us = new userTag((taglist.getTitleList().get(i)), taginput.getText().toString());
                 inputlist.addTag(taglist.getTitleList().get(i), us);
             } else if (taglist.getTag(taglist.getTitleList().get(i)).isPos()) {
@@ -263,24 +265,28 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
             }
         }
         listHandler handler = new listHandler("333");
-        flag = handler.addNewData(inputlist);
-        if (addbridgestr != null) {
-            try {
-                handler.addBridge(topic, handler.timeStr2Long(dt), addbridgestr.split(",")[0], handler.timeStr2Long(addbridgestr.split(",")[1]), addbridgestr.split(",")[2]);
-            } catch (ParseException e) {
-                e.printStackTrace();
+        if(flag) {
+            flag = handler.addNewData(inputlist);
+
+            if (addbridgestr != null) {
+                try {
+                    handler.addBridge(topic, handler.timeStr2Long(dt), addbridgestr.split(",")[0], handler.timeStr2Long(addbridgestr.split(",")[1]), addbridgestr.split(",")[2]);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
+            return true;
+        }
+        else{
+            dialog();
+            return false;
         }
     }
 
     protected void dialog() {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setMessage("确认退出吗？");
-
+        builder.setMessage("页面输入错误！");
         builder.setTitle("提示");
-
         builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 
             @Override
@@ -289,8 +295,6 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
             }
 
         });
-
-
         builder.create().show();
 
     }

@@ -67,12 +67,15 @@ public class MapShowPage extends AppCompatActivity {
             final Marker marker = aMap.addMarker(new MarkerOptions().position(latLng).title(p.first));
         }
 
-        LatLng latLng = new LatLng(39.906901, 116.397972);
-        final Marker marker = aMap.addMarker(new MarkerOptions().position(latLng).title("北京"));
-        // 定义 Marker拖拽的监听
-        marker.isDraggable();
-        marker.setDraggable(true);
-        Log.i("bslc", "bslc_MapsActivity_OnCreate_markerisDraggable" + marker.isDraggable());
+        if(positionstr==null) {
+            LatLng latLng = new LatLng(39.906901, 116.397972);
+            final Marker marker = aMap.addMarker(new MarkerOptions().position(latLng).title("北京"));
+            // 定义 Marker拖拽的监听
+            marker.isDraggable();
+            marker.setDraggable(true);
+            Log.i("bslc", "bslc_MapsActivity_OnCreate_markerisDraggable" + marker.isDraggable());
+        }
+
 
     }
 }

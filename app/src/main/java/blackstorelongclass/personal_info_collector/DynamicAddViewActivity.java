@@ -1,6 +1,7 @@
 package blackstorelongclass.personal_info_collector;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -39,6 +40,7 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
     private String TAG = this.getClass().getSimpleName();
     //装在所有动态添加的Item的LinearLayout容器
     private LinearLayout addHotelNameView;
+    private boolean flag=true;
 
     //添加ViewItem
     private void addViewItem(View view) {
@@ -114,9 +116,13 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
                 break;
             case R.id.submit_button://打印数据
                 if(checktime()<0) break;
-                getData();
-                Intent intent = new Intent(this,selecttofill.class);
-                startActivity(intent);
+                if(!flag) dialog();
+                else {
+                    getData();
+                    Intent intent = new Intent(this, selecttofill.class);
+                    startActivity(intent);
+                    break;
+                }
                 break;
             case R.id.homebutton:
                 Intent intent1 = new Intent(this, selecttofill.class);
@@ -205,7 +211,7 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
                     break;
                 default: us = new userTag(hotelName.getText().toString(),java.lang.String.class);
             }
-
+            if(hotelName.getText()==null) flag = false;
             inputlist.addTag(hotelName.getText().toString(),us);
         }
         listHandler hd = new listHandler("whatever");
@@ -213,5 +219,20 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
 
     }
 
+    protected void dialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("页面输入错误！");
+        builder.setTitle("提示");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+
+        });
+        builder.create().show();
+
+    }
 
 }

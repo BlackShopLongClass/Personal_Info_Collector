@@ -97,8 +97,8 @@ public class BackupHandler {
         return dataList;
     }
 
-    public static ArrayList<ArrayList<userList>> readXlsFile(String path1){
-        String path= Environment.getExternalStorageDirectory()+"/Download/export.xls";
+    public static boolean readXlsFile(String path){
+        //String path= Environment.getExternalStorageDirectory()+"/Download/export.xls";
         //"/data/data/blackstorelongclass.personal_info_collector/export"
         //BackupHandler.writeXlsFile(file);
         //BackupHandler.readXlsFile("/data/data/blackstorelongclass.personal_info_collector/export.xls");
@@ -113,10 +113,12 @@ public class BackupHandler {
             workbook.close();
         } catch (IOException e) {
             Log.i("bslc","bslc_BackupHandler_readXlsFile(): IOException ERROR: "+e.getMessage());
+            return  false;
         } catch (BiffException e) {
             Log.i("bslc","bslc_BackupHandler_readXlsFile(): BiffException ERROR: "+e.getMessage());
+            return false;
         }
-        return userData;
+        return true;
     }
 
     public static ArrayList<userList> readXlsPage(String path, int index){

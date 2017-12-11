@@ -163,11 +163,20 @@ public class DBOperate extends AppCompatActivity {
             String tagType_temp=get_tagTypes(listName_temp);
             ArrayList<String> tagNames_temp=get_tagNames(listName_temp);
             ArrayList<String> oneListTagNames_temp=new ArrayList<String>();
+            int judgeP=0;
             for (j=0;j<tagType_temp.length();j++)
             {
-                if (tagType_temp.charAt(j)=='3')
+                if (tagType_temp.charAt(j)=='3'&&judgeP==0)
                 {
                     oneListTagNames_temp.add(tagNames_temp.get(j));
+                }
+                else if (tagType_temp.charAt(j)=='4'&&judgeP==0)
+                {
+                    judgeP++;
+                }
+                else if (tagType_temp.charAt(j)=='3'&&judgeP>0)
+                {
+                    oneListTagNames_temp.add(tagNames_temp.get(j-1));
                 }
             }
             listsContainStrType.add(listName_temp);
@@ -215,7 +224,7 @@ public class DBOperate extends AppCompatActivity {
                         {
                             if (tag.charAt(tag.length() - 1) == 'x') {
                                 x = cursor.getDouble(k + 1);
-                                break;
+                                continue;
                             } else {
                                 y = cursor.getDouble(k + 1);
                                 Pair<Double, Double> position = new Pair<>(x, y);
@@ -223,7 +232,7 @@ public class DBOperate extends AppCompatActivity {
                                 tag = tag.substring(0, tag.length() - 1);
                                 temp2 = new userTag(tag, content);
                                 temp1.addTag(tag, temp2);
-                                break;
+                                continue;
                             }
                         } else {
                             content = null;
@@ -250,11 +259,20 @@ public class DBOperate extends AppCompatActivity {
             String tagType_temp=get_tagTypes(listName_temp);
             ArrayList<String> tagNames_temp=get_tagNames(listName_temp);
             ArrayList<String> oneListTagNames_temp=new ArrayList<String>();
+            int judgeP=0;
             for (j=0;j<tagType_temp.length();j++)
             {
-                if (tagType_temp.charAt(j)=='1')
+                if (tagType_temp.charAt(j)=='1'&&judgeP==0)
                 {
                     oneListTagNames_temp.add(tagNames_temp.get(j));
+                }
+                else if (tagType_temp.charAt(j)=='4'&&judgeP==0)
+                {
+                    judgeP++;
+                }
+                else if (tagType_temp.charAt(j)=='1'&&judgeP>0)
+                {
+                    oneListTagNames_temp.add(tagNames_temp.get(j-1));
                 }
             }
             listsContainNumType.add(listName_temp);
@@ -302,7 +320,7 @@ public class DBOperate extends AppCompatActivity {
                         {
                             if (tag.charAt(tag.length() - 1) == 'x') {
                                 x = cursor.getDouble(k + 1);
-                                break;
+                                continue;
                             } else {
                                 y = cursor.getDouble(k + 1);
                                 Pair<Double, Double> position = new Pair<>(x, y);
@@ -310,7 +328,7 @@ public class DBOperate extends AppCompatActivity {
                                 tag = tag.substring(0, tag.length() - 1);
                                 temp2 = new userTag(tag, content);
                                 temp1.addTag(tag, temp2);
-                                break;
+                                continue;
                             }
                         } else {
                             content = null;
