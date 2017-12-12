@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -111,17 +112,14 @@ public class BackupHandler {
                 userData.add(currentList);
             }
             workbook.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.i("bslc","bslc_BackupHandler_readXlsFile(): IOException ERROR: "+e.getMessage());
             return  false;
-        } catch (BiffException e) {
-            Log.i("bslc","bslc_BackupHandler_readXlsFile(): BiffException ERROR: "+e.getMessage());
-            return false;
         }
         return true;
     }
 
-    public static ArrayList<userList> readXlsPage(String path, int index){
+    public static ArrayList<userList> readXlsPage(String path, int index) throws ParseException {
         Workbook workbook;
         listHandler listhandler = new listHandler("name");
         try{
@@ -242,7 +240,9 @@ public class BackupHandler {
                 }
                 if(j==Cols) {
                     userData.add(currentUserList);
-                    listhandler.addNewData(currentUserList);
+                    userList userlist = listhandler.getATableData(currentUserList.getListTitle(),currentUserList.getTime());
+                    if(userlist == null)
+                        listhandler.addNewData(currentUserList);
                 }
                 else{
                     continue;

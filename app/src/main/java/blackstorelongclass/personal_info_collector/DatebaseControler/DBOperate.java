@@ -449,7 +449,9 @@ public class DBOperate extends AppCompatActivity {
         cursor=this.db.rawQuery(SQL_searchItem,null);
         //cursor.moveToNext();
         specificItem=new userList(listName);
+        int flag = 0;
         while (cursor.moveToNext()) {
+            flag++;
             double x=0,y=0;
             for (i=0;i<size;i++) {
                 userTag temp;
@@ -503,6 +505,8 @@ public class DBOperate extends AppCompatActivity {
         }
         cursor.close();
         Log.i("bslc","bslc_DBOperate_get_specificItem():finish!");
+        if(flag == 0)
+            return null;
         return specificItem;
     }
     public boolean linkItemWithItemTag(String list1Name,double item1Time,String list2Name,double item2Time,String tagName){
