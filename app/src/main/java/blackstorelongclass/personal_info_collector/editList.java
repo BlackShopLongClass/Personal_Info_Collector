@@ -50,6 +50,7 @@ public class editList extends AppCompatActivity implements View.OnClickListener 
     private String topic;
     private String listname;
     private boolean flag = true;
+    private boolean pf = true;
     private String position;
     private String table;
     private String time;
@@ -160,7 +161,12 @@ public class editList extends AppCompatActivity implements View.OnClickListener 
                 addView.addView(tagView);
             }
             else if(taglist.getTag(taglist.getTitleList().get(i)).isPos()){
-                continue;
+                LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.filllistitemposition, null);
+                TextView tagTopic = (TextView) tagView.findViewById(R.id.tagTopic);
+                tagTopic.setText(taglist.getTitleList().get(i));
+                Button bn = (Button) tagView.findViewById(R.id.positionbutton);
+                bn.setOnClickListener(this);
+                addView.addView(tagView);
             }
             else {
                 LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.filllistitem, null);
@@ -232,7 +238,7 @@ public class editList extends AppCompatActivity implements View.OnClickListener 
             public void onTimeSet(TimePicker view, int hour, int munite) {
                 editList.this.timeEditText.setText(hour + ":" + munite);
             }
-        }, calendartime.get(Calendar.HOUR), calendartime.get(Calendar.MINUTE),true);
+        }, calendartime.get(Calendar.HOUR_OF_DAY), calendartime.get(Calendar.MINUTE),true);
         timePickerDialog.show();
 
     }
@@ -283,9 +289,7 @@ public class editList extends AppCompatActivity implements View.OnClickListener 
             }
             else if (taglist.getTag(taglist.getTitleList().get(i)).isPos()) {
                 View childAt = addView.getChildAt(i);
-                Double firststr = Double.parseDouble(position.split(",")[0]);
-                Double secondstr = Double.parseDouble(position.split(",")[1]);
-                Pair<Double, Double> p = new Pair<>(firststr, secondstr);
+                Object p = taglist.getTag(taglist.getTitleList().get(i)).getObject();
                 userTag us = new userTag((taglist.getTitleList().get(i)), p);
                 inputlist.addTag(taglist.getTitleList().get(i), us);
             }
