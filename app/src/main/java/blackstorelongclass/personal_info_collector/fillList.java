@@ -222,7 +222,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 String timestr = taginputtime.getText().toString();
                 String datestr = taginputdate.getText().toString();
 
-                if((timestr==null) ||(datestr==null)) flag = false;
+                if((timestr.equals("")) ||(datestr.equals(""))) flag = false;
 
                 dt = datestr + " " + timestr + ":00";
                 listHandler LH = new listHandler("n");
@@ -244,14 +244,14 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
             } else if (taglist.getTag(taglist.getTitleList().get(i)).isDouble()) {
                 View childAt = addView.getChildAt(i);
                 EditText taginput = (EditText) childAt.findViewById(R.id.taginput);
-                if(taginput.getText()==null) flag = false;
+                if(taginput.getText().toString().equals("")) flag = false;
                 double d = Double.valueOf(taginput.getText().toString());
                 userTag us = new userTag((taglist.getTitleList().get(i)), d);
                 inputlist.addTag(taglist.getTitleList().get(i), us);
             } else if (taglist.getTag(taglist.getTitleList().get(i)).isStr()) {
                 View childAt = addView.getChildAt(i);
                 EditText taginput = (EditText) childAt.findViewById(R.id.taginput);
-                if(taginput.getText()==null) flag = false;
+                if(taginput.getText().toString().equals("")) flag = false;
                 userTag us = new userTag((taglist.getTitleList().get(i)), taginput.getText().toString());
                 inputlist.addTag(taglist.getTitleList().get(i), us);
             } else if (taglist.getTag(taglist.getTitleList().get(i)).isPos()) {
@@ -279,6 +279,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
         }
         else{
             dialog();
+            flag = true;
             return false;
         }
     }

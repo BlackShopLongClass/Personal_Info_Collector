@@ -62,7 +62,7 @@ public class searchresult extends AppCompatActivity {
                 if(!us.getTag(tag).isCalendar()) {
                     LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.searchresultitem, null);
                     TextView tagTopic = (TextView) tagView.findViewById(R.id.tagTopic);
-                    tagTopic.setText(us.getListTitle() + " " + tag+ " " + us.getTag(tag).getObject().toString());
+                    tagTopic.setText("表单名称"+ us.getListTitle() + "标签名称" + tag+ "对应项" + us.getTag(tag).getObject().toString());
                     addView.addView(tagView);
                     BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
                     navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

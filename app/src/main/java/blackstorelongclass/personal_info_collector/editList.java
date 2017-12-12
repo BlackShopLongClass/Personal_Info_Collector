@@ -159,12 +159,9 @@ public class editList extends AppCompatActivity implements View.OnClickListener 
                 text.setText((String)taglist.getTag(topic).getObject());
                 addView.addView(tagView);
             }
-//            else if(taglist.getTag(taglist.getTitleList().get(i)).isPosition()){
-//                LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.filllistitemposition, null);
-//                TextView tagTopic = (TextView) tagView.findViewById(R.id.tagTopic);
-//                tagTopic.setText(taglist.getTitleList().get(i));
-//                addView.addView(tagView);
-//            }
+            else if(taglist.getTag(taglist.getTitleList().get(i)).isPos()){
+                continue;
+            }
             else {
                 LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.filllistitem, null);
                 TextView tagTopic = (TextView) tagView.findViewById(R.id.tagTopic);
@@ -209,8 +206,8 @@ public class editList extends AppCompatActivity implements View.OnClickListener 
                 break;
 
             case R.id.positionbutton:
-                Intent intent = new Intent(this, MapsActivity.class);
-                startActivity(intent);
+                Intent intent2 = new Intent(this, MapsActivity.class);
+                startActivityForResult(intent2, 1);
         }
     }
 
@@ -284,19 +281,14 @@ public class editList extends AppCompatActivity implements View.OnClickListener 
                 userTag us = new userTag((taglist.getTitleList().get(i)),taginput.getText().toString());
                 inputlist.addTag(taglist.getTitleList().get(i),us);
             }
-//            else if(taglist.getTag(taglist.getTitleList().get(i)).isPosition()){
-//                View childAt = addView.getChildAt(i);
-//
-//                Intent intent2 = getIntent();
-//                position = intent2.getStringExtra(MapsActivity.EXTRA_MESSAGE);
-//                Long firststr = Long.parseLong(position.split(",")[0].substring(1));
-//                Long secondstr = Long.parseLong(position.split(",")[1].substring(0,6));
-//                Pair<Long,Long> p = new Pair<>(firststr,secondstr);
-//
-//                EditText taginput = (EditText) childAt.findViewById(R.id.taginput);
-//                userTag us = new userTag((taglist.getTitleList().get(i)),p);
-//                inputlist.addTag(taglist.getTitleList().get(i),us);
-//            }
+            else if (taglist.getTag(taglist.getTitleList().get(i)).isPos()) {
+                View childAt = addView.getChildAt(i);
+                Double firststr = Double.parseDouble(position.split(",")[0]);
+                Double secondstr = Double.parseDouble(position.split(",")[1]);
+                Pair<Double, Double> p = new Pair<>(firststr, secondstr);
+                userTag us = new userTag((taglist.getTitleList().get(i)), p);
+                inputlist.addTag(taglist.getTitleList().get(i), us);
+            }
         }
         listHandler handler = new listHandler("333");
         Long l = handler.timeStr2Long(time);
@@ -326,5 +318,10 @@ public class editList extends AppCompatActivity implements View.OnClickListener 
         builder.create().show();
 
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        position = data.getStringExtra(EXTRA_MESSAGE);
+    }
+
 
 }

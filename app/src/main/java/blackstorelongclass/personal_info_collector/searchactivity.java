@@ -1,11 +1,13 @@
 package blackstorelongclass.personal_info_collector;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -74,13 +76,32 @@ public class searchactivity extends AppCompatActivity implements View.OnClickLis
         else {
             spinner = (Spinner) findViewById(R.id.type_spinner);
             String str = (String) spinner.getSelectedItem();
-
             hotelName = (EditText) findViewById(R.id.sc_input);
-
-            searchstr = str + "," + hotelName.getText();
-            Intent intent = new Intent(this, searchresult.class);
-            intent.putExtra(EXTRA_MESSAGE, searchstr);
-            startActivity(intent);
+            String s = hotelName.getText().toString();
+            if(s.equals(""))
+                dialog();
+            else {
+                searchstr = str + "," + hotelName.getText();
+                Intent intent = new Intent(this, searchresult.class);
+                intent.putExtra(EXTRA_MESSAGE, searchstr);
+                startActivity(intent);
+            }
         }
+    }
+
+    protected void dialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("页面输入错误！");
+        builder.setTitle("提示");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+
+        });
+        builder.create().show();
+
     }
 }

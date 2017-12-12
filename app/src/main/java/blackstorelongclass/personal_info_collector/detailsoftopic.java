@@ -17,6 +17,7 @@ import blackstorelongclass.personal_info_collector.DataHandler.*;
 
 import java.text.ParseException;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -30,6 +31,9 @@ public class detailsoftopic extends AppCompatActivity implements View.OnClickLis
     private String dateStr;
     private String listname;
     private String positionstr;
+    private Pair<Pair<String,Long>,String> p;
+    private Pair<String,Long> pfirst;
+    private String table, time;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -65,7 +69,7 @@ public class detailsoftopic extends AppCompatActivity implements View.OnClickLis
         Intent intent = getIntent();
         listname = intent.getStringExtra(topicsofonelist.EXTRA_MESSAGE);
 
-        String table, time;
+
         table = listname.split(",")[0];
         time = listname.split(",")[1];
 
@@ -120,8 +124,36 @@ public class detailsoftopic extends AppCompatActivity implements View.OnClickLis
             addView.requestLayout();
         }
 
+        try {
+            if(hd.getBridge(table,hd.timeStr2Long(time))==null){
+                View addb = View.inflate(this, R.layout.addbridgeitem, null);
+                Button addbridge = (Button) addb.findViewById(R.id.addbridge);
+                addView.addView(addb);
+                addView.requestLayout();
+                addbridge.setOnClickListener(this);
+            }
+            else{
+                p = hd.getBridge(table,hd.timeStr2Long(time));
+                pfirst = p.first;
+                View dl = View.inflate(this, R.layout.deletebridheitem, null);
+                TextView tx = (TextView)dl.findViewById(R.id.tagitem);
+                Button bn = (Button)dl.findViewById(R.id.deletebridge);
+                bn.setOnClickListener(this);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis((long) (pfirst.second));
+                //(Calendar) (us.getTag(topic).getObject());
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                dateStr = sdf.format(calendar.getTime());
+                tx.setText(pfirst.first + ":" + dateStr + ","+p.second);
+                addView.addView(dl);
+                addView.requestLayout();
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
         findViewById(R.id.edit).setOnClickListener(this);
-        findViewById(R.id.addbridge).setOnClickListener(this);
 
         Button homebutton = (Button) findViewById(R.id.homebutton);
         homebutton.setOnClickListener(this);
@@ -144,9 +176,19 @@ public class detailsoftopic extends AppCompatActivity implements View.OnClickLis
             intent.putExtra(EXTRA_MESSAGE, positionstr);
             startActivity(intent);
         }
-        else {
+        else if(v.getId() == R.id.addbridge){
             Intent intent = new Intent(this, firstchoose.class);
             intent.putExtra(EXTRA_MESSAGE, listname);
+            startActivity(intent);
+        }
+        else{
+            listHandler hd = new listHandler("whatever");
+            try {
+                hd.deleteBridge(table,hd.timeStr2Long(time),pfirst.first,pfirst.second,p.second);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Intent intent = new Intent(this, selecttofill.class);
             startActivity(intent);
         }
     }
