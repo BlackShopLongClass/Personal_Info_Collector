@@ -234,6 +234,23 @@ public class listHandler extends AppCompatActivity{
         return DBO.get_specificItem(sentence,table);
     }
 
+    public userList getATableData(String table,Long time) throws ParseException {
+        DBOperate DBO = new DBOperate();
+        ArrayList<String> titles = DBO.get_tagNames(table);
+        String tagTypes = DBO.get_tagTypes(table);
+        Log.i("bslc","bslc_listHandler_getATableData():tagType="+tagTypes+"(1 for num;2 for date; 3 for word; 4 for position)");
+        String resultString = "";
+        for(int i=0;i<titles.size();i++){
+            if(tagTypes.charAt(i) == '2') {
+                resultString = titles.get(i);
+                break;
+            }
+        }
+        String sentence = "SELECT * FROM " + table + " WHERE " + resultString + "=" + time + ";";
+        Log.i("bslc","bslc_listHandler_getATableData():sentence="+sentence);
+        return DBO.get_specificItem(sentence,table);
+    }
+
     /**
      * 查询一个表单的一个时间点是否可用
      * @param table
