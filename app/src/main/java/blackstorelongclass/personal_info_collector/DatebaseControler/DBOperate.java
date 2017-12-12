@@ -505,8 +505,8 @@ public class DBOperate extends AppCompatActivity {
         }
         cursor.close();
         Log.i("bslc","bslc_DBOperate_get_specificItem():finish!");
-        if(flag == 0)
-            return null;
+//        if(flag == 0)
+//            return null;
         return specificItem;
     }
     public boolean linkItemWithItemTag(String list1Name,double item1Time,String list2Name,double item2Time,String tagName){

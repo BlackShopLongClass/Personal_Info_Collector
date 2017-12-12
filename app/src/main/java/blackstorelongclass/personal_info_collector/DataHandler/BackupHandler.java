@@ -240,9 +240,9 @@ public class BackupHandler {
                 }
                 if(j==Cols) {
                     userData.add(currentUserList);
-                    userList userlist = listhandler.getATableData(currentUserList.getListTitle(),currentUserList.getTime());
-                    if(userlist == null)
-                        listhandler.addNewData(currentUserList);
+                    //userList userlist = listhandler.getATableData(currentUserList.getListTitle(),currentUserList.getTime());
+                    //if(userlist == null)
+                    listhandler.addNewData(currentUserList);
                 }
                 else{
                     continue;
