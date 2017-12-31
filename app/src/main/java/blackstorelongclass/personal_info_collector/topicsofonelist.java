@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -41,7 +42,12 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
 //                    mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_dashboard:
-//                    mTextMessage.setText(R.string.title_dashboard);
+                    Intent intentNavigation = new Intent(topicsofonelist.this, timeLine.class);
+                    startActivity(intentNavigation);
+                    return true;
+                case R.id.navigation_user:
+                    Intent intentNavigation3 = new Intent(topicsofonelist.this, Userspage.class);
+                    startActivity(intentNavigation3);
                     return true;
             }
             return false;
@@ -58,12 +64,18 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
 
 //        topics = Arrays.asList("xxx", "yyy", "zzz", "yyy", "zzz", "yyy", "zzz", "yyy", "zzz", "yyy", "zzz", "yyy", "zzz", "yyy", "zzz");
 
-        ArrayList<userList> list;
+
 
         listHandler hd = new listHandler("whatever");
         Intent intent = getIntent();
         listname = intent.getStringExtra(selecttofill.EXTRA_MESSAGE);
-        if(listname==null) listname = intent.getStringExtra(fillList.EXTRA_MESSAGE);
+        if(listname==null) {
+            listname = intent.getStringExtra(fillList.EXTRA_MESSAGE);
+            if(listname==null) {
+                listname = intent.getStringExtra(editList.EXTRA_MESSAGE);
+            }
+        }
+        ArrayList<userList> list;
         list = hd.getTableAllData(listname);
 
         if(list != null) {
@@ -82,9 +94,14 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
                 Button bn = tagView.findViewById(R.id.detailoftopic);
                 bn.setTag(str);
                 bn.setOnClickListener(this);
+
+                Button deletebn = tagView.findViewById(R.id.delete);
+                deletebn.setTag(str);
+                deletebn.setOnClickListener(this);
+
                 String h,m,month,date;
-                if(calendar.get(Calendar.HOUR)<10) h = "0"+calendar.get(Calendar.HOUR);
-                else h=""+calendar.get(Calendar.HOUR);
+                if(calendar.get(Calendar.HOUR_OF_DAY)<10) h = "0"+calendar.get(Calendar.HOUR_OF_DAY);
+                else h=""+calendar.get(Calendar.HOUR_OF_DAY);
                 if(calendar.get(Calendar.MINUTE)<10) m = "0"+calendar.get(Calendar.MINUTE);
                 else m=""+calendar.get(Calendar.MINUTE);
                 if(calendar.get(Calendar.MONTH)<9) month = "0"+(calendar.get(Calendar.MONTH)+1);
@@ -97,6 +114,9 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
                 timestring = calendar.get(Calendar.YEAR) + "-" + month + "-" + date + " " +
                         h + ":" + m;
                 text.setText(timestring);
+                bn.setTag(timestring);
+                deletebn.setTag(timestring);
+                Log.i("bslc","bslc_topicsofonelist_onCreate():time="+timestring);
                 addView.addView(tagView);
                 addView.requestLayout();
             }
@@ -105,6 +125,9 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
 
         Button createnewlistbutton = (Button) findViewById(R.id.addData);
         createnewlistbutton.setOnClickListener(this);
+
+        Button homebutton = (Button) findViewById(R.id.homebutton);
+        homebutton.setOnClickListener(this);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -117,11 +140,27 @@ public class topicsofonelist extends AppCompatActivity implements View.OnClickLi
             intent.putExtra(EXTRA_MESSAGE, listname);
             startActivity(intent);
         }
-        else {
-            timestring = timestring + ":00";
-            String gettopic = listname+ "," + timestring;
-            Intent intent = new Intent(this, detailsoftopic.class);
-            intent.putExtra(EXTRA_MESSAGE, gettopic);
+        else if(v.getId()==R.id.detailoftopic) {
+                String tString = (String)v.getTag();
+                tString = tString + ":00";
+                String gettopic = listname+ "," + tString;
+                Intent intent = new Intent(this, detailsoftopic.class);
+                intent.putExtra(EXTRA_MESSAGE, gettopic);
+                startActivity(intent);
+        }
+        else if(v.getId()==R.id.homebutton) {
+            Intent intent = new Intent(this, selecttofill.class);
+            startActivity(intent);
+        }
+        else if(v.getId()==R.id.delete) {
+            String tString = (String)v.getTag();
+            tString = tString + ":00";
+            String gettopic = listname+ "," + tString;
+
+            listHandler listhandler = new listHandler("333");
+            listhandler.deleteData(listname,tString);
+
+            Intent intent = new Intent(this, selecttofill.class);
             startActivity(intent);
         }
     }

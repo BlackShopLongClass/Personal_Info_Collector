@@ -41,12 +41,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="20dp"
-                            android:text="Details"
+                            android:layout_marginRight="180dp"
+                            android:text="表单详情"
                             android:textAlignment="viewStart"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                            android:textSize="24sp"
-                            android:textStyle="bold"
-                            android:typeface="sans" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+                        <Button
+                            android:id="@+id/homebutton"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_home_white_24dp" />
                     </LinearLayout>
                 </android.support.v7.widget.Toolbar>
 
@@ -72,6 +77,18 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/listTopic"
                 android:orientation="vertical" />
+
+
+            <Button
+                android:id="@+id/edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dt_addView"
+                android:layout_marginRight="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="3"
+                android:text="修改数据" />
 
 
         </RelativeLayout>

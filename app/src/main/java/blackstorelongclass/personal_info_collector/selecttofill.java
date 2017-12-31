@@ -28,6 +28,7 @@ public class selecttofill extends AppCompatActivity implements View.OnClickListe
     public final static String EXTRA_MESSAGE = "blackstorelongclass.personal_info_collector.MESSAGE";
     private LinearLayout addView;
     private List<String> topics;
+//    private Intent intentNavigation = new Intent(this, timeLine.class);
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -39,7 +40,12 @@ public class selecttofill extends AppCompatActivity implements View.OnClickListe
 //                    mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_dashboard:
-//                    mTextMessage.setText(R.string.title_dashboard);
+                    Intent intentNavigation = new Intent(selecttofill.this, timeLine.class);
+                    startActivity(intentNavigation);
+                    return true;
+                case R.id.navigation_user:
+                    Intent intentNavigation3 = new Intent(selecttofill.this, Userspage.class);
+                    startActivity(intentNavigation3);
                     return true;
             }
             return false;
@@ -76,14 +82,23 @@ public class selecttofill extends AppCompatActivity implements View.OnClickListe
         Button createnewlistbutton = (Button) findViewById(R.id.createnewlist);
         createnewlistbutton.setOnClickListener(this);
 
+        Button searchbutton = (Button) findViewById(R.id.searchdata);
+        searchbutton.setOnClickListener(this);
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
     }
 
     @Override
     public void onClick(View v) {
         if(v.getId()==R.id.createnewlist){
             Intent intent = new Intent(this,DynamicAddViewActivity.class);
+            startActivity(intent);
+        }
+        else if(v.getId()==R.id.searchdata){
+            Intent intent = new Intent(this, searchactivity.class);
+//            Intent intent = new Intent(this, MapShowPage.class);
             startActivity(intent);
         }
         else {

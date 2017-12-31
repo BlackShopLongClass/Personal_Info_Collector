@@ -43,22 +43,28 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="20dp"
-                            android:layout_marginRight="50dp"
-                            android:text="Select A List"
+                            android:layout_marginRight="30dp"
+                            android:text="选择表单"
                             android:textAlignment="viewStart"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                            android:textSize="24sp"
-                            android:textStyle="bold"
-                            android:typeface="sans" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
                         <Button
+                            android:id="@+id/searchdata"
                             style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="25dp"
+                            android:text="search"
+                            android:textSize="14sp" />
+
+                        <Button
                             android:id="@+id/createnewlist"
+                            style="@style/Widget.AppCompat.Button.Borderless"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="100dp"
-                            android:textSize="30sp"
-                            android:text="+" />
+                            android:layout_marginLeft="0dp"
+                            android:text="+"
+                            android:textSize="30sp" />
                     </LinearLayout>
                 </android.support.v7.widget.Toolbar>
 

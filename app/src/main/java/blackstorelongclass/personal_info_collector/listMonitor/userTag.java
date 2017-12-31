@@ -78,7 +78,9 @@ public class userTag {
      * @return bool
      */
     public boolean isCalendar(){
-        if(C == java.util.GregorianCalendar.class) return true;
+        if(C == java.util.Calendar.class) return true;
+        else if(C == java.lang.Long.class) return true;
+        else if(C == java.util.GregorianCalendar.class) return true;
         else return false;
     }
 
@@ -90,4 +92,15 @@ public class userTag {
         if(C == java.lang.String.class) return true;
         else return false;
     }
+
+    /**
+     * 是否为地点类型
+     * @return bool
+     */
+    public boolean isPos(){
+        if(C == android.util.Pair.class) return true;
+        else return false;
+    }
+
+
 }

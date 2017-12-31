@@ -41,12 +41,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="20dp"
-                            android:text="Fill Your List"
+                            android:layout_marginRight="180dp"
+                            android:text="填写表单"
                             android:textAlignment="viewStart"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                            android:textSize="24sp"
-                            android:textStyle="bold"
-                            android:typeface="sans" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+                        <Button
+                            android:id="@+id/homebutton"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_home_white_24dp" />
                     </LinearLayout>
                 </android.support.v7.widget.Toolbar>
 
@@ -72,6 +77,7 @@
                 android:layout_below="@+id/listTopic"
                 android:padding="10dp"
                 android:orientation="vertical" />
+
 
             <Button
                 android:id="@+id/submit"

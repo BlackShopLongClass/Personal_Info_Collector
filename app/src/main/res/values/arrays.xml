@@ -7,4 +7,10 @@
         <item>时间</item>
         <item>地点</item>
     </string-array>
+
+    <string-array name="items">
+        <item>选择类型</item>
+        <item>数字</item>
+        <item>文字</item>
+    </string-array>
 </resources>

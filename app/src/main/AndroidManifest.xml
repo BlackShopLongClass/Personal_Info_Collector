@@ -7,6 +7,26 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
+    <!-- 允许程序打开网络套接字 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 允许程序设置内置sd卡的写权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 允许程序获取网络状态 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 允许程序访问WiFi网络信息 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 允许程序读写手机状态和身份 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 允许程序访问CellID或WiFi热点来获取粗略的位置 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality. 
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,7 +34,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".welcome"
+        <activity
+            android:name=".welcome"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,9 +62,63 @@
         <activity
             android:name=".testforbuttonnav"
             android:label="@string/title_activity_testforbuttonnav" />
-        <activity android:name=".topicsofonelist"
+        <activity
+            android:name=".topicsofonelist"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".detailsoftopic"
+        <activity
+            android:name=".detailsoftopic"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".timeLine"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Userspage"
+            android:label="@string/title_activity_userspage"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps" />
+
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="568f76ca338e2cd80c31c7b4d7fb2086" />
+
+        <activity android:name=".MapShowPage" />
+        <activity
+            android:name=".editList"
+            android:label="@string/title_activity_edit_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".searchactivity"
+            android:label="search"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".searchresult"
+            android:label="@string/title_activity_searchresult"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".firstchoose"
+            android:label="@string/title_activity_firstchoose"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".secondchoose"
+            android:label="@string/title_activity_secondchoose"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".thirdchoose"
+            android:label="@string/title_activity_thirdchoose"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

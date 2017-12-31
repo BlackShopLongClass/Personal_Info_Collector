@@ -1,6 +1,7 @@
 package blackstorelongclass.personal_info_collector;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -39,6 +40,7 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
     private String TAG = this.getClass().getSimpleName();
     //装在所有动态添加的Item的LinearLayout容器
     private LinearLayout addHotelNameView;
+    private boolean flag=true;
 
     //添加ViewItem
     private void addViewItem(View view) {
@@ -72,7 +74,12 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
 //                    mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_dashboard:
-//                    mTextMessage.setText(R.string.title_dashboard);
+                    Intent intentNavigation = new Intent(DynamicAddViewActivity.this, timeLine.class);
+                    startActivity(intentNavigation);
+                    return true;
+                case R.id.navigation_user:
+                    Intent intentNavigation3 = new Intent(DynamicAddViewActivity.this, Userspage.class);
+                    startActivity(intentNavigation3);
                     return true;
             }
             return false;
@@ -91,6 +98,9 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
 
         addViewItem(null);
 
+        Button homebutton = (Button) findViewById(R.id.homebutton);
+        homebutton.setOnClickListener(this);
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -106,9 +116,17 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
                 break;
             case R.id.submit_button://打印数据
                 if(checktime()<0) break;
-                getData();
-                Intent intent = new Intent(this,selecttofill.class);
-                startActivity(intent);
+                if(!flag) dialog();
+                else {
+                    getData();
+                    Intent intent = new Intent(this, selecttofill.class);
+                    startActivity(intent);
+                    break;
+                }
+                break;
+            case R.id.homebutton:
+                Intent intent1 = new Intent(this, selecttofill.class);
+                startActivity(intent1);
                 break;
         }
     }
@@ -187,11 +205,13 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
                     break;
                 case "文字":us = new userTag(hotelName.getText().toString(),java.lang.String.class);
                     break;
-                case "时间":us = new userTag(hotelName.getText().toString(),java.util.GregorianCalendar.class);
+                case "时间":us = new userTag(hotelName.getText().toString(),java.util.Calendar.class);
+                    break;
+                case "地点":us = new userTag(hotelName.getText().toString(),android.util.Pair.class);
                     break;
                 default: us = new userTag(hotelName.getText().toString(),java.lang.String.class);
             }
-
+            if(hotelName.getText()==null) flag = false;
             inputlist.addTag(hotelName.getText().toString(),us);
         }
         listHandler hd = new listHandler("whatever");
@@ -199,5 +219,20 @@ public class DynamicAddViewActivity extends AppCompatActivity implements View.On
 
     }
 
+    protected void dialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("页面输入错误！");
+        builder.setTitle("提示");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+
+        });
+        builder.create().show();
+
+    }
 
 }

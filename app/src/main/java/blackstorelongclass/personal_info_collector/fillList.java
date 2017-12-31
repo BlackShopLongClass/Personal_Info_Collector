@@ -3,14 +3,18 @@ package blackstorelongclass.personal_info_collector;
 import android.app.DatePickerDialog;
 
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
+import android.util.Pair;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,6 +25,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import com.amap.api.maps2d.model.LatLng;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -40,24 +46,12 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
     private EditText timeEditText;
     private EditText dateEditText;
     private userList taglist;
-    private Calendar calendardate,calendartime;
+    private Calendar calendardate, calendartime;
     private String topic;
+    private boolean flag=true;
+    private String position;
+    private String addbridgestr;
 
-    private void addViewItem(View view) {
-        if (addView.getChildCount() == 0) {//如果一个都没有，就添加一个
-            View tagView = View.inflate(this, R.layout.itemlist, null);
-            addView.addView(tagView);
-            addView.requestLayout();
-            //sortHotelViewItem();
-        } else if (((String) view.getTag()).equals("add")) {//如果有一个以上的Item,点击为添加的Item则添加
-            View hotelEvaluateView = View.inflate(this, R.layout.itemlist, null);
-            addView.addView(hotelEvaluateView);
-//            sortHotelViewItem();
-        }
-        //else {
-        //  sortHotelViewItem();
-        //}
-    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -69,7 +63,12 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
 //                    mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_dashboard:
-//                    mTextMessage.setText(R.string.title_dashboard);
+                    Intent intentNavigation = new Intent(fillList.this, timeLine.class);
+                    startActivity(intentNavigation);
+                    return true;
+                case R.id.navigation_user:
+                    Intent intentNavigation3 = new Intent(fillList.this, Userspage.class);
+                    startActivity(intentNavigation3);
                     return true;
             }
             return false;
@@ -100,7 +99,7 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
 
         listHandler hd = new listHandler("whatever");
         taglist = hd.getDataType(topic);
-        for(int i=0;i<taglist.getListSize();i++) {
+        for (int i = 0; i < taglist.getListSize(); i++) {
             if (taglist.getTag(taglist.getTitleList().get(i)).isCalendar()) {
                 LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.filllistitemtime, null);
                 TextView tagTopic = (TextView) tagView.findViewById(R.id.tagTopic);
@@ -130,15 +129,31 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                         return false;
                     }
                 });
-            }
-            else{
+            } else if (taglist.getTag(taglist.getTitleList().get(i)).isStr()) {
                 LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.filllistitem, null);
                 TextView tagTopic = (TextView) tagView.findViewById(R.id.tagTopic);
                 tagTopic.setText(taglist.getTitleList().get(i));
                 addView.addView(tagView);
+            } else if (taglist.getTag(taglist.getTitleList().get(i)).isPos()) {
+                LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.filllistitemposition, null);
+                TextView tagTopic = (TextView) tagView.findViewById(R.id.tagTopic);
+                tagTopic.setText(taglist.getTitleList().get(i));
+                Button bn = (Button) tagView.findViewById(R.id.positionbutton);
+                bn.setOnClickListener(this);
+                addView.addView(tagView);
+            } else {
+                LinearLayout tagView = (LinearLayout) View.inflate(this, R.layout.filllistitem, null);
+                TextView tagTopic = (TextView) tagView.findViewById(R.id.tagTopic);
+                tagTopic.setText(taglist.getTitleList().get(i));
+                EditText editText = (EditText) tagView.findViewById(R.id.taginput);
+                editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                addView.addView(tagView);
             }
         }
         findViewById(R.id.submit).setOnClickListener(this);
+
+        Button homebutton = (Button) findViewById(R.id.homebutton);
+        homebutton.setOnClickListener(this);
 
     }
 
@@ -146,16 +161,30 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.submit:
-                getData();
-                Intent intent = new Intent(this, topicsofonelist.class);
-                intent.putExtra(EXTRA_MESSAGE, topic);
-                startActivity(intent);
+                listHandler lh = new listHandler("2");
+                boolean f = getData();
+                if(f) {
+                    Intent intent = new Intent(this, topicsofonelist.class);
+                    intent.putExtra(EXTRA_MESSAGE, topic);
+                    startActivity(intent);
+                }
+                else break;
+
+
+            case R.id.homebutton:
+                Intent intent1 = new Intent(this, selecttofill.class);
+                startActivity(intent1);
                 break;
+
+            case R.id.positionbutton:
+                Intent intent2 = new Intent(this, MapsActivity.class);
+                startActivityForResult(intent2, 1);
+
         }
     }
 
     protected void showDatePickDlg() {
-       calendardate = Calendar.getInstance();
+        calendardate = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(fillList.this, new DatePickerDialog.OnDateSetListener() {
 
             @Override
@@ -175,29 +204,31 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
             public void onTimeSet(TimePicker view, int hour, int munite) {
                 fillList.this.timeEditText.setText(hour + ":" + munite);
             }
-        }, calendartime.get(Calendar.HOUR), calendartime.get(Calendar.MINUTE),true);
+        }, calendartime.get(Calendar.HOUR), calendartime.get(Calendar.MINUTE), true);
         timePickerDialog.show();
 
     }
 
-    private void getData(){
+    private boolean getData() {
         TextView listTopic = (TextView) findViewById(R.id.listTopic);
         String inputTitle = listTopic.getText().toString();
         userList inputlist = new userList(inputTitle);
+        String dt = null;
         for (int i = 0; i < addView.getChildCount(); i++) {
-            if(taglist.getTag(taglist.getTitleList().get(i)).isCalendar()){
+            if (taglist.getTag(taglist.getTitleList().get(i)).isCalendar()) {
                 View childAt = addView.getChildAt(i);
                 EditText taginputtime = childAt.findViewById(R.id.taginputtime);
                 EditText taginputdate = childAt.findViewById(R.id.taginputdate);
                 String timestr = taginputtime.getText().toString();
                 String datestr = taginputdate.getText().toString();
-                SimpleDateFormat stf= new SimpleDateFormat("HH:MM");
-                SimpleDateFormat sdf= new SimpleDateFormat("yyyy-mm-dd");
-                String dt = datestr + " " + timestr + ":00";
-                listHandler LH=new listHandler("n");
-                long t=0;
+
+                if((timestr.equals("")) ||(datestr.equals(""))) flag = false;
+
+                dt = datestr + " " + timestr + ":00";
+                listHandler LH = new listHandler("n");
+                long t = 0;
                 try {
-                    t=LH.timeStr2Long(dt);
+                    t = LH.timeStr2Long(dt);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -206,26 +237,71 @@ public class fillList extends AppCompatActivity implements View.OnClickListener 
                 calendartime = datetime;
                 calendardate = datetime;
 
-                calendardate.set(Calendar.HOUR,calendartime.get(Calendar.HOUR));
-                calendardate.set(Calendar.MINUTE,calendartime.get(Calendar.MINUTE));
-                userTag us = new userTag((taglist.getTitleList().get(i)),datetime);
-                inputlist.addTag(taglist.getTitleList().get(i),us);
-            }
-            else if(taglist.getTag(taglist.getTitleList().get(i)).isDouble()){
+                calendardate.set(Calendar.HOUR, calendartime.get(Calendar.HOUR));
+                calendardate.set(Calendar.MINUTE, calendartime.get(Calendar.MINUTE));
+                userTag us = new userTag((taglist.getTitleList().get(i)), datetime);
+                inputlist.addTag(taglist.getTitleList().get(i), us);
+            } else if (taglist.getTag(taglist.getTitleList().get(i)).isDouble()) {
                 View childAt = addView.getChildAt(i);
                 EditText taginput = (EditText) childAt.findViewById(R.id.taginput);
+                if(taginput.getText().toString().equals("")) flag = false;
                 double d = Double.valueOf(taginput.getText().toString());
-                userTag us = new userTag((taglist.getTitleList().get(i)),d);
-                inputlist.addTag(taglist.getTitleList().get(i),us);
-            }
-            else if(taglist.getTag(taglist.getTitleList().get(i)).isStr()){
+                userTag us = new userTag((taglist.getTitleList().get(i)), d);
+                inputlist.addTag(taglist.getTitleList().get(i), us);
+            } else if (taglist.getTag(taglist.getTitleList().get(i)).isStr()) {
                 View childAt = addView.getChildAt(i);
                 EditText taginput = (EditText) childAt.findViewById(R.id.taginput);
-                userTag us = new userTag((taglist.getTitleList().get(i)),taginput.getText().toString());
-                inputlist.addTag(taglist.getTitleList().get(i),us);
+                if(taginput.getText().toString().equals("")) flag = false;
+                userTag us = new userTag((taglist.getTitleList().get(i)), taginput.getText().toString());
+                inputlist.addTag(taglist.getTitleList().get(i), us);
+            } else if (taglist.getTag(taglist.getTitleList().get(i)).isPos()) {
+                View childAt = addView.getChildAt(i);
+                Double firststr = Double.parseDouble(position.split(",")[0]);
+                Double secondstr = Double.parseDouble(position.split(",")[1]);
+                Pair<Double, Double> p = new Pair<>(firststr, secondstr);
+
+                userTag us = new userTag((taglist.getTitleList().get(i)), p);
+                inputlist.addTag(taglist.getTitleList().get(i), us);
             }
         }
         listHandler handler = new listHandler("333");
-        handler.addNewData(inputlist);
+        if(flag) {
+            flag = handler.addNewData(inputlist);
+
+            if (addbridgestr != null) {
+                try {
+                    handler.addBridge(topic, handler.timeStr2Long(dt), addbridgestr.split(",")[0], handler.timeStr2Long(addbridgestr.split(",")[1]), addbridgestr.split(",")[2]);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            return true;
+        }
+        else{
+            dialog();
+            flag = true;
+            return false;
+        }
+    }
+
+    protected void dialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("页面输入错误！");
+        builder.setTitle("提示");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+
+        });
+        builder.create().show();
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        position = data.getStringExtra(EXTRA_MESSAGE);
     }
 }

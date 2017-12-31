@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
+        android:id="@+id/topicsofonelist"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/topicsofonelist">
+        android:layout_weight="1">
 
 
         <RelativeLayout
@@ -21,9 +21,9 @@
 
 
             <android.support.design.widget.AppBarLayout
+                android:id="@+id/toolbarlayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/toolbarlayout"
                 android:theme="@style/AppTheme.AppBarOverlay">
 
                 <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -36,19 +36,25 @@
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
                         android:background="@color/colorPrimary"
-                        android:orientation="horizontal"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="20dp"
-                            android:text="Data in List"
+                            android:layout_marginRight="180dp"
+                            android:text="所有数据"
                             android:textAlignment="viewStart"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                            android:textSize="24sp"
-                            android:textStyle="bold"
-                            android:typeface="sans" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+                        <Button
+                            android:id="@+id/homebutton"
+                            style="@style/Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_home_white_24dp" />
+
 
                     </LinearLayout>
                 </android.support.v7.widget.Toolbar>
@@ -60,19 +66,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/toolbarlayout"
-                android:padding="10dp"
-                android:orientation="vertical" />
+                android:orientation="vertical"
+                android:padding="10dp" />
 
             <Button
                 android:id="@+id/addData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tl_addView"
-                android:layout_marginRight="50dp"
                 android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
                 android:layout_marginTop="10dp"
                 android:layout_weight="3"
                 android:text="添加新数据" />
+
+
+
 
         </RelativeLayout>
     </ScrollView>
